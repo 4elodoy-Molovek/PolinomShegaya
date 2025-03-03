@@ -99,9 +99,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ExpressionAnalyzer.h" />
     <ClInclude Include="HashTableOne.h" />
     <ClInclude Include="HashTableTwo.h" />
     <ClInclude Include="LinearListTable.h" />
+    <ClInclude Include="Parser.h" />
     <ClInclude Include="SortedArrayTable.h" />
     <ClInclude Include="LinearArrayTable.h" />
     <ClInclude Include="Polynomial.h" />
