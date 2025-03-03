@@ -72,5 +72,8 @@
     <ClInclude Include="ExpressionAnalyzer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PolynomialHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

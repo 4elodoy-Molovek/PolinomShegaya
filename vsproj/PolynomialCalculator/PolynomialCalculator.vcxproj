@@ -104,6 +104,7 @@
     <ClInclude Include="HashTableTwo.h" />
     <ClInclude Include="LinearListTable.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="PolynomialHandler.h" />
     <ClInclude Include="SortedArrayTable.h" />
     <ClInclude Include="LinearArrayTable.h" />
     <ClInclude Include="Polynomial.h" />
