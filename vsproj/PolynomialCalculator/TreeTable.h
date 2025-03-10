@@ -7,18 +7,18 @@ class TreeTable : public Table
 protected:
 	struct TreeNode
 	{
-		Polynomial* data;
+		Polynomial<polynomialData>* data;
 		int color;
-		Node* parent;
-		Node* left;
-		Node* right;
+		Node<polynomialData>* parent;
+		Node<polynomialData>* left;
+		Node<polynomialData>* right;
 	};
 
 public:
 	TreeTable(size_t sz = defaultSize);
 	~TreeTable() override;
 
-	void addElement(const Polynomial& pol) override;
-	void deleteElement(const Polynomial& pol) override;
-	void findELement(const Polynomial& pol) override;
+	void addElement(const Polynomial<polynomialData>& pol) override;
+	void deleteElement(const Polynomial<polynomialData>& pol) override;
+	void findELement(const Polynomial<polynomialData>& pol) override;
 };
