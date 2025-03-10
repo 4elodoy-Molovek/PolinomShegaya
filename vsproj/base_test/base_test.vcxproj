@@ -85,6 +85,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="TestList.cpp" />
+    <ClCompile Include="TestPolynomial.cpp" />
     <ClCompile Include="TestTable.cpp" />
     <ClCompile Include="test_main.cpp" />
   </ItemGroup>
