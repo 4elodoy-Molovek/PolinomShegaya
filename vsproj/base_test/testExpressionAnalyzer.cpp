@@ -1,5 +1,5 @@
 #include "gtest.h"
-#include "ExpressionAnalyer.h"
+#include "ExpressionAnalyzer.h"
 
 TEST(ExpressionAnalyer, ea_Can_Get_Postfix)
 {
