@@ -18,12 +18,12 @@ protected:
 
 TEST_P(TableTest, AddAndFindElement)
 {
-    EXPECT_TRUE(true);
+    ADD_FAILURE();
 }
 
 TEST_P(TableTest, DeleteElement)
 {
-    EXPECT_TRUE(true);
+    ADD_FAILURE();
 }
 
 INSTANTIATE_TEST_CASE_P
