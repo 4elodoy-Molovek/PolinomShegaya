@@ -6,7 +6,7 @@
 class ExpressionAnalyzer 
 {
 public:
-	Polynomial calculateSummaryPolynomial();
+	Polynomial<polynomialData> calculateSummaryPolynomial();
 private:
 	std::vector<std::string> getPostfix(const std::string expression);
 	bool check(const std::string poly_string);
