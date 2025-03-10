@@ -18,13 +18,19 @@
     <ClCompile Include="TestTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test_main.cpp">
+    <ClCompile Include="TestMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestPolynomial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="testExpressionAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="testParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

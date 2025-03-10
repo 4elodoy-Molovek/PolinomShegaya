@@ -85,10 +85,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="testExpressionAnalyzer.cpp" />
     <ClCompile Include="TestList.cpp" />
+    <ClCompile Include="testParser.cpp" />
     <ClCompile Include="TestPolynomial.cpp" />
     <ClCompile Include="TestTable.cpp" />
-    <ClCompile Include="test_main.cpp" />
+    <ClCompile Include="TestMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
