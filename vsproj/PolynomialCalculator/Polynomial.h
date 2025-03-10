@@ -1,41 +1,25 @@
 #pragma once
 #include <string>
-using ui = unsigned;
+#include "List.h"
 
-struct Node 
-{
+
+struct polynomialData {
 	int c;
-	ui grades;
-	Node* pNext;
+	unsigned grades;
 };
 
-class List 
-{
-	friend class Polynomial;
-	Node* pFirst;
-	Node* pLast;
 
-public:
-	List();
-	List(Node*& fst);
-	List(const List& lis);
-	~List();
-
-	void InsertFirst(Node*& n);
-	void InsertLast(Node*& n);
-
-	bool operator==(const List& l);
-	List& operator=(const List& lis);
-};
-
+template <typename T>
 class Polynomial 
 {
-	List monoms;
+private:
+	List<polynomialData> monoms;
 
-	void Insert(Node*& el);
-	void Unite();
+	void insertMonom(Node<polynomialData>*& el);
 	bool check(const std::string& s);
 	std::string despace(const std::string& str);
+
+
 public:
 	Polynomial();
 	Polynomial(const std::string& poly);
