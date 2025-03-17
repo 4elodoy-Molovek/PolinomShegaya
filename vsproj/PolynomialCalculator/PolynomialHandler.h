@@ -5,15 +5,28 @@
 
 class PolynomialHandler 
 {
+
 private:
+
 	Table* tableList[6];
-	ExpressionAnalyzer analyzer;
-	Parser pars;
+	ExpressionAnalyzer* analyzer;
+	Parser* pars;
+
 public:
-	void addPolynomial();
+
+	PolynomialHandler()
+	{
+		// Инициализация (Создание) Таблиц, ExpressionAnalyzer и Parser
+	}
+
+	void addPolynomial()
+	{
+		pars->convertPolynomialToString();
+
+	}
 	void deletePolynomial();
 	void findPolynomial();
 
-	Polynomial calculatePolynomialExpression(const std::string expression);
+	void calculatePolynomialExpression(const std::string expression);
 };
 

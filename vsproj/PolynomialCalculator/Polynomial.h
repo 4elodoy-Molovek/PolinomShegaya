@@ -15,8 +15,7 @@ class Polynomial
 private:
 	List<polynomialData> monoms;
 
-	void insertMonom(Node<polynomialData>*& el);
-	bool check(const std::string& s);
+	void insertMonom(polynomialData& el);
 	std::string despace(const std::string& str);
 
 
