@@ -72,6 +72,55 @@ TEST(List, list_Identical_Lists_Are_Equal)
 }
 
 
+TEST(List, list_Can_Copy_List)
+{
+	// Собираем list_1
+	ListNode<int>* node_1_1 = new ListNode<int>();
+	ListNode<int>* node_1_2 = new ListNode<int>();
+	ListNode<int>* node_1_3 = new ListNode<int>();
+
+	node_1_1->data = 1;
+	node_1_1->pNext = node_1_2;
+
+	node_1_2->data = 3;
+	node_1_2->pNext = node_1_3;
+
+	node_1_3->data = 100;
+
+	List<int> list_1(node_1_1);
+
+	// Копирукм list_1 в list_2 конструктором
+	List<int> list_2(list_1);
+
+	// Копируем list_1 в list_3 опрератором "="
+	List<int> list_3 = list_1;
+
+	EXPECT_EQ(list_1, list_2);
+	EXPECT_EQ(list_1, list_3);
+}
+
+TEST(List, list_Operator_Eq_Returns_New_Value)
+{
+	// Собираем list_1
+	ListNode<int>* node_1_1 = new ListNode<int>();
+	ListNode<int>* node_1_2 = new ListNode<int>();
+	ListNode<int>* node_1_3 = new ListNode<int>();
+
+	node_1_1->data = 1;
+	node_1_1->pNext = node_1_2;
+
+	node_1_2->data = 3;
+	node_1_2->pNext = node_1_3;
+
+	node_1_3->data = 100;
+
+	List<int> list_1(node_1_1);
+	List<int> list_2 = List<int>();
+
+	EXPECT_EQ(list_1, list_2 = list_1);
+}
+
+
 TEST(List, list_Can_Insert_First_Into_Empty_List)
 {
 	// Лист пример, с которым будем сравнивать
@@ -147,4 +196,29 @@ TEST(List, list_Can_Insert_Last_Into_Non_Empty_List)
 	EXPECT_EQ(listExample, list);
 }
 
-// тут не все, но надо больше
+TEST(List, list_Size_Is_Correct)
+{
+	List<int> list = List<int>();
+
+	EXPECT_EQ(0, list.size());
+
+	list.InsertLast(10);
+
+	EXPECT_EQ(1, list.size());
+
+	for (int i = 0; i < 10; i++)
+		list.InsertLast(10);
+
+	EXPECT_EQ(11, list.size());
+}
+
+TEST(List, list_Empty_Is_Correct)
+{
+	List<int> list = List<int>();
+
+	EXPECT_TRUE(list.empty());
+
+	list.InsertLast(10);
+
+	EXPECT_FALSE(list.empty());
+}

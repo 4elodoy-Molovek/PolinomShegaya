@@ -43,8 +43,6 @@ public:
 	void InsertFirst(const T& data);
 	// Вставка в конец
 	void InsertLast(const T& data);
-	// Вставка на любую позицию
-	void Insert(const T& data, size_t position);
 
 
 	// Операторы

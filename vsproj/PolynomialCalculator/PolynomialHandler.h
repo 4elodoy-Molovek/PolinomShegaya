@@ -8,9 +8,21 @@ class PolynomialHandler
 
 private:
 
+	// Массив указателей на все типы таблиц
 	Table* tableList[6];
+
+	// Индекс активной таблицы
+	int activeTableID;
+
+	/* Указатель на Объект класса ExpressionAnalyzer, 
+	 * отвечающий за обработку математических выражений с полиномами.
+	 */
 	ExpressionAnalyzer* analyzer;
-	Parser* pars;
+	
+	/* Указатель на Объект класса Parser, 
+	 * отвечающий за перевод строковой нотации полинома в его программное представление в виде объекта класса Polynomial
+	 */
+	Parser* parser;
 
 public:
 
@@ -21,7 +33,7 @@ public:
 
 	void addPolynomial()
 	{
-		pars->convertPolynomialToString();
+		parser->convertPolynomialToString();
 
 	}
 	void deletePolynomial();
