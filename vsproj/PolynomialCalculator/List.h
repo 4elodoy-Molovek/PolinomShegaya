@@ -43,6 +43,8 @@ public:
 	void InsertFirst(const T& data);
 	// Вставка в конец
 	void InsertLast(const T& data);
+	// Вставляет в произвольную позицию списка
+	void Insert(int index, const T& data);
 
 
 	// Операторы

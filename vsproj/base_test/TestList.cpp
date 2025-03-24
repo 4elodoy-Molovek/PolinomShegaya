@@ -196,6 +196,32 @@ TEST(List, list_Can_Insert_Last_Into_Non_Empty_List)
 	EXPECT_EQ(listExample, list);
 }
 
+TEST(List, list_Can_Insert_In_Any_Spot)
+{
+	// Лист пример, с которым будем сравнивать
+	ListNode<int>* nodeExample_1 = new ListNode<int>();
+	ListNode<int>* nodeExample_2 = new ListNode<int>();
+	ListNode<int>* nodeExample_3 = new ListNode<int>();
+
+	nodeExample_1->data = 5;
+	nodeExample_1->pNext = nodeExample_2;
+
+	nodeExample_2->data = 10;
+	nodeExample_2->pNext = nodeExample_3;
+
+	nodeExample_3->data = 20;
+
+	List<int> listExample(nodeExample_1);
+
+	// Сам insert
+	List<int> list = List<int>();
+	list.Insert(0, 5);
+	list.Insert(1, 20);
+	list.Insert(1, 10);
+
+	EXPECT_EQ(listExample, list);
+}
+
 TEST(List, list_Size_Is_Correct)
 {
 	List<int> list = List<int>();

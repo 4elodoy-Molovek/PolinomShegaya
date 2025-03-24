@@ -1,13 +1,44 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
+#include <set>
 #include "Polynomial.h"
+
+
+/*
+ * Отвечает за обработку математических выражений с полиномами
+ */
 
 class ExpressionAnalyzer 
 {
+	// Постфиксная форма последнего проанализированного выражения
+	std::vector<std::string> cachedPostfix;
+
 public:
-	Polynomial<polynomialData> calculateSummaryPolynomial();
+
+	/* 
+	 * Анализирует выражение строя его постфиксную форму и записывая её в cachedPostfix
+	 * В outRequestedPolynomials метод положит имена полиномов, которые необходимо получить из таблиц
+	 * 
+	 * Подробности:
+	 *		1) Поддержка операций '+', '-', '* на полином', '* на константу';
+	 *		2) Поддержка скобок '(' и ')';
+	 *		3) Лексемы состоящие исключительно из цифр и точек воспринимаются как константы;
+	 *		4) Любые другие лексемы воспринимаются как имена полиномов;
+	 *		5) Умножение ТОЛЬКО через знак '*';
+	 *		6) При обнаружении ошибки бросает исключение
+	 */
+	void analyzeExpression(const std::string& expression, std::set<std::string>& outRequestedPolynomials);
+
+	/*
+	 * Вычисляет результат последнего проанализированного выражения
+	 * В polynomials подаются полиномы, запрошенные в outRequestedPolynomials, полученном от analyzeExpression
+	 */
+	Polynomial calculateSummaryPolynomial(const std::map<std::string, const Polynomial&> polynomials);
+
 private:
-	virtual std::vector<std::string> getPostfix(const std::string expression) = 0;
-	virtual bool check(const std::string poly_string) = 0;
+
+	// Строит постфиксную форму выражения
+	virtual std::vector<std::string> getPostfix(const std::string& expression) = 0;
 };
