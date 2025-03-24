@@ -34,7 +34,6 @@ public:
 	void addPolynomial()
 	{
 
-
 	}
 	void deletePolynomial();
 	void findPolynomial();
