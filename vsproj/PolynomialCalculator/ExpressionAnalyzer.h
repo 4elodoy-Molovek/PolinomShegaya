@@ -8,6 +8,6 @@ class ExpressionAnalyzer
 public:
 	Polynomial<polynomialData> calculateSummaryPolynomial();
 private:
-	std::vector<std::string> getPostfix(const std::string expression);
-	bool check(const std::string poly_string);
+	virtual std::vector<std::string> getPostfix(const std::string expression) = 0;
+	virtual bool check(const std::string poly_string) = 0;
 };

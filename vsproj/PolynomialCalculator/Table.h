@@ -15,5 +15,5 @@ public:
 	//pure virtual
 	virtual void addElement(const Polynomial<polynomialData>& pol) = 0;
 	virtual void deleteElement(const Polynomial<polynomialData>& pol) = 0;
-	virtual void findELement(const Polynomial<polynomialData>& pol) = 0;
+	virtual void findElement(const Polynomial<polynomialData>& pol) = 0;
 };

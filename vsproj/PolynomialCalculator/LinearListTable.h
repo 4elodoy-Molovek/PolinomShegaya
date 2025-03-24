@@ -17,5 +17,5 @@ public:
 
 	void addElement(const Polynomial<polynomialData>& pol) override;
 	void deleteElement(const Polynomial<polynomialData>& pol) override;
-	void findELement(const Polynomial<polynomialData>& pol) override;
+	void findElement(const Polynomial<polynomialData>& pol) override;
 };
