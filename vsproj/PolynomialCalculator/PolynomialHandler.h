@@ -33,7 +33,6 @@ public:
 
 	void addPolynomial()
 	{
-		parser->convertPolynomialToString();
 
 	}
 	void deletePolynomial();

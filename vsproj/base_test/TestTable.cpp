@@ -18,21 +18,28 @@ protected:
 
 TEST_P(TableTest, table_Can_Add_Element)
 {
-    Polynomial<polynomialData> pol;
+    Polynomial pol;
 
-    EXPECT_NO_THROW(table->addElement(pol));
+    EXPECT_NO_THROW(table->addElement("pol", pol));
 }
 
 TEST_P(TableTest, table_Can_Find_Added_Element)
 {
-    Polynomial<polynomialData> pol;
+    Polynomial pol;
 
-    table->addElement(pol);
+    table->addElement("pol", pol);
+    EXPECT_EQ(pol, table->findElement("pol"));
 }
 
 TEST_P(TableTest, table_Can_Delete_Element)
 {
-    ADD_FAILURE();
+    Polynomial pol;
+
+    table->addElement("pol", pol);
+    EXPECT_EQ(pol, table->findElement("pol"));
+
+    table->deleteElement("pol");
+    EXPECT_ANY_THROW(table->findElement("pol"));
 }
 
 INSTANTIATE_TEST_CASE_P
