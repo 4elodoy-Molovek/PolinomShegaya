@@ -3,29 +3,55 @@
 
 
 template <typename T>
-struct Node
+struct ListNode
 {
 	T data;
-	Node<T>* pNext;
+	ListNode<T>* pNext;
 };
 
 
 template <typename L>
 class List
 {
-	Node<L>* pFirst;
-	Node<L>* pLast;
+	ListNode<L>* pFirst;
+	ListNode<L>* pLast;
+
+	size_t sz;
 
 public:
-	List();
-	List(Node<L>*& fst);
-	List(const List<L>& lis);
+
+	// Конструктор по умолчанию
+	List(); 
+	// Конструктор из указателя на первую Node (должен искать pLast в цепочке, начинающейся с fst)
+	List(ListNode<L>* fst);
+	// Конструктор копирования
+	List(const List<L>& list);
+
+
+	// Деструктор
 	~List();
 
-	void InsertFirst(Node<L>*& n);
-	void InsertLast(Node< L>*& n);
+	// Utility функции
 
-	bool operator==(const List<L>& l);
-	List& operator=(const List<L>& lis);
+	// Возвращает число элементов в списке
+	size_t size();
+	// Пуст ли список?
+	bool empty();
+
+
+	// Вставка в начало
+	void InsertFirst(const T& data);
+	// Вставка в конец
+	void InsertLast(const T& data);
+	// Вставляет в произвольную позицию списка
+	void Insert(int index, const T& data);
+
+
+	// Операторы
+
+	bool operator==(const List<L>& list);
+	List& operator=(const List<L>& list);
+
+	
 };
 

@@ -4,7 +4,7 @@
 class SortedArrayTable : public Table
 {
 protected:
-	Polynomial<polynomialData>** data;
+	Polynomial** data;
 	size_t size;
 	size_t bufferSize;
 
@@ -12,7 +12,12 @@ public:
 	SortedArrayTable(size_t sz = defaultSize);
 	~SortedArrayTable() override;
 
-	void addElement(const Polynomial<polynomialData>& pol) override;
-	void deleteElement(const Polynomial<polynomialData>& pol) override;
-	void findELement(const Polynomial<polynomialData>& pol) override;
+	// Добавляет полином pol в таблицу с ключем(именем) name
+	virtual void addElement(const std::string& name, const Polynomial& pol) override;
+
+	// Удаляет из полином с именем name из таблицы
+	virtual void deleteElement(const std::string& name) override;
+
+	// Ищет в таблице полином с именем name
+	virtual const Polynomial& findElement(const std::string& name) override;
 };
