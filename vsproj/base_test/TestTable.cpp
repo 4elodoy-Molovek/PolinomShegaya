@@ -16,14 +16,30 @@ protected:
     void SetUp() override { table = GetParam(); }
 };
 
-TEST_P(TableTest, AddAndFindElement)
+TEST_P(TableTest, table_Can_Add_Element)
 {
-    ADD_FAILURE();
+    Polynomial pol;
+
+    EXPECT_NO_THROW(table->addElement("pol", pol));
 }
 
-TEST_P(TableTest, DeleteElement)
+TEST_P(TableTest, table_Can_Find_Added_Element)
 {
-    ADD_FAILURE();
+    Polynomial pol;
+
+    table->addElement("pol", pol);
+    EXPECT_EQ(pol, table->findElement("pol"));
+}
+
+TEST_P(TableTest, table_Can_Delete_Element)
+{
+    Polynomial pol;
+
+    table->addElement("pol", pol);
+    EXPECT_EQ(pol, table->findElement("pol"));
+
+    table->deleteElement("pol");
+    EXPECT_ANY_THROW(table->findElement("pol"));
 }
 
 INSTANTIATE_TEST_CASE_P
