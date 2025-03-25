@@ -8,19 +8,19 @@ class PolynomialHandler
 
 private:
 
-	// Массив указателей на все типы таблиц
+	// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	Table* tableList[6];
 
-	// Индекс активной таблицы
-	int activeTableID;
+	// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	size_t activeTableID;
 
-	/* Указатель на Объект класса ExpressionAnalyzer, 
-	 * отвечающий за обработку математических выражений с полиномами.
+	/* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ExpressionAnalyzer, 
+	 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 	 */
 	ExpressionAnalyzer* analyzer;
 	
-	/* Указатель на Объект класса Parser, 
-	 * отвечающий за перевод строковой нотации полинома в его программное представление в виде объекта класса Polynomial
+	/* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Parser, 
+	 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Polynomial
 	 */
 	Parser* parser;
 
@@ -28,16 +28,21 @@ public:
 
 	PolynomialHandler()
 	{
-		// Инициализация (Создание) Таблиц, ExpressionAnalyzer и Parser
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ) пїЅпїЅпїЅпїЅпїЅпїЅ, ExpressionAnalyzer пїЅ Parser
 	}
 
-	void addPolynomial()
+	void addPolynomial(const std::string& name, const std::string& notation)
 	{
 
 	}
-	void deletePolynomial();
-	void findPolynomial();
 
-	void calculatePolynomialExpression(const std::string expression);
+	void deletePolynomial(const std::string& name);
+
+	Polynomial calculatePolynomialExpression(const std::string expression);
+
+	const Polynomial& findPolynomial(const std::string& name);
+
+	void setActiveTable(size_t newActiveTable);
+	size_t GetActiveTable();
 };
 

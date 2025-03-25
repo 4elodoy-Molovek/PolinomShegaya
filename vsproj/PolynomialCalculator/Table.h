@@ -1,10 +1,11 @@
 #pragma once
 #include "Polynomial.h"
 
-
 class Table 
 {
+
 protected:
+
 	static const size_t defaultSize = 4;
 	unsigned activeTableId;
 
@@ -12,12 +13,12 @@ public:
 	Table();
 	virtual ~Table() = 0;
 
-    // Добавляет полином pol в таблицу с ключем(именем) name
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ pol пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅпїЅпїЅпїЅпїЅ) name
 	virtual void addElement(const std::string& name, const Polynomial& pol) = 0;
 
-	// Удаляет из полином с именем name из таблицы
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ name пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual void deleteElement(const std::string& name) = 0;
 
-	// Ищет в таблице полином с именем name
+	// пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ name
 	virtual const Polynomial& findElement(const std::string& name) = 0;
 };
