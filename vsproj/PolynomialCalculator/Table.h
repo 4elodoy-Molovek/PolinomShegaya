@@ -6,8 +6,7 @@ class Table
 {
 protected:
 	static const size_t defaultSize = 4;
-	unsigned activeTableId;
-
+	
 public:
 	Table();
 	virtual ~Table() = 0;
@@ -19,5 +18,5 @@ public:
 	virtual void deleteElement(const std::string& name) = 0;
 
 	// »щет в таблице полином с именем name
-	virtual const Polynomial& findElement(const std::string& name) = 0;
+	virtual const Polynomial* findElement(const std::string& name) = 0;
 };
