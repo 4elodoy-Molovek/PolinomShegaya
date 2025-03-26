@@ -18,5 +18,5 @@ public:
 	virtual void deleteElement(const std::string& name) = 0;
 
 	// »щет в таблице полином с именем name
-	virtual const Polynomial* findElement(const std::string& name) = 0;
+	virtual Polynomial& findElement(const std::string& name) = 0;
 };
