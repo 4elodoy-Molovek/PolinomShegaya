@@ -7,12 +7,15 @@ class Parser
 
 public:
 
+	Parser() {}
+	virtual ~Parser() {}
+
    /* Преобразует строковую нотацию полинома в его програмное представление
 	* При обнаружении ошибки кидает исключение
 	*/
-	Polynomial convertStringToPolynomial(const std::string poly_string);
+	virtual Polynomial convertStringToPolynomial(const std::string poly_string) = 0;
 
 	// Преобразует полином в строковую нотацию
-	std::string convertPolynomialToString(const Polynomial& poly);
+	virtual std::string convertPolynomialToString(const Polynomial& poly) = 0;
 
 };

@@ -8,38 +8,46 @@
 #include "SortedArrayTable.h"
 #include "TreeTable.h"
 
-class TableTest : public ::testing::TestWithParam<std::shared_ptr<Table>>
+class TableTest : public ::testing::TestWithParam<std::shared_ptr<Table<std::string, int>>>
 {
 protected:
-    std::shared_ptr<Table> table;
+    std::shared_ptr<Table<std::string, int>> table;
 
     void SetUp() override { table = GetParam(); }
 };
 
 TEST_P(TableTest, table_Can_Add_Element)
 {
-    Polynomial pol;
+    EXPECT_NO_THROW(table->addElement("one", 1));
+}
 
-    EXPECT_NO_THROW(table->addElement("pol", pol));
+TEST_P(TableTest, table_Can_Not_Add_Element_With_Existing_Key)
+{
+    table->addElement("one", 1);
+    EXPECT_ANY_THROW(table->addElement("one", 2));
 }
 
 TEST_P(TableTest, table_Can_Find_Added_Element)
 {
-    Polynomial pol;
+    table->addElement("one", 1);
+    EXPECT_EQ(1, table->findElement("one"));
+}
 
-    table->addElement("pol", pol);
-    EXPECT_EQ(pol, table->findElement("pol"));
+TEST_P(TableTest, table_Can_Not_Find_Non_Existant_Element)
+{
+    EXPECT_ANY_THROW(table->findElement("two"));
 }
 
 TEST_P(TableTest, table_Can_Delete_Element)
 {
-    Polynomial pol;
+    table->addElement("one", 1);
+    table->deleteElement("one");
+    EXPECT_ANY_THROW(table->findElement("one"));
+}
 
-    table->addElement("pol", pol);
-    EXPECT_EQ(pol, table->findElement("pol"));
-
-    table->deleteElement("pol");
-    EXPECT_ANY_THROW(table->findElement("pol"));
+TEST_P(TableTest, table_Can_Not_Delete_Non_Existant_Element)
+{
+    EXPECT_ANY_THROW(table->findElement("two"));
 }
 
 INSTANTIATE_TEST_CASE_P
@@ -48,11 +56,11 @@ INSTANTIATE_TEST_CASE_P
     TableTest,
     ::testing::Values
     (
-        std::make_shared<HashTableOne>(),
-        std::make_shared<HashTableTwo>(),
-        std::make_shared<LinearArrayTable>(),
-        std::make_shared<LinearListTable>(),
-        std::make_shared<SortedArrayTable>(),
-        std::make_shared<TreeTable>()
+        std::make_shared<HashTableOne<std::string, int>>(),
+        std::make_shared<HashTableTwo<std::string, int>>(),
+        std::make_shared<LinearArrayTable<std::string, int>>(),
+        std::make_shared<LinearListTable<std::string, int>>(),
+        std::make_shared<SortedArrayTable<std::string, int>>(),
+        std::make_shared<TreeTable<std::string, int>>()
     )
 );

@@ -1,13 +1,13 @@
 #pragma once
 #include "Table.h"
 
-
-class HashTableOne : public Table 
+template<typename K, typename T>
+class HashTableOne : public Table<K, T>
 {
 protected:
 	struct Node
 	{
-		Polynomial data;
+		T data;
 		bool deleted;
 	};
 	int size; // сколько элементов у нас сейчас в массиве (без учета deleted)
@@ -18,12 +18,12 @@ public:
 	HashTableOne(size_t sz = defaultSize);
 	~HashTableOne() override;
 
-	// Добавляет полином pol в таблицу с ключем(именем) name
-	virtual void addElement(const std::string& name, const Polynomial& pol) override;
+	// Добавляет в таблицу элемент с ключем key
+	virtual void addElement(const K& key, const T& pol) override;
 
-	// Удаляет из полином с именем name из таблицы
-	virtual void deleteElement(const std::string& name) override;
+	// Удаляет из таблицы элемент с ключем key
+	virtual void deleteElement(const K& key) override;
 
-	// Ищет в таблице полином с именем name
-	virtual const Polynomial& findElement(const std::string& name) override;
+	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение
+	virtual T& findElement(const K& key) override;
 };

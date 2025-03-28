@@ -8,19 +8,19 @@ class PolynomialHandler
 
 private:
 
-	// ������ ���������� �� ��� ���� ������
-	Table* tableList[6];
+	// Массив указателей на таблицы, хранящие полиномы
+	Table<std::string, Polynomial>* tableList[6];
 
-	// ������ �������� �������
+	// Индекс активной таблицы
 	size_t activeTableID;
 
-	/* ��������� �� ������ ������ ExpressionAnalyzer, 
-	 * ���������� �� ��������� �������������� ��������� � ����������.
+	/* Указатель на объект класса ExpressionAnalyzer, 
+	 * Отвечает за обработку математических выражений с полиномами.
 	 */
 	ExpressionAnalyzer* analyzer;
 	
-	/* ��������� �� ������ ������ Parser, 
-	 * ���������� �� ������� ��������� ������� �������� � ��� ����������� ������������� � ���� ������� ������ Polynomial
+	/* Указатель на объект класса Parser, 
+	 * Преобразует строковую нотацию полинома в объект класса Polynomial и обратно
 	 */
 	Parser* parser;
 
@@ -28,7 +28,7 @@ public:
 
 	PolynomialHandler()
 	{
-		// ������������� (��������) ������, ExpressionAnalyzer � Parser
+		
 	}
 
 	void addPolynomial(const std::string& name, const std::string& notation)
