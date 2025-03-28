@@ -8,19 +8,19 @@ class PolynomialHandler
 
 private:
 
-	// Массив указателей на все типы таблиц
-	Table* tableList[6];
+	// РњР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° С‚Р°Р±Р»РёС†С‹, С…СЂР°РЅСЏС‰РёРµ РїРѕР»РёРЅРѕРјС‹
+	Table<std::string, Polynomial>* tableList[6];
 
-	// Индекс активной таблицы
-	int activeTableID;
+	// РРЅРґРµРєСЃ Р°РєС‚РёРІРЅРѕР№ С‚Р°Р±Р»РёС†С‹
+	size_t activeTableID;
 
-	/* Указатель на Объект класса ExpressionAnalyzer, 
-	 * отвечающий за обработку математических выражений с полиномами.
+	/* РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РѕР±СЉРµРєС‚ РєР»Р°СЃСЃР° ExpressionAnalyzer, 
+	 * РћС‚РІРµС‡Р°РµС‚ Р·Р° РѕР±СЂР°Р±РѕС‚РєСѓ РјР°С‚РµРјР°С‚РёС‡РµСЃРєРёС… РІС‹СЂР°Р¶РµРЅРёР№ СЃ РїРѕР»РёРЅРѕРјР°РјРё.
 	 */
 	ExpressionAnalyzer* analyzer;
 	
-	/* Указатель на Объект класса Parser, 
-	 * отвечающий за перевод строковой нотации полинома в его программное представление в виде объекта класса Polynomial
+	/* РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РѕР±СЉРµРєС‚ РєР»Р°СЃСЃР° Parser, 
+	 * РџСЂРµРѕР±СЂР°Р·СѓРµС‚ СЃС‚СЂРѕРєРѕРІСѓСЋ РЅРѕС‚Р°С†РёСЋ РїРѕР»РёРЅРѕРјР° РІ РѕР±СЉРµРєС‚ РєР»Р°СЃСЃР° Polynomial Рё РѕР±СЂР°С‚РЅРѕ
 	 */
 	Parser* parser;
 
@@ -28,16 +28,21 @@ public:
 
 	PolynomialHandler()
 	{
-		// Инициализация (Создание) Таблиц, ExpressionAnalyzer и Parser
+		
 	}
 
-	void addPolynomial()
+	void addPolynomial(const std::string& name, const std::string& notation)
 	{
 
 	}
-	void deletePolynomial();
-	void findPolynomial();
 
-	void calculatePolynomialExpression(const std::string expression);
+	void deletePolynomial(const std::string& name);
+
+	Polynomial calculatePolynomialExpression(const std::string expression);
+
+	const Polynomial& findPolynomial(const std::string& name);
+
+	void setActiveTable(size_t newActiveTable);
+	size_t GetActiveTable();
 };
 

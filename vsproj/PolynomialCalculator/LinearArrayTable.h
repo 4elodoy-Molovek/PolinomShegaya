@@ -1,10 +1,11 @@
 #pragma once
 #include "Table.h"
 
-class LinearArrayTable : public Table 
+template<typename K, typename T>
+class LinearArrayTable : public Table<K, T>
 {
 protected:
-	Polynomial** data; // ???
+	std::vector<T> data; // ???
 	size_t size;
 	size_t bufferSize;
 
@@ -12,12 +13,12 @@ public:
 	LinearArrayTable(size_t sz = defaultSize);
 	~LinearArrayTable() override;
 
-	// Добавляет полином pol в таблицу с ключем(именем) name
-	virtual void addElement(const std::string& name, const Polynomial& pol) override;
+	// Р”РѕР±Р°РІР»СЏРµС‚ РІ С‚Р°Р±Р»РёС†Сѓ СЌР»РµРјРµРЅС‚ СЃ РєР»СЋС‡РµРј key
+	virtual void addElement(const K& key, const T& pol) override;
 
-	// Удаляет из полином с именем name из таблицы
-	virtual void deleteElement(const std::string& name) override;
+	// РЈРґР°Р»СЏРµС‚ РёР· С‚Р°Р±Р»РёС†С‹ СЌР»РµРјРµРЅС‚ СЃ РєР»СЋС‡РµРј key
+	virtual void deleteElement(const K& key) override;
 
-	// Ищет в таблице полином с именем name
-	virtual const Polynomial& findElement(const std::string& name) override;
+	// РС‰РµС‚ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌР»РµРјРµРЅС‚ СЃ РєР»СЋС‡РµРј K, РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ Р±СЂРѕСЃР°РµС‚ РёСЃРєР»СЋС‡РµРЅРёРµ
+	virtual T& findElement(const K& key) override;
 };

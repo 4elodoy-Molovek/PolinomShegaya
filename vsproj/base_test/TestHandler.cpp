@@ -1,9 +1,13 @@
+
 /*
 #include "gtest.h"
 #include "PolynomailHandler.h"
 
-TEST(List, list_Can_Create_List)
+TEST(Handler, handler_Can_Add_Polynomial)
 {
-	EXPECT_NO_THROW(List<int> list = List<int>());
+	PolynomailHandler Handler = PolynomailHandler();
+
+	EXPECT_ANY_THROW(Handler.findPolynomial("pol"));
+	EXPECT_NO_THROW(Handler.addPolynomial(""));
 }
 */

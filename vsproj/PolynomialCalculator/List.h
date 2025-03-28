@@ -21,11 +21,35 @@ class List
 public:
 
 	// Конструктор по умолчанию
-	List(); 
-	// Конструктор из указателя на первую Node (должен искать pLast в цепочке, начинающейся с fst)
-	List(ListNode<L>* fst);
+	List() : pFirst(nulltpr), pLast(nullptr), sz(0) {}
+
+	// Конструктор из указателя на первую Node
+	List(ListNode<L>* fst) : pFirst(fst), sz(0)
+	{
+		ListNode<L>* node = fst;
+		while (node)
+		{
+			sz++;
+			node = node->pNext;
+		}
+
+		pLast = node;
+	}
+
 	// Конструктор копирования
-	List(const List<L>& list);
+	List(const List<L>& list)
+	{
+		sz = list.sz;
+
+		if (sz > 0)
+		{
+			ListNode<L>* node = list.pFirst();
+			while (node)
+			{
+
+			}
+		}
+	}
 
 
 	// Деструктор
@@ -40,18 +64,23 @@ public:
 
 
 	// Вставка в начало
-	void InsertFirst(const T& data);
+	void insertFirst(const T& data);
 	// Вставка в конец
-	void InsertLast(const T& data);
+	void insertLast(const T& data);
 	// Вставляет в произвольную позицию списка
-	void Insert(int index, const T& data);
+	void insert(int index, const T& data);
 
 
-	// Операторы
+	// Получение значения первого элемента
+	L& getFirst();
+
+	// Получение значения последнего элемента
+	L& getLast();
+
+	// Получение произвольного элемента
+	L& operator[](int);
 
 	bool operator==(const List<L>& list);
 	List& operator=(const List<L>& list);
-
-	
 };
 
