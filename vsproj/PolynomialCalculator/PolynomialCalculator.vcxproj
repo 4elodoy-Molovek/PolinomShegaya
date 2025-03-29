@@ -95,6 +95,9 @@
     <QtRcc Include="PolynomialCalculator.qrc" />
     <QtUic Include="PolynomialCalculator.ui" />
     <QtMoc Include="PolynomialCalculator.h" />
+    <ClCompile Include="LinearListTable.cpp" />
+    <ClCompile Include="Parser\Parser_v1.cpp" />
+    <ClCompile Include="Parser_v1.h" />
     <ClCompile Include="PolynomialCalculator.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
