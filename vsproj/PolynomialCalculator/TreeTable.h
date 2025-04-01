@@ -46,7 +46,7 @@ public:
 		if (size == 0) return nullptr;
 		if (size == 1 && root->key != key) return nullptr;
 		
-		if (size == 1 && root->key == key) return &key->data;
+		if (size == 1 && root->key == key) return &root->data;
 
 		// Размер >= 2
 		TreeNode* node = root;
