@@ -12,7 +12,7 @@ protected:
 		T value;
 	};
 
-	List<ListTableString> data;
+	List<ListTableString<K, T>> data;
 
 public:
 	LinearListTable(size_t sz = defaultSize);
@@ -25,5 +25,6 @@ public:
 	virtual void deleteElement(const K& key) override;
 
 	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение
-	virtual T& findElement(const K& key) override;
+	virtual T* findElement(const K& key) override;
+
 };
