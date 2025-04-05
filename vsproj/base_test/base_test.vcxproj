@@ -92,6 +92,7 @@
     <ClCompile Include="TestPolynomial.cpp" />
     <ClCompile Include="TestTable.cpp" />
     <ClCompile Include="TestMain.cpp" />
+    <ClCompile Include="TestTreeTable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
