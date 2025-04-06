@@ -2,28 +2,32 @@
 #include <Polynomial.h>
 #include <Table.h>
 
-class TreeTable : public Table
+template<typename K, typename T>
+class TreeTable : public Table<K, T>
 {
 protected:
 	struct TreeNode
 	{
-		Polynomial* data;
+		K Value;
+		T data;
 		int color;
-		// Node<polynomialData>* parent;
-		// Node<polynomialData>* left;
-		// Node<polynomialData>* right;
+
+		TreeNode* parent;
+		TreeNode* left;
+		TreeNode* right;
 	};
 
 public:
 	TreeTable(size_t sz = defaultSize);
 	~TreeTable() override;
 
-	// Добавляет полином pol в таблицу с ключем(именем) name
-	virtual void addElement(const std::string& name, const Polynomial& pol) override;
 
-	// Удаляет из полином с именем name из таблицы
-	virtual void deleteElement(const std::string& name) override;
+	// Äîáàâëÿåò â òàáëèöó ýëåìåíò ñ êëþ÷åì key
+	virtual void addElement(const K& key, const T& pol) override;
 
-	// Ищет в таблице полином с именем name
-	virtual const Polynomial& findElement(const std::string& name) override;
+	// Óäàëÿåò èç òàáëèöû ýëåìåíò ñ êëþ÷åì key
+	virtual void deleteElement(const K& key) override;
+
+	// Èùåò è âîçâðàùàåò ññûëêó íà ýëåìåíò ñ êëþ÷åì K, â ïðîòèâíîì ñëó÷àå áðîñàåò èñêëþ÷åíèå
+	virtual T& findElement(const K& key) override;
 };
