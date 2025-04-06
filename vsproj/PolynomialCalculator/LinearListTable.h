@@ -11,6 +11,7 @@ protected:
 		K key;
 		T value;
 	};
+	size_t size; 
 
 	List<ListTableString<K, T>> data;
 

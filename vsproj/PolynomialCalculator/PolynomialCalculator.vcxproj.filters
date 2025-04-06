@@ -55,6 +55,9 @@
     <ClCompile Include="Polynomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EA_v1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Polynomial.h">
@@ -91,6 +94,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="List.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EA_v1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
