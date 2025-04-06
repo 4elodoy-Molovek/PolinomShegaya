@@ -22,10 +22,10 @@ class List
 
 public:
 
-	// Конструктор по умолчанию
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 	List() : pFirst(nullptr), pLast(nullptr), sz(0) {}
 
-	// Конструктор из указателя на первую Node
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РїРµСЂРІСѓСЋ Node
 	List(ListNode<L>* fst) : pFirst(fst), sz(0)
 	{
 		ListNode<L>* node = fst;
@@ -38,7 +38,7 @@ public:
 		pLast = node;
 	}
 
-	// Конструктор копирования
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 	List(const List<L>& list)
 	{
 		sz = list.sz;
@@ -65,7 +65,7 @@ public:
 	}
 
 
-	// Деструктор
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 	~List()
 	{
 		ListNode<L>* node = pFirst;
@@ -76,15 +76,15 @@ public:
 		}
 	}
 
-	// Utility функции
+	// Utility С„СѓРЅРєС†РёРё
 
-	// Возвращает число элементов в списке
+	// Р’РѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ РІ СЃРїРёСЃРєРµ
 	size_t size() const { return sz; }
-	// Пуст ли список?
+	// РџСѓСЃС‚ Р»Рё СЃРїРёСЃРѕРє?
 	bool empty() const { return sz == 0; }
 
 
-	// Вставка в начало
+	// Р’СЃС‚Р°РІРєР° РІ РЅР°С‡Р°Р»Рѕ
 	void insertFirst(const L& data)
 	{
 		ListNode<L>* newNode = new ListNode<L>(data);
@@ -104,7 +104,7 @@ public:
 		sz++;
 	}
 
-	// Вставка в конец
+	// Р’СЃС‚Р°РІРєР° РІ РєРѕРЅРµС†
 	void insertLast(const L& data)
 	{
 		ListNode<L>* newNode = new ListNode<L>(data);
@@ -124,7 +124,7 @@ public:
 		sz++;
 	}
 
-	// Вставляет в произвольную позицию списка
+	// Р’СЃС‚Р°РІР»СЏРµС‚ РІ РїСЂРѕРёР·РІРѕР»СЊРЅСѓСЋ РїРѕР·РёС†РёСЋ СЃРїРёСЃРєР°
 	void insert(int index, const L& data)
 	{
 		ListNode<L>* newNode = new ListNode<L>(data);
@@ -166,7 +166,7 @@ public:
 	}
 
 
-	// Получение значения первого элемента
+	// РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 	L& getFirst()
 	{
 		if (pFirst)
@@ -175,7 +175,7 @@ public:
 		throw(std::exception("LIST: getFirst in an empty list!"));
 	}
 
-	// Получение значения последнего элемента
+	// РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЌР»РµРјРµРЅС‚Р°
 	L& getLast()
 	{
 		if (pLast)
@@ -184,7 +184,7 @@ public:
 		throw(std::exception("LIST: getLast in an empty list!"));
 	}
 
-	// Получение произвольного элемента
+	// РџРѕР»СѓС‡РµРЅРёРµ РїСЂРѕРёР·РІРѕР»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 	L& operator[](int index)
 	{
 		if (!pFirst) throw(std::exception("LIST: operator[] in an empty list!"));
@@ -222,14 +222,14 @@ public:
 	{
 		ListNode<L>* node = pFirst;
 
-		// Удаление текущего списка
+		// РЈРґР°Р»РµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ СЃРїРёСЃРєР°
 		while (pFirst)
 		{
 			pFirst = node->pNext;
 			delete node;
 		}
 
-		// Копирование
+		// РљРѕРїРёСЂРѕРІР°РЅРёРµ
 		sz = list.sz;
 
 		if (sz > 0)

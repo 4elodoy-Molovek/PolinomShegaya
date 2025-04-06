@@ -13,12 +13,12 @@ public:
 	SortedArrayTable(size_t sz = defaultSize);
 	~SortedArrayTable() override;
 
-	// Добавляет в таблицу элемент с ключем key
+	// Г„Г®ГЎГ ГўГ«ГїГҐГІ Гў ГІГ ГЎГ«ГЁГ¶Гі ГЅГ«ГҐГ¬ГҐГ­ГІ Г± ГЄГ«ГѕГ·ГҐГ¬ key
 	virtual void addElement(const K& key, const T& pol) override;
 
-	// Удаляет из таблицы элемент с ключем key
+	// Г“Г¤Г Г«ГїГҐГІ ГЁГ§ ГІГ ГЎГ«ГЁГ¶Г» ГЅГ«ГҐГ¬ГҐГ­ГІ Г± ГЄГ«ГѕГ·ГҐГ¬ key
 	virtual void deleteElement(const K& key) override;
 
-	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение
-	virtual T* findElement(const K& key) override;
+	// Г€Г№ГҐГІ ГЁ ГўГ®Г§ГўГ°Г Г№Г ГҐГІ Г±Г±Г»Г«ГЄГі Г­Г  ГЅГ«ГҐГ¬ГҐГ­ГІ Г± ГЄГ«ГѕГ·ГҐГ¬ K, Гў ГЇГ°Г®ГІГЁГўГ­Г®Г¬ Г±Г«ГіГ·Г ГҐ ГЎГ°Г®Г±Г ГҐГІ ГЁГ±ГЄГ«ГѕГ·ГҐГ­ГЁГҐ
+	virtual T& findElement(const K& key) override;
 };

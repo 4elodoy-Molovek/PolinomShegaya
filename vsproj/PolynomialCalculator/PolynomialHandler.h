@@ -28,7 +28,8 @@ public:
 
 	PolynomialHandler()
 	{
-		
+		// Инициализация (Создание) Таблиц, ExpressionAnalyzer и Parser
+
 	}
 
 	void addPolynomial(const std::string& name, const std::string& notation)
