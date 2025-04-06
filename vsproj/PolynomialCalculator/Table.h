@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Polynomial.h"
 
 
@@ -19,5 +19,5 @@ public:
 	virtual void deleteElement(const std::string& name) = 0;
 
 	// Ищет в таблице полином с именем name
-	virtual const Polynomial& findElement(const std::string& name) = 0;
+	virtual const Polynomial* findElement(const std::string& name) = 0;
 };

@@ -1,18 +1,21 @@
-#pragma once
+﻿#pragma once
 #include "Polynomial.h"
 
 
-class Parser 
+class Parser
 {
 
 public:
 
-   /* Преобразует строковую нотацию полинома в его програмное представление
-	* При обнаружении ошибки кидает исключение
-	*/
-	Polynomial convertStringToPolynomial(const std::string poly_string);
+	Parser() {}
+	virtual ~Parser() {}
+
+	/* Преобразует строковую нотацию полинома в его програмное представление
+	 * При обнаружении ошибки кидает исключение
+	 */
+	virtual Polynomial convertStringToPolynomial(const std::string poly_string) = 0;
 
 	// Преобразует полином в строковую нотацию
-	std::string convertPolynomialToString(const Polynomial& poly);
+	virtual std::string convertPolynomialToString(const Polynomial& poly) = 0;
 
 };

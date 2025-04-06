@@ -40,8 +40,10 @@ bool Polynomial::operator==(const Polynomial& pl)
 }
 
 // Вставка в правильную позицию (отсортированно по убыванию степени)
-void Polynomial::insertMonom(polynomialData& el)
+void Polynomial::insertMonom(int co, unsigned grad)
 {
+	polynomialData el{ co, grad };
+
 	if (monoms.empty()) 
 	{
 		monoms.insertFirst(el);
@@ -67,8 +69,43 @@ void Polynomial::insertMonom(polynomialData& el)
 	monoms = newList;
 }
 
+void Polynomial::insertMonom(const polynomialData& el)
+{
+
+	if (monoms.empty())
+	{
+		monoms.insertFirst(el);
+		return;
+	}
+
+	List<polynomialData> newList;
+	bool inserted = false;
+	for (size_t i = 0; i < monoms.size(); i++)
+	{
+		polynomialData curr = monoms[i];
+		if (!inserted && curr.grades < el.grades)
+		{
+			newList.insertLast(el);
+			inserted = true;
+		}
+		newList.insertLast(curr);
+	}
+
+	if (!inserted)
+		newList.insertLast(el);
+
+	monoms = newList;
+}
+
 // Вставка в конец
-void Polynomial::insertMonomLast(polynomialData& el)
+void Polynomial::insertMonomLast(int co, unsigned grad)
+{
+	polynomialData el{ co, grad };
+	monoms.insertLast(el);
+}
+
+// Вставка в конец
+void Polynomial::insertMonomLast(const polynomialData& el)
 {
 	monoms.insertLast(el);
 }
@@ -113,7 +150,7 @@ Polynomial Polynomial::operator-(const Polynomial& rhs)
 }
 
 // Умножение на константу
-Polynomial Polynomial::operator*(const float scalar)
+Polynomial Polynomial::operator*(const float scalar) const
 {
 	Polynomial result;
 
