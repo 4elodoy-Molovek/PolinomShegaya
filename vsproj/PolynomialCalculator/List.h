@@ -1,12 +1,14 @@
 #pragma once
 #include <string>
 
-
 template <typename T>
 struct ListNode
 {
 	T data;
 	ListNode<T>* pNext;
+
+	ListNode() {}
+	ListNode(const T& value) : data(value) {}
 };
 
 
@@ -19,11 +21,11 @@ class List
 	size_t sz;
 
 public:
-
-	// Конструктор по умолчанию
+	// ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ
 	List() : pFirst(nulltpr), pLast(nullptr), sz(0) {}
 
-	// Конструктор из указателя на первую Node
+	// ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЁГ§ ГіГЄГ Г§Г ГІГҐГ«Гї Г­Г  ГЇГҐГ°ГўГіГѕ Node
+
 	List(ListNode<L>* fst) : pFirst(fst), sz(0)
 	{
 		ListNode<L>* node = fst;
@@ -36,51 +38,223 @@ public:
 		pLast = node;
 	}
 
-	// Конструктор копирования
+
+	// ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГї
 	List(const List<L>& list)
 	{
 		sz = list.sz;
 
 		if (sz > 0)
 		{
-			ListNode<L>* node = list.pFirst();
+			ListNode<L>* node = list.pFirst;
 			while (node)
 			{
+				ListNode<L>* newNode = new ListNode<L>(node->data);
 
+				if (!pFirst)
+				{
+					pFirst = newNode;
+					pLast = newNode;
+				}
+
+				pLast->pNext = newNode;
+				pLast = newNode;
+
+				node = node->pNext;
 			}
 		}
 	}
 
 
-	// Деструктор
-	~List();
+	// ГђВ”ГђВµГ‘ВЃГ‘В‚Г‘ВЂГ‘ВѓГђВєГ‘В‚ГђВѕГ‘ВЂ
+	~List()
+	{
+		ListNode<L>* node = pFirst;
+		while (pFirst)
+		{
+			pFirst = node->pNext;
+			delete node;
+		}
+	}
 
-	// Utility функции
+	// Utility Г‘В„Г‘ВѓГђВЅГђВєГ‘В†ГђВёГђВё
 
-	// Возвращает число элементов в списке
-	size_t size();
-	// Пуст ли список?
-	bool empty();
-
-
-	// Вставка в начало
-	void insertFirst(const T& data);
-	// Вставка в конец
-	void insertLast(const T& data);
-	// Вставляет в произвольную позицию списка
-	void insert(int index, const T& data);
+	// ГђВ’ГђВѕГђВ·ГђВІГ‘ВЂГђВ°Г‘В‰ГђВ°ГђВµГ‘В‚ Г‘В‡ГђВёГ‘ВЃГђВ»ГђВѕ Г‘ВЌГђВ»ГђВµГђВјГђВµГђВЅГ‘В‚ГђВѕГђВІ ГђВІ Г‘ВЃГђВїГђВёГ‘ВЃГђВєГђВµ
+	size_t size() const { return sz; }
+	// ГђВџГ‘ВѓГ‘ВЃГ‘В‚ ГђВ»ГђВё Г‘ВЃГђВїГђВёГ‘ВЃГђВѕГђВє?
+	bool empty() const { return sz == 0; }
 
 
-	// Получение значения первого элемента
-	L& getFirst();
+	// ГђВ’Г‘ВЃГ‘В‚ГђВ°ГђВІГђВєГђВ° ГђВІ ГђВЅГђВ°Г‘В‡ГђВ°ГђВ»ГђВѕ
+	void insertFirst(const L& data)
+	{
+		ListNode<L>* newNode = new ListNode<L>(data);
 
-	// Получение значения последнего элемента
-	L& getLast();
+		if (!pFirst)
+		{
+			pFirst = newNode;
+			pLast = newNode;
+		}
 
-	// Получение произвольного элемента
-	L& operator[](int);
+		else
+		{
+			newNode->pNext = pFirst;
+			pFirst = newNode;
+		}
 
-	bool operator==(const List<L>& list);
-	List& operator=(const List<L>& list);
+		sz++;
+	}
+
+	// ГђВ’Г‘ВЃГ‘В‚ГђВ°ГђВІГђВєГђВ° ГђВІ ГђВєГђВѕГђВЅГђВµГ‘В†
+	void insertLast(const L& data)
+	{
+		ListNode<L>* newNode = new ListNode<L>(data);
+
+		if (!pFirst)
+		{
+			pFirst = newNode;
+			pLast = newNode;
+		}
+
+		else
+		{
+			pLast->pNext = newNode;
+			pLast = newNode;
+		}
+
+		sz++;
+	}
+
+	// ГђВ’Г‘ВЃГ‘В‚ГђВ°ГђВІГђВ»Г‘ВЏГђВµГ‘В‚ ГђВІ ГђВїГ‘ВЂГђВѕГђВёГђВ·ГђВІГђВѕГђВ»Г‘ВЊГђВЅГ‘ВѓГ‘ВЋ ГђВїГђВѕГђВ·ГђВёГ‘В†ГђВёГ‘ВЋ Г‘ВЃГђВїГђВёГ‘ВЃГђВєГђВ°
+	void insert(int index, const L& data)
+	{
+		ListNode<L>* newNode = new ListNode<L>(data);
+
+		if (!pFirst)
+		{
+			if (index != 0) throw(std::exception("LIST: Trying to insert at invalid index into an EMPTY list!"));
+
+			pFirst = newNode;
+			pLast = newNode;
+		}
+
+		else if (index >= sz) throw(std::exception("LIST: Trying to insert at invalid index!"));
+
+		else
+		{
+			int i = 0;
+
+			ListNode<L>* prevNode = nullptr;
+			ListNode<L>* node = pFirst;
+
+			while (i < index)
+			{
+				prevNode = node;
+				node = pFirst->pNext;
+				i++;
+			}
+
+			if (!prevNode)
+				pFirst = newNode;
+
+			else
+				prevNode->pNext = newNode;
+
+			newNode->pNext = node;
+		}
+
+		sz++;
+	}
+
+
+	// ГђВџГђВѕГђВ»Г‘ВѓГ‘В‡ГђВµГђВЅГђВёГђВµ ГђВ·ГђВЅГђВ°Г‘В‡ГђВµГђВЅГђВёГ‘ВЏ ГђВїГђВµГ‘ВЂГђВІГђВѕГђВіГђВѕ Г‘ВЌГђВ»ГђВµГђВјГђВµГђВЅГ‘В‚ГђВ°
+	L& getFirst()
+	{
+		if (pFirst)
+			return pFirst->data;
+
+		throw(std::exception("LIST: getFirst in an empty list!"));
+	}
+
+	// ГђВџГђВѕГђВ»Г‘ВѓГ‘В‡ГђВµГђВЅГђВёГђВµ ГђВ·ГђВЅГђВ°Г‘В‡ГђВµГђВЅГђВёГ‘ВЏ ГђВїГђВѕГ‘ВЃГђВ»ГђВµГђВґГђВЅГђВµГђВіГђВѕ Г‘ВЌГђВ»ГђВµГђВјГђВµГђВЅГ‘В‚ГђВ°
+	L& getLast()
+	{
+		if (pLast)
+			return pLast->data;
+
+		throw(std::exception("LIST: getLast in an empty list!"));
+	}
+
+	// ГђВџГђВѕГђВ»Г‘ВѓГ‘В‡ГђВµГђВЅГђВёГђВµ ГђВїГ‘ВЂГђВѕГђВёГђВ·ГђВІГђВѕГђВ»Г‘ВЊГђВЅГђВѕГђВіГђВѕ Г‘ВЌГђВ»ГђВµГђВјГђВµГђВЅГ‘В‚ГђВ°
+	L& operator[](int index)
+	{
+		if (!pFirst) throw(std::exception("LIST: operator[] in an empty list!"));
+		if (index >= sz) throw(std::exception("LIST: operator[] with an invalid index!"));
+
+		int i = 0;
+		ListNode<L>* node = pFirst;
+
+		while (i < index)
+		{
+			node = node->pNext;
+			i++;
+		}
+
+		return node->data;
+	}
+
+	bool operator==(const List<L>& list)
+	{
+		if (size() != list.size()) return false;
+
+
+		ListNode<L> *node_1 = pFirst, *node_2 = list.pFirst;
+
+		while (node_1)
+		{
+			if (node_1->data != node_2->data) return false;
+			node_1 = node_1->pNext;
+			node_2 = node_2->pNext;
+		}
+		
+		return true;
+	}
+
+	List<L>& operator=(const List<L>& list)
+	{
+		ListNode<L>* node = pFirst;
+
+		// ГђВЈГђВґГђВ°ГђВ»ГђВµГђВЅГђВёГђВµ Г‘В‚ГђВµГђВєГ‘ВѓГ‘В‰ГђВµГђВіГђВѕ Г‘ВЃГђВїГђВёГ‘ВЃГђВєГђВ°
+		while (pFirst)
+		{
+			pFirst = node->pNext;
+			delete node;
+		}
+
+		// ГђВљГђВѕГђВїГђВёГ‘ВЂГђВѕГђВІГђВ°ГђВЅГђВёГђВµ
+		sz = list.sz;
+
+		if (sz > 0)
+		{
+			node = list.pFirst;
+			while (node)
+			{
+				ListNode<L>* newNode = new ListNode<L>(node->data);
+
+				if (!pFirst)
+				{
+					pFirst = newNode;
+					pLast = newNode;
+				}
+
+				pLast->pNext = newNode;
+				pLast = newNode;
+
+				node = node->pNext;
+			}
+		}
+
+		return *this;
+	}
 };
 
