@@ -1,13 +1,12 @@
 #pragma once
 #include "Table.h"
 
-template<typename K, typename T>
-class HashTableTwo : public Table<K, T>
+class HashTableTwo : public Table
 {
 protected:
 	struct Node
 	{
-		T data;
+		Polynomial data;
 		bool deleted;
 	};
 	int size; // сколько элементов у нас сейчас в массиве (без учета deleted)
@@ -18,12 +17,12 @@ public:
 	HashTableTwo(size_t sz = defaultSize);
 	~HashTableTwo() override;
 
-	// Добавляет в таблицу элемент с ключем key
-	virtual void addElement(const K& key, const T& pol) override;
+	// Добавляет полином pol в таблицу с ключем(именем) name
+	virtual void addElement(const std::string& name, const Polynomial& pol) override;
 
-	// Удаляет из таблицы элемент с ключем key
-	virtual void deleteElement(const K& key) override;
+	// Удаляет из полином с именем name из таблицы
+	virtual void deleteElement(const std::string& name) override;
 
-	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение
-	virtual T& findElement(const K& key) override;
+	// Ищет в таблице полином с именем name
+	virtual const Polynomial& findElement(const std::string& name) override;
 };

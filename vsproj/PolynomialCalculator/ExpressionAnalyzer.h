@@ -17,9 +17,6 @@ class ExpressionAnalyzer
 
 public:
 
-	ExpressionAnalyzer() {}
-	virtual ~ExpressionAnalyzer() {}
-
 	/* 
 	 * Анализирует выражение строя его постфиксную форму и записывая её в cachedPostfix
 	 * В outRequestedPolynomials метод положит имена полиномов, которые необходимо получить из таблиц
@@ -32,13 +29,13 @@ public:
 	 *		5) Умножение ТОЛЬКО через знак '*';
 	 *		6) При обнаружении ошибки бросает исключение
 	 */
-	virtual void analyzeExpression(const std::string& expression, std::set<std::string>& outRequestedPolynomials) = 0;
+	void analyzeExpression(const std::string& expression, std::set<std::string>& outRequestedPolynomials);
 
 	/*
 	 * Вычисляет результат последнего проанализированного выражения
 	 * В polynomials подаются полиномы, запрошенные в outRequestedPolynomials, полученном от analyzeExpression
 	 */
-	virtual Polynomial calculateSummaryPolynomial(const std::map<std::string, const Polynomial&> polynomials) = 0;
+	Polynomial calculateSummaryPolynomial(const std::map<std::string, const Polynomial&> polynomials);
 
 private:
 
