@@ -63,12 +63,12 @@ long int convertStrToInt(string strNum) {
 
 EA_v1::EA_v1() {
 	cachedPostfix.clear();
-	function_list = { {"sin", sin }, {"cos", cos }, { "d_dx", d_dx }, { "d_dy", d_dy }, { "d_dz", d_dz },
+	functionList = { {"sin", sin }, {"cos", cos }, { "d_dx", d_dx }, { "d_dy", d_dy }, { "d_dz", d_dz },
 	{ "i_dx", i_dx }, { "i_dy", i_dy }, { "i_dz", i_dz }}; // <name, ptr_to_func> 
 }
 
 Tptr EA_v1::funcCheck(const string& func) {
-	Tptr functionPtr = function_list[func];
+	Tptr functionPtr = functionList[func];
 	if (functionPtr == nullptr)
 		throw (string("Expression Analyzer can't identify function") + func);
 	return functionPtr;
