@@ -1,28 +1,31 @@
-﻿#pragma once
+ï»¿#pragma once
 #include "Table.h"
 #include <stdexcept>
 
-struct ListTableString {
-	std::string name;
-	Polynomial poly;
-};
-
-class LinearListTable : public Table
+template<typename K, typename T>
+class LinearListTable : public Table<K, T>
 {
 protected:
-	List<ListTableString>* data;
-	size_t size = 0;
+
+
+	template<typename K, typename T>
+	struct ListTableString {
+		K key;
+		T value;
+	};
+
+	List<ListTableString> data;
 
 public:
 	LinearListTable(size_t sz = defaultSize);
 	~LinearListTable() override;
 
-	// Добавляет полином pol в таблицу с ключем(именем) name
-	virtual void addElement(const std::string& name, const Polynomial& pol) override;
+	// Äîáàâëÿåò â òàáëèöó ýëåìåíò ñ êëþ÷åì key
+	virtual void addElement(const K& key, const T& pol) override;
 
-	// Удаляет из полином с именем name из таблицы
-	virtual void deleteElement(const std::string& name) override;
+	// Óäàëÿåò èç òàáëèöû ýëåìåíò ñ êëþ÷åì key
+	virtual void deleteElement(const K& key) override;
 
-	// Ищет в таблице полином с именем name
-	virtual const Polynomial& findElement(const std::string& name) override;
+	// Èùåò è âîçâðàùàåò ññûëêó íà ýëåìåíò ñ êëþ÷åì K, â ïðîòèâíîì ñëó÷àå áðîñàåò èñêëþ÷åíèå
+	virtual T& findElement(const K& key) override;
 };

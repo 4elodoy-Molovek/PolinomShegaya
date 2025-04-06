@@ -131,7 +131,7 @@ TEST(List, list_Can_Insert_First_Into_Empty_List)
 
 	// брь insert
 	List<int> list = List<int>();
-	list.InsertFirst(10);
+	list.insertFirst(10);
 
 	EXPECT_EQ(listExample, list);
 }
@@ -152,8 +152,8 @@ TEST(List, list_Can_Insert_First_Into_Non_Empty_List)
 
 	// брь insert
 	List<int> list = List<int>();
-	list.InsertFirst(5);
-	list.InsertFirst(10);
+	list.insertFirst(5);
+	list.insertFirst(10);
 
 	EXPECT_EQ(listExample, list);
 }
@@ -169,7 +169,7 @@ TEST(List, list_Can_Insert_Last_Into_Empty_List)
 
 	// брь insert
 	List<int> list = List<int>();
-	list.InsertLast(10);
+	list.insertLast(10);
 
 	EXPECT_EQ(listExample, list);
 }
@@ -190,8 +190,8 @@ TEST(List, list_Can_Insert_Last_Into_Non_Empty_List)
 
 	// брь insert
 	List<int> list = List<int>();
-	list.InsertLast(5);
-	list.InsertLast(10);
+	list.insertLast(5);
+	list.insertLast(10);
 
 	EXPECT_EQ(listExample, list);
 }
@@ -215,9 +215,9 @@ TEST(List, list_Can_Insert_In_Any_Spot)
 
 	// брь insert
 	List<int> list = List<int>();
-	list.Insert(0, 5);
-	list.Insert(1, 20);
-	list.Insert(1, 10);
+	list.insert(0, 5);
+	list.insert(1, 20);
+	list.insert(1, 10);
 
 	EXPECT_EQ(listExample, list);
 }
@@ -228,12 +228,12 @@ TEST(List, list_Size_Is_Correct)
 
 	EXPECT_EQ(0, list.size());
 
-	list.InsertLast(10);
+	list.insertLast(10);
 
 	EXPECT_EQ(1, list.size());
 
 	for (int i = 0; i < 10; i++)
-		list.InsertLast(10);
+		list.insertLast(10);
 
 	EXPECT_EQ(11, list.size());
 }
@@ -244,7 +244,51 @@ TEST(List, list_Empty_Is_Correct)
 
 	EXPECT_TRUE(list.empty());
 
-	list.InsertLast(10);
+	list.insertLast(10);
 
 	EXPECT_FALSE(list.empty());
+}
+
+TEST(List, list_Can_View_First_Element)
+{
+	List<int> list = List<int>();
+	list.insertFirst(10);
+	list.insertLast(5);
+	list.insertFirst(2);
+
+	EXPECT_EQ(2, list.getFirst());
+}
+
+TEST(List, list_Can_Edit_First_Element)
+{
+	List<int> list = List<int>();
+	list.insertFirst(10);
+	list.insertLast(5);
+	list.insertFirst(2);
+
+	list.getFirst() = 100;
+
+	EXPECT_EQ(100, list.getFirst());
+}
+
+TEST(List, list_Can_View_Last_Element)
+{
+	List<int> list = List<int>();
+	list.insertFirst(10);
+	list.insertLast(5);
+	list.insertFirst(2);
+
+	EXPECT_EQ(5, list.getLast());
+}
+
+TEST(List, list_Can_Edit_Last_Element)
+{
+	List<int> list = List<int>();
+	list.insertFirst(10);
+	list.insertLast(5);
+	list.insertFirst(2);
+
+	list.getLast() = 100;
+
+	EXPECT_EQ(100, list.getLast());
 }
