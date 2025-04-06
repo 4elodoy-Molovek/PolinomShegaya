@@ -1,12 +1,14 @@
 #pragma once
 #include <string>
 
-
 template <typename T>
 struct ListNode
 {
 	T data;
 	ListNode<T>* pNext;
+
+	ListNode() {}
+	ListNode(const T& value) : data(value) {}
 };
 
 
@@ -20,10 +22,10 @@ class List
 
 public:
 
-	// Конструктор по умолчанию
-	List() : pFirst(nulltpr), pLast(nullptr), sz(0) {}
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+	List() : pFirst(nullptr), pLast(nullptr), sz(0) {}
 
-	// Конструктор из указателя на первую Node
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РїРµСЂРІСѓСЋ Node
 	List(ListNode<L>* fst) : pFirst(fst), sz(0)
 	{
 		ListNode<L>* node = fst;
@@ -36,51 +38,221 @@ public:
 		pLast = node;
 	}
 
-	// Конструктор копирования
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 	List(const List<L>& list)
 	{
 		sz = list.sz;
 
 		if (sz > 0)
 		{
-			ListNode<L>* node = list.pFirst();
+			ListNode<L>* node = list.pFirst;
 			while (node)
 			{
+				ListNode<L>* newNode = new ListNode<L>(node->data);
 
+				if (!pFirst)
+				{
+					pFirst = newNode;
+					pLast = newNode;
+				}
+
+				pLast->pNext = newNode;
+				pLast = newNode;
+
+				node = node->pNext;
 			}
 		}
 	}
 
 
-	// Деструктор
-	~List();
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
+	~List()
+	{
+		ListNode<L>* node = pFirst;
+		while (pFirst)
+		{
+			pFirst = node->pNext;
+			delete node;
+		}
+	}
 
-	// Utility функции
+	// Utility С„СѓРЅРєС†РёРё
 
-	// Возвращает число элементов в списке
-	size_t size();
-	// Пуст ли список?
-	bool empty();
-
-
-	// Вставка в начало
-	void insertFirst(const T& data);
-	// Вставка в конец
-	void insertLast(const T& data);
-	// Вставляет в произвольную позицию списка
-	void insert(int index, const T& data);
+	// Р’РѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ РІ СЃРїРёСЃРєРµ
+	size_t size() const { return sz; }
+	// РџСѓСЃС‚ Р»Рё СЃРїРёСЃРѕРє?
+	bool empty() const { return sz == 0; }
 
 
-	// Получение значения первого элемента
-	L& getFirst();
+	// Р’СЃС‚Р°РІРєР° РІ РЅР°С‡Р°Р»Рѕ
+	void insertFirst(const L& data)
+	{
+		ListNode<L>* newNode = new ListNode<L>(data);
 
-	// Получение значения последнего элемента
-	L& getLast();
+		if (!pFirst)
+		{
+			pFirst = newNode;
+			pLast = newNode;
+		}
 
-	// Получение произвольного элемента
-	L& operator[](int);
+		else
+		{
+			newNode->pNext = pFirst;
+			pFirst = newNode;
+		}
 
-	bool operator==(const List<L>& list);
-	List& operator=(const List<L>& list);
+		sz++;
+	}
+
+	// Р’СЃС‚Р°РІРєР° РІ РєРѕРЅРµС†
+	void insertLast(const L& data)
+	{
+		ListNode<L>* newNode = new ListNode<L>(data);
+
+		if (!pFirst)
+		{
+			pFirst = newNode;
+			pLast = newNode;
+		}
+
+		else
+		{
+			pLast->pNext = newNode;
+			pLast = newNode;
+		}
+
+		sz++;
+	}
+
+	// Р’СЃС‚Р°РІР»СЏРµС‚ РІ РїСЂРѕРёР·РІРѕР»СЊРЅСѓСЋ РїРѕР·РёС†РёСЋ СЃРїРёСЃРєР°
+	void insert(int index, const L& data)
+	{
+		ListNode<L>* newNode = new ListNode<L>(data);
+
+		if (!pFirst)
+		{
+			if (index != 0) throw(std::exception("LIST: Trying to insert at invalid index into an EMPTY list!"));
+
+			pFirst = newNode;
+			pLast = newNode;
+		}
+
+		else if (index >= sz) throw(std::exception("LIST: Trying to insert at invalid index!"));
+
+		else
+		{
+			int i = 0;
+
+			ListNode<L>* prevNode = nullptr;
+			ListNode<L>* node = pFirst;
+
+			while (i < index)
+			{
+				prevNode = node;
+				node = pFirst->pNext;
+				i++;
+			}
+
+			if (!prevNode)
+				pFirst = newNode;
+
+			else
+				prevNode->pNext = newNode;
+
+			newNode->pNext = node;
+		}
+
+		sz++;
+	}
+
+
+	// РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
+	L& getFirst()
+	{
+		if (pFirst)
+			return pFirst->data;
+
+		throw(std::exception("LIST: getFirst in an empty list!"));
+	}
+
+	// РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЌР»РµРјРµРЅС‚Р°
+	L& getLast()
+	{
+		if (pLast)
+			return pLast->data;
+
+		throw(std::exception("LIST: getLast in an empty list!"));
+	}
+
+	// РџРѕР»СѓС‡РµРЅРёРµ РїСЂРѕРёР·РІРѕР»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
+	L& operator[](int index)
+	{
+		if (!pFirst) throw(std::exception("LIST: operator[] in an empty list!"));
+		if (index >= sz) throw(std::exception("LIST: operator[] with an invalid index!"));
+
+		int i = 0;
+		ListNode<L>* node = pFirst;
+
+		while (i < index)
+		{
+			node = node->pNext;
+			i++;
+		}
+
+		return node->data;
+	}
+
+	bool operator==(const List<L>& list)
+	{
+		if (size() != list.size()) return false;
+
+		ListNode<L> *node_1 = pFirst, *node_2 = list.pFirst;
+
+		while (node_1)
+		{
+			if (node_1->data != node_2->data) return false;
+			node_1 = node_1->pNext;
+			node_2 = node_2->pNext;
+		}
+		
+		return true;
+	}
+
+	List<L>& operator=(const List<L>& list)
+	{
+		ListNode<L>* node = pFirst;
+
+		// РЈРґР°Р»РµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ СЃРїРёСЃРєР°
+		while (pFirst)
+		{
+			pFirst = node->pNext;
+			delete node;
+		}
+
+		// РљРѕРїРёСЂРѕРІР°РЅРёРµ
+		sz = list.sz;
+
+		if (sz > 0)
+		{
+			node = list.pFirst;
+			while (node)
+			{
+				ListNode<L>* newNode = new ListNode<L>(node->data);
+
+				if (!pFirst)
+				{
+					pFirst = newNode;
+					pLast = newNode;
+				}
+
+				pLast->pNext = newNode;
+				pLast = newNode;
+
+				node = node->pNext;
+			}
+		}
+
+		return *this;
+	}
 };
 

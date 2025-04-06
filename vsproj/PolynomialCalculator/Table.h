@@ -1,7 +1,6 @@
 #pragma once
 #include "Polynomial.h"
 
-
 template<typename K, typename T>
 class Table 
 {
@@ -11,7 +10,7 @@ protected:
 	static const size_t defaultSize = 4;
 
 public:
-	Table();
+	Table() {}
 	virtual ~Table() = 0;
 
 	// Добавляет в таблицу элемент с ключем key
@@ -21,5 +20,8 @@ public:
 	virtual void deleteElement(const K& key) = 0;
 
 	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение
-	virtual T& findElement(const K& key) = 0;
+	virtual T* findElement(const K& key) = 0;
+
+	// В outElements помещает все элементы таблицы в некотором порядке
+	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) = 0;
 };
