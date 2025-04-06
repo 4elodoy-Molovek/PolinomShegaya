@@ -52,16 +52,34 @@ public:
 
 	void addPolynomial(const std::string& name, const std::string& notation)
 	{
+		Polynomial pol = parser->convertStringToPolynomial(notation);
 
+		for (int i = 0; i < 6; i++)
+			tableList[i]->addElement(name, pol);
 	}
 
-	void deletePolynomial(const std::string& name);
+	void deletePolynomial(const std::string& name)
+	{
+		for (int i = 0; i < 6; i++)
+			tableList[i]->deleteElement(name);
+	}
 
-	Polynomial calculatePolynomialExpression(const std::string expression);
+	Polynomial calculatePolynomialExpression(const std::string expression)
+	{
+		std::set<std::string> requestedPolynomials;
+		analyzer->analyzeExpression(expression, requestedPolynomials);
 
-	const Polynomial& findPolynomial(const std::string& name);
+		std::map<std::string, const Polynomial&> polynomials;
+		for (auto& pol : requestedPolynomials)
+		{
+			Polynomial& polp = *tableList[activeTableID]->findElement(pol);
+			polynomials.insert({ pol, polp });
+		}
 
-	void setActiveTable(size_t newActiveTable);
-	size_t GetActiveTable();
+		return analyzer->calculateSummaryPolynomial(polynomials);
+	}
+
+	void setActiveTable(size_t newActiveTable) { activeTableID = newActiveTable; }
+	size_t GetActiveTable() { return activeTableID; }
 };
 
