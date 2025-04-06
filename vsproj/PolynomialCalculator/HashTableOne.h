@@ -10,20 +10,20 @@ protected:
 		Polynomial data;
 		bool deleted;
 	};
-	int size; // сколько элементов у нас сейчас в массиве (без учета deleted)
-	int bufferSize; // размер самого массива, сколько памяти выделено под хранение нашей таблицы
-	int sizeAllNonNullptr; // сколько элементов у нас сейчас в массиве (с учетом deleted)
+	int size; // СЃРєРѕР»СЊРєРѕ СЌР»РµРјРµРЅС‚РѕРІ Сѓ РЅР°СЃ СЃРµР№С‡Р°СЃ РІ РјР°СЃСЃРёРІРµ (Р±РµР· СѓС‡РµС‚Р° deleted)
+	int bufferSize; // СЂР°Р·РјРµСЂ СЃР°РјРѕРіРѕ РјР°СЃСЃРёРІР°, СЃРєРѕР»СЊРєРѕ РїР°РјСЏС‚Рё РІС‹РґРµР»РµРЅРѕ РїРѕРґ С…СЂР°РЅРµРЅРёРµ РЅР°С€РµР№ С‚Р°Р±Р»РёС†С‹
+	int sizeAllNonNullptr; // СЃРєРѕР»СЊРєРѕ СЌР»РµРјРµРЅС‚РѕРІ Сѓ РЅР°СЃ СЃРµР№С‡Р°СЃ РІ РјР°СЃСЃРёРІРµ (СЃ СѓС‡РµС‚РѕРј deleted)
 
 public:
 	HashTableOne(size_t sz = defaultSize);
 	~HashTableOne() override;
 
-	// Добавляет полином pol в таблицу с ключем(именем) name
+	// Р”РѕР±Р°РІР»СЏРµС‚ РїРѕР»РёРЅРѕРј pol РІ С‚Р°Р±Р»РёС†Сѓ СЃ РєР»СЋС‡РµРј(РёРјРµРЅРµРј) name
 	virtual void addElement(const std::string& name, const Polynomial& pol) override;
 
-	// Удаляет из полином с именем name из таблицы
+	// РЈРґР°Р»СЏРµС‚ РёР· РїРѕР»РёРЅРѕРј СЃ РёРјРµРЅРµРј name РёР· С‚Р°Р±Р»РёС†С‹
 	virtual void deleteElement(const std::string& name) override;
 
-	// Ищет в таблице полином с именем name
+	// РС‰РµС‚ РІ С‚Р°Р±Р»РёС†Рµ РїРѕР»РёРЅРѕРј СЃ РёРјРµРЅРµРј name
 	virtual const Polynomial& findElement(const std::string& name) override;
 };

@@ -12,12 +12,12 @@ public:
 	SortedArrayTable(size_t sz = defaultSize);
 	~SortedArrayTable() override;
 
-	// Добавляет полином pol в таблицу с ключем(именем) name
+	// Р”РѕР±Р°РІР»СЏРµС‚ РїРѕР»РёРЅРѕРј pol РІ С‚Р°Р±Р»РёС†Сѓ СЃ РєР»СЋС‡РµРј(РёРјРµРЅРµРј) name
 	virtual void addElement(const std::string& name, const Polynomial& pol) override;
 
-	// Удаляет из полином с именем name из таблицы
+	// РЈРґР°Р»СЏРµС‚ РёР· РїРѕР»РёРЅРѕРј СЃ РёРјРµРЅРµРј name РёР· С‚Р°Р±Р»РёС†С‹
 	virtual void deleteElement(const std::string& name) override;
 
-	// Ищет в таблице полином с именем name
+	// РС‰РµС‚ РІ С‚Р°Р±Р»РёС†Рµ РїРѕР»РёРЅРѕРј СЃ РёРјРµРЅРµРј name
 	virtual const Polynomial& findElement(const std::string& name) override;
 };

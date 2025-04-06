@@ -1,4 +1,4 @@
-﻿#include "HashTableOne.h"
+#include "HashTableOne.h"
 #include <stdexcept>
 #include <functional>
 

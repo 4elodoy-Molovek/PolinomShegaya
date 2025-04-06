@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Polynomial.h"
-
+#include "Parser.h"
 
 class Parser_v1 : public Parser
 {
