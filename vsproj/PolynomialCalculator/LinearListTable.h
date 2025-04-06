@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "Table.h"
 #include <stdexcept>
 
@@ -6,8 +6,6 @@ template<typename K, typename T>
 class LinearListTable : public Table<K, T>
 {
 protected:
-
-
 	template<typename K, typename T>
 	struct ListTableString {
 		K key;
@@ -27,5 +25,5 @@ public:
 	virtual void deleteElement(const K& key) override;
   
 	// Èùåò è âîçâðàùàåò ññûëêó íà ýëåìåíò ñ êëþ÷åì K, â ïðîòèâíîì ñëó÷àå áðîñàåò èñêëþ÷åíèå
-	virtual T& findElement(const K& key) override;
+	virtual T* findElement(const K& key) override;
 };
