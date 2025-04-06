@@ -14,7 +14,7 @@ protected:
 		T value;
 	};
 
-	List<ListTableString> data;
+	List<ListTableString<K, T>> data;
 
 public:
 	LinearListTable(size_t sz = defaultSize);
@@ -25,7 +25,7 @@ public:
 
 	// Óäàëÿåò èç òàáëèöû ýëåìåíò ñ êëþ÷åì key
 	virtual void deleteElement(const K& key) override;
-
+  
 	// Èùåò è âîçâðàùàåò ññûëêó íà ýëåìåíò ñ êëþ÷åì K, â ïðîòèâíîì ñëó÷àå áðîñàåò èñêëþ÷åíèå
 	virtual T& findElement(const K& key) override;
 };
