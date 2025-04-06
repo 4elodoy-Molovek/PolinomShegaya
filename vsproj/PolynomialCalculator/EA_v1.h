@@ -7,7 +7,7 @@ typedef Polynomial(*Tptr)(Polynomial);
 
 class EA_v1 : public ExpressionAnalyzer 
 {
-	std::map<std::string, Tptr> function_list; 
+	std::map<std::string, Tptr> functionList; 
 
 public:
 	EA_v1();

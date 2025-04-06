@@ -10,10 +10,30 @@ Polynomial cos(Polynomial a) {
 	return a + a;
 }
 
-///
-Polynomial minusOp(Polynomial a) {
-	return a * (-1);
+Polynomial d_dx(Polynomial a) {
+	return a.derivate("x");
 }
+
+Polynomial d_dy(Polynomial a) {
+	return a.derivate("y");
+}
+
+Polynomial d_dz(Polynomial a) {
+	return a.derivate("z");
+}
+
+Polynomial i_dx(Polynomial a) {
+	return a.integrate("x");
+}
+
+Polynomial i_dy(Polynomial a) {
+	return a.integrate("y");
+}
+
+Polynomial i_dz(Polynomial a) {
+	return a.integrate("z");
+}
+
 
 char STACK_FUNC_SYMBOL = '#'; // 
 
@@ -43,7 +63,8 @@ long int convertStrToInt(string strNum) {
 
 EA_v1::EA_v1() {
 	cachedPostfix.clear();
-	function_list = { {"sin", sin }, {"cos", cos }, {"minus", minusOp} }; // <name, ptr_to_func> 
+	function_list = { {"sin", sin }, {"cos", cos }, { "d_dx", d_dx }, { "d_dy", d_dy }, { "d_dz", d_dz },
+	{ "i_dx", i_dx }, { "i_dy", i_dy }, { "i_dz", i_dz }}; // <name, ptr_to_func> 
 }
 
 Tptr EA_v1::funcCheck(const string& func) {
