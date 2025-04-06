@@ -1,5 +1,7 @@
-#include "Parser_v1.h"
+﻿#include "Parser_v1.h"
 #include <sstream>
+#include <string>
+#include <regex>
 
 Polynomial Parser_v1::convertStringToPolynomial(const std::string poly_string)
 {
