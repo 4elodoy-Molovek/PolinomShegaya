@@ -136,6 +136,9 @@ public:
 		TreeNode<K, T>* newNode = new TreeNode<K, T>(key, pol, NODE_RED);
 		newNode->parent = node->parent;
 
+		if (node->parent->left == node) node->parent->left = newNode;
+		else node->parent->right = newNode;
+
 		// Создание новых листов
 		node->parent = newNode;
 		newNode->left = node;

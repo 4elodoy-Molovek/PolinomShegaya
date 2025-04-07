@@ -53,29 +53,15 @@ public:
 	// Конструктор копирования
 	List(const List<L>& list)
 	{
-		sz = list.sz;
-
+		sz = 0;
 		pFirst = nullptr;
 		pLast = nullptr;
 
-		if (sz > 0)
+		ListNode<L>* node = list.pFirst;
+		while (node)
 		{
-			ListNode<L>* node = list.pFirst;
-			while (node)
-			{
-				ListNode<L>* newNode = new ListNode<L>(node->data);
-
-				if (!pFirst)
-				{
-					pFirst = newNode;
-					pLast = newNode;
-				}
-
-				pLast->pNext = newNode;
-				pLast = newNode;
-
-				node = node->pNext;
-			}
+			insertLast(node->data);
+			node = node->pNext;
 		}
 	}
 
@@ -302,35 +288,16 @@ public:
 		if (this == &list)
 			return *this;
 
-		ListNode<L>* node = pFirst;
-
-		// Удаление текущего списка
-		destroyNode(pFirst);
-
+		clearList();
 		pFirst = nullptr;
 		pLast = nullptr;
+		sz = 0;
 
-		// Копирование
-		sz = list.sz;
-
-		if (sz > 0)
+		ListNode<L>* node = list.pFirst;
+		while (node)
 		{
-			node = list.pFirst;
-			while (node)
-			{
-				ListNode<L>* newNode = new ListNode<L>(node->data);
-
-				if (!pFirst)
-				{
-					pFirst = newNode;
-					pLast = newNode;
-				}
-
-				pLast->pNext = newNode;
-				pLast = newNode;
-
-				node = node->pNext;
-			}
+			insertLast(node->data);
+			node = node->pNext;
 		}
 
 		return *this;
