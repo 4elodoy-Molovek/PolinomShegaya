@@ -299,7 +299,7 @@ public:
 
 	List<L>& operator=(const List<L>& list)
 	{
-		if (this != &list)
+		if (this == &list)
 			return *this;
 
 		ListNode<L>* node = pFirst;
