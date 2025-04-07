@@ -85,6 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\gtest\gtest-all.cc" />
     <ClCompile Include="testExpressionAnalyzer.cpp" />
     <ClCompile Include="TestHandler.cpp" />
     <ClCompile Include="TestList.cpp" />
@@ -93,6 +94,9 @@
     <ClCompile Include="TestTable.cpp" />
     <ClCompile Include="TestMain.cpp" />
     <ClCompile Include="TestTreeTable.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\gtest\gtest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

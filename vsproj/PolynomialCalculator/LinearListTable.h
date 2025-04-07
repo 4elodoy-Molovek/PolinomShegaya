@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Table.h"
+#include "List.h"
 #include <stdexcept>
 #include <vector>
 

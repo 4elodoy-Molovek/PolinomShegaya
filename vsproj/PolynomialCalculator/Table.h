@@ -12,7 +12,7 @@ protected:
 
 public:
 	Table() {}
-	virtual ~Table() = 0;
+	virtual ~Table() {}
 
 	// Добавляет в таблицу элемент с ключем key
 	virtual void addElement(const K& key, const T& pol) = 0;

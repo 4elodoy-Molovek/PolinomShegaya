@@ -1,12 +1,12 @@
 ﻿#include <..\gtest\gtest.h>
 #include <memory>
-#include "Table.h"
-#include "HashTableOne.h"
-#include "HashTableTwo.h"
-#include "LinearArrayTable.h"
-#include "LinearListTable.h"
-#include "SortedArrayTable.h"
-#include "TreeTable.h"
+#include "..\PolynomialCalculator\Table.h"
+#include "..\PolynomialCalculator\HashTableOne.h"
+#include "..\PolynomialCalculator\HashTableTwo.h"
+#include "..\PolynomialCalculator\LinearArrayTable.h"
+#include "..\PolynomialCalculator\LinearListTable.h"
+#include "..\PolynomialCalculator\SortedArrayTable.h"
+#include "..\PolynomialCalculator\TreeTable.h"
 
 class TableTest : public ::testing::TestWithParam<std::shared_ptr<Table<std::string, int>>>
 {

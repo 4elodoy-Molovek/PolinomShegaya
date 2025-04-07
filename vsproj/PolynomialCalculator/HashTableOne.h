@@ -1,6 +1,5 @@
 #pragma once
 #include "Table.h"
-#include "Polynomial.h"
 
 template<typename K, typename T>
 class HashTableOne : public Table<K, T>
@@ -33,7 +32,7 @@ public:
 		table.resize(bufferSize);
 	}
 
-	~HashTableOne() override;
+	~HashTableOne() override {}
 
 	// Добавляет полином pol в таблицу с ключем(именем) name
 	virtual void addElement(const K& key, const T& pol) override
