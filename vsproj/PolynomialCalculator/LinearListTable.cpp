@@ -1,18 +1,21 @@
 ﻿#include "LinearListTable.h"
 
-LinearListTable::LinearListTable(size_t sz)
+template<typename K, typename T>
+LinearListTable<K, T>::LinearListTable(size_t sz)
 {
 	data = new List<ListTableString>();
-	size = 0;
+	size = 0; /// ???
 }
 
-LinearListTable::~LinearListTable()
+template<typename K, typename T>
+LinearListTable<K, T>::~LinearListTable()
 {
 	delete data;
 }
 
 // Добавляет полином pol в таблицу с ключом (именем) name
-void LinearListTable::addElement(const std::string& name, const Polynomial& pol)
+template<typename K, typename T>
+void LinearListTable<K, T>::addElement(const K& name, const T& pol)
 {
 	// Проверка на существование элемента
 	for (size_t i = 0; i < data->size(); ++i)
@@ -30,7 +33,8 @@ void LinearListTable::addElement(const std::string& name, const Polynomial& pol)
 }
 
 // Удаляет полином с именем name из таблицы
-void LinearListTable::deleteElement(const std::string& name)
+template<typename K, typename T>
+void LinearListTable<K, T>::deleteElement(const K& name)
 {
 	bool found = false;
 
@@ -61,7 +65,8 @@ void LinearListTable::deleteElement(const std::string& name)
 }
 
 // Ищет в таблице полином с именем name
-const Polynomial& LinearListTable::findElement(const std::string& name)
+template<typename K, typename T>
+T* LinearListTable<K, T>::findElement(const K& name)
 {
 	for (size_t i = 0; i < data->size(); ++i)
 	{
@@ -71,3 +76,5 @@ const Polynomial& LinearListTable::findElement(const std::string& name)
 
 	throw std::runtime_error("Element not found.");
 }
+/// must return pointer
+/// delete throw

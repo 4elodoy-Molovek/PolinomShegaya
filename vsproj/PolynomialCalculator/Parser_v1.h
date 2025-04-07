@@ -7,8 +7,8 @@ class Parser_v1 : public Parser
 
 public:
 
-	Parser() {}
-	virtual ~Parser() {}
+	Parser_v1 () {}
+	virtual ~Parser_v1 () {}
 
 	/* Ïðåîáðàçóåò ñòðîêîâóþ íîòàöèþ ïîëèíîìà â åãî ïðîãðàìíîå ïðåäñòàâëåíèå
 	 * Ïðè îáíàðóæåíèè îøèáêè êèäàåò èñêëþ÷åíèå
