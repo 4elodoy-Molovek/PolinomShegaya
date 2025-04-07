@@ -30,6 +30,7 @@ Polynomial* Polynomial::operator=(const Polynomial& poly)
 	if (this == &poly)
 		return this;
 
+
 	this->monoms = poly.monoms;
 	return this;
 }

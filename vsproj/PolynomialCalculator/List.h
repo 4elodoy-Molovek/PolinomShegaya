@@ -20,6 +20,16 @@ class List
 
 	size_t sz;
 
+private:
+
+	void destroyNode(ListNode<L>* node)
+	{
+		if (!node) return;
+		if (node->pNext) 
+			destroyNode(node->pNext);
+		delete node;
+	}
+
 public:
 
 	// Конструктор по умолчанию
@@ -68,12 +78,7 @@ public:
 	// Деструктор
 	~List()
 	{
-		ListNode<L>* node = pFirst;
-		while (pFirst)
-		{
-			pFirst = node->pNext;
-			delete node;
-		}
+		if (pFirst) destroyNode(pFirst);
 	}
 
 	// Utility функции
@@ -149,7 +154,7 @@ public:
 			while (i < index)
 			{
 				prevNode = node;
-				node = pFirst->pNext;
+				node = node->pNext;
 				i++;
 			}
 
@@ -240,11 +245,7 @@ public:
 		ListNode<L>* node = pFirst;
 
 		// Удаление текущего списка
-		while (pFirst)
-		{
-			pFirst = node->pNext;
-			delete node;
-		}
+		destroyNode(pFirst);
 
 		// Копирование
 		sz = list.sz;

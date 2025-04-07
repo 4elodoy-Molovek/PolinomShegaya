@@ -93,7 +93,7 @@ public:
 	virtual T* findElement(const K& name) 
 	{
 		bool suc = false;
-		size_t num = binarySearch(name, suc) - 1;
+		size_t num = binarySearch(name, suc);
 		if (!suc)
 			return nullptr;
 		else
