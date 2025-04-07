@@ -41,7 +41,8 @@ TEST(TreeTableTest, FindElement)
     table.addElement(20, "Twenty");
 
     EXPECT_EQ(*table.findElement(10), "Ten");
-    EXPECT_EQ(*table.findElement(20), "Twenty");
+    std::string res = *table.findElement(20);
+    EXPECT_EQ(res, "Twenty");
     EXPECT_EQ(table.findElement(30), nullptr);  // Non-existent element
 }
 

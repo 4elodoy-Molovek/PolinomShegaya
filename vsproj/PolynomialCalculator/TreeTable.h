@@ -119,6 +119,8 @@ public:
 
 			root->right->parent = root;
 			root->left->parent = root;
+			
+			size++;
 
 			return;
 		}

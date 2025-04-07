@@ -10,41 +10,41 @@ Polynomial Parser_v1::convertStringToPolynomial(const std::string poly_string)
 {
     Polynomial result;
 
-    std::regex term_regex(R"(([+-]?\s*\d*)([xyz](\^\d+)?)*?)", std::regex_constants::icase);
-    std::sregex_iterator iter(poly_string.begin(), poly_string.end(), term_regex);
+    std::string cleaned = poly_string;
+    cleaned.erase(remove_if(cleaned.begin(), cleaned.end(), ::isspace), cleaned.end());
+
+    std::regex monom_regex(R"(([+-]?[^+-]+))");
+    std::sregex_iterator iter(cleaned.begin(), cleaned.end(), monom_regex);
     std::sregex_iterator end;
 
     for (; iter != end; ++iter)
     {
-        std::string full_match = iter->str();
-        if (full_match.empty() || std::all_of(full_match.begin(), full_match.end(), isspace)) continue;
-
-        // Коэффициент
-        std::smatch match;
-        std::regex term_parse(R"(([+-]?\s*\d*)([xyz](\^\d+)?)*?)");
-        if (!std::regex_match(full_match, match, term_parse)) continue;
-
-        std::string coeff_str = match[1].str();
-        coeff_str.erase(remove_if(coeff_str.begin(), coeff_str.end(), ::isspace), coeff_str.end());
+        std::string monom_str = iter->str();
 
         int coeff = 1;
-        if (!coeff_str.empty() && coeff_str != "+" && coeff_str != "-")
-        {
-            coeff = std::stoi(coeff_str);
+        int sign = 1;
+
+        if (monom_str[0] == '-') {
+            sign = -1;
+            monom_str = monom_str.substr(1);
         }
-        else if (coeff_str == "-")
-        {
-            coeff = -1;
-        }
-        else if (coeff_str == "+")
-        {
-            coeff = 1;
+        else if (monom_str[0] == '+') {
+            monom_str = monom_str.substr(1);
         }
 
-        // Переменные
+        std::regex coeff_regex(R"(^\d+)");
+        std::smatch coeff_match;
+        if (std::regex_search(monom_str, coeff_match, coeff_regex))
+        {
+            coeff = std::stoi(coeff_match.str());
+            monom_str = monom_str.substr(coeff_match.length());
+        }
+
+        coeff *= sign;
+
         int x = 0, y = 0, z = 0;
-        std::regex var_regex(R"(([xyz])(\^(\d+))?)", std::regex_constants::icase);
-        std::sregex_iterator var_iter(full_match.begin(), full_match.end(), var_regex);
+        std::regex var_regex(R"(([xyz])(\^(\d+))?)");
+        std::sregex_iterator var_iter(monom_str.begin(), monom_str.end(), var_regex);
         std::sregex_iterator var_end;
 
         for (; var_iter != var_end; ++var_iter)
@@ -68,6 +68,7 @@ Polynomial Parser_v1::convertStringToPolynomial(const std::string poly_string)
 
     return result;
 }
+
 
 std::string Parser_v1::convertPolynomialToString(const Polynomial& poly)
 {
