@@ -60,12 +60,12 @@ Polynomial Polynomial::operator+(const Polynomial& rhs)
 
 	for (int i = 0; i < monoms.size(); ++i)
 	{
-		result.insertMonomLast(monoms[i]);
+		result.insertMonom(monoms[i]);
 	}
 
 	for (int i = 0; i < rhs.monoms.size(); ++i)
 	{
-		result.insertMonomLast(rhs.monoms[i]);
+		result.insertMonom(rhs.monoms[i]);
 	}
 
 	return result;
@@ -77,14 +77,14 @@ Polynomial Polynomial::operator-(const Polynomial& rhs)
 
 	for (int i = 0; i < monoms.size(); ++i)
 	{
-		result.insertMonomLast(monoms[i]);
+		result.insertMonom(monoms[i]);
 	}
 
 	for (int i = 0; i < rhs.monoms.size(); ++i)
 	{
 		polynomialData neg = rhs.monoms[i];
 		neg.c *= -1;
-		result.insertMonomLast(neg);
+		result.insertMonom(neg);
 	}
 
 	return result;
@@ -110,7 +110,7 @@ Polynomial Polynomial::operator*(const Polynomial& rhs)
 
 			prod.grades = x * 100 + y * 10 + z;
 
-			result.insertMonomLast(prod);
+			result.insertMonom(prod);
 		}
 	}
 
@@ -125,7 +125,7 @@ Polynomial Polynomial::operator*(float scalar) const
 	{
 		polynomialData scaled = monoms[i];
 		scaled.c *= scalar;
-		result.insertMonomLast(scaled);
+		result.insertMonom(scaled);
 	}
 
 	return result;
@@ -153,7 +153,7 @@ Polynomial Polynomial::derivate(const std::string& var)
 		degrees[varIndex] -= 1;
 		der.grades = degrees[0] * 100 + degrees[1] * 10 + degrees[2];
 
-		result.insertMonomLast(der);
+		result.insertMonom(der);
 	}
 
 	return result;
@@ -178,9 +178,9 @@ Polynomial Polynomial::integrate(const std::string& var)
 
 		polynomialData integ;
 		integ.grades = degrees[0] * 100 + degrees[1] * 10 + degrees[2];
-		integ.c = mon.c / degrees[varIndex]; // простая интеграция без константы
+		integ.c = mon.c / degrees[varIndex];
 
-		result.insertMonomLast(integ);
+		result.insertMonom(integ);
 	}
 
 	return result;
@@ -199,11 +199,20 @@ void Polynomial::insertMonom(const polynomialData& el)
 		if (monoms[i].grades == el.grades)
 		{
 			monoms[i].c += el.c;
+
+			if (monoms[i].c == 0)
+			{
+				monoms.remove(i);
+			}
+
 			return;
 		}
 	}
 
-	monoms.insertLast(el);
+	if (el.c != 0)
+	{
+		monoms.insertLast(el);
+	}
 }
 
 void Polynomial::insertMonomLast(int co, unsigned grad)
@@ -237,6 +246,12 @@ long Polynomial::calculate(const int px, const int py, const int pz)
 
 std::ostream& operator<<(std::ostream& os, const Polynomial& pl)
 {
+	if (pl.monoms.size() == 0)
+	{
+		os << "0";
+		return os;
+	}
+
 	for (int i = 0; i < pl.monoms.size(); ++i)
 	{
 		const auto& mon = pl.monoms[i];
@@ -255,9 +270,6 @@ std::ostream& operator<<(std::ostream& os, const Polynomial& pl)
 		if (y > 0) os << "y^" << y;
 		if (z > 0) os << "z^" << z;
 	}
-
-	if (pl.monoms.size() == 0)
-		os << "0";
 
 	return os;
 }

@@ -79,11 +79,15 @@ public:
 		}
 	}
 
+	void clearList()
+	{
+		if (pFirst) destroyNode(pFirst);
+	}
 
 	// Деструктор
 	~List()
 	{
-		if (pFirst) destroyNode(pFirst);
+		clearList();
 	}
 
 	// Utility функции
@@ -175,6 +179,54 @@ public:
 		sz++;
 	}
 
+	void remove(int index)
+	{
+		if (!pFirst) throw(std::exception("LIST: Trying to remove an element in an EMPTY list!"));
+
+		else if (index >= sz || index < 0) throw(std::exception("LIST: Trying to remove at invalid index!"));
+
+		else if (pFirst == pLast)
+		{
+			delete pFirst;
+			pFirst = nullptr;
+			pLast = nullptr;
+		}
+
+		else if (index == 0)
+		{
+			ListNode<L>* temp = pFirst;
+			pFirst = pFirst->pNext;
+			delete temp;
+		}
+
+		else
+		{
+			int i = 0;
+
+			ListNode<L>* prevNode = nullptr;
+			ListNode<L>* node = pFirst;
+
+			while (i < index)
+			{
+				prevNode = node;
+				node = node->pNext;
+				i++;
+			}
+
+			if (node == pLast)
+			{
+				pLast = prevNode;
+				delete node;
+			}
+
+			else
+				prevNode->pNext = node->pNext;
+
+			delete node;
+		}
+
+		sz--;
+	}
 
 	// Получение значения первого элемента
 	L& getFirst()
