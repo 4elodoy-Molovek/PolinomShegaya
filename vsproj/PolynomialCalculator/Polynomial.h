@@ -3,6 +3,7 @@
 #include "List.h"
 
 
+
 class Polynomial 
 {
 private:
