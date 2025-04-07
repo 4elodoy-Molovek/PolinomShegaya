@@ -12,6 +12,9 @@ private:
 	{
 		int c;
 		unsigned grades;
+
+		bool operator==(const polynomialData& rhs) const { return (c == rhs.c) && (grades == rhs.grades); }
+		bool operator!=(const polynomialData& rhs) const { return (c != rhs.c) || (grades != rhs.grades); }
 	};
 
 	// Лист всех мономов полинома
@@ -26,7 +29,7 @@ public:
 	Polynomial(const Polynomial& pl);
 
 	// Конструктор константы
-	Polynomial(int constant);
+	explicit Polynomial(int constant);
 
 	// Деструктор
 	~Polynomial();

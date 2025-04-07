@@ -86,6 +86,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\gtest\gtest-all.cc" />
+    <ClCompile Include="..\PolynomialCalculator\Parser_v1.cpp" />
+    <ClCompile Include="..\PolynomialCalculator\Polynomial.cpp" />
     <ClCompile Include="testExpressionAnalyzer.cpp" />
     <ClCompile Include="TestHandler.cpp" />
     <ClCompile Include="TestList.cpp" />

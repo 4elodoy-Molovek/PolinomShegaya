@@ -1,10 +1,13 @@
 ﻿﻿
 #include "Parser_v1.h"
+#include "Polynomial.h"
 #include <regex>
 #include <sstream>
 #include <cctype>
 #include <string>
 #include <iostream>
+
+;
 
 Polynomial Parser_v1::convertStringToPolynomial(const std::string poly_string)
 {
@@ -75,17 +78,18 @@ std::string Parser_v1::convertPolynomialToString(const Polynomial& poly)
     bool first = true;
 
     // Доступ к pFirst напрямую (Parser_v1 — friend Polynomial)
-    ListNode<Polynomial::polynomialData>* node = poly.monoms[0];
+    //ListNode<Polynomial::polynomialData>* node = poly.monoms[0];
+    size_t i = 0;
 
-    while (node != nullptr)
+    while (i < poly.monoms.size())
     {
-        int coeff = node->data.c;
+        int coeff = poly.monoms[i].c;
         if (coeff == 0) {
-            node = node->pNext;
+            i++;
             continue;
         }
 
-        unsigned grades = node->data.grades;
+        unsigned grades = poly.monoms[i].grades;
         int x = grades / 100;
         int y = (grades / 10) % 10;
         int z = grades % 10;
@@ -107,7 +111,7 @@ std::string Parser_v1::convertPolynomialToString(const Polynomial& poly)
         if (z > 0) oss << "z" << (z > 1 ? ("^" + std::to_string(z)) : "");
 
         first = false;
-        node = node->pNext;
+        i++;
     }
 
     std::string result = oss.str();
