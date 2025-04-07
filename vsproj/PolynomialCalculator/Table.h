@@ -1,6 +1,5 @@
-﻿#pragma once
-#include "Polynomial.h"
-
+#pragma once
+#include <vector>
 
 class Table 
 {
@@ -9,7 +8,7 @@ protected:
 	unsigned activeTableId;
 
 public:
-	Table();
+	Table() {}
 	virtual ~Table() = 0;
 
     // Добавляет полином pol в таблицу с ключем(именем) name
@@ -18,6 +17,9 @@ public:
 	// Удаляет из полином с именем name из таблицы
 	virtual void deleteElement(const std::string& name) = 0;
 
-	// Ищет в таблице полином с именем name
-	virtual const Polynomial* findElement(const std::string& name) = 0;
+	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение
+	virtual T* findElement(const K& key) = 0;
+
+	// В outElements помещает все элементы таблицы в некотором порядке
+	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) = 0;
 };

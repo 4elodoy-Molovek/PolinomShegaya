@@ -37,6 +37,7 @@ public:
 				throw std::runtime_error("Element with this key already exists.");
 		}
 
+
 		ListTablePair<K, T> entry;
 		entry.key = key;
 		entry.value = value;

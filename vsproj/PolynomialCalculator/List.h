@@ -202,6 +202,23 @@ public:
 		return node->data;
 	}
 
+	const L& operator[](int index) const
+	{
+		if (!pFirst) throw(std::exception("LIST: operator[] in an empty list!"));
+		if (index >= sz) throw(std::exception("LIST: operator[] with an invalid index!"));
+
+		int i = 0;
+		ListNode<L>* node = pFirst;
+
+		while (i < index)
+		{
+			node = node->pNext;
+			i++;
+		}
+
+		return node->data;
+	}
+
 	bool operator==(const List<L>& list)
 	{
 		if (size() != list.size()) return false;

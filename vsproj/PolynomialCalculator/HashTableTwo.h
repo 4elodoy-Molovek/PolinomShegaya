@@ -9,20 +9,20 @@ protected:
 		Polynomial data;
 		bool deleted;
 	};
-	int size; // сколько элементов у нас сейчас в массиве (без учета deleted)
-	int bufferSize; // размер самого массива, сколько памяти выделено под хранение нашей таблицы
-	int sizeAllNonNullptr; // сколько элементов у нас сейчас в массиве (с учетом deleted)
+	int size; // Г±ГЄГ®Г«ГјГЄГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гі Г­Г Г± Г±ГҐГ©Г·Г Г± Гў Г¬Г Г±Г±ГЁГўГҐ (ГЎГҐГ§ ГіГ·ГҐГІГ  deleted)
+	int bufferSize; // Г°Г Г§Г¬ГҐГ° Г±Г Г¬Г®ГЈГ® Г¬Г Г±Г±ГЁГўГ , Г±ГЄГ®Г«ГјГЄГ® ГЇГ Г¬ГїГІГЁ ГўГ»Г¤ГҐГ«ГҐГ­Г® ГЇГ®Г¤ ГµГ°Г Г­ГҐГ­ГЁГҐ Г­Г ГёГҐГ© ГІГ ГЎГ«ГЁГ¶Г»
+	int sizeAllNonNullptr; // Г±ГЄГ®Г«ГјГЄГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гі Г­Г Г± Г±ГҐГ©Г·Г Г± Гў Г¬Г Г±Г±ГЁГўГҐ (Г± ГіГ·ГҐГІГ®Г¬ deleted)
 
 public:
 	HashTableTwo(size_t sz = defaultSize);
 	~HashTableTwo() override;
 
-	// Добавляет полином pol в таблицу с ключем(именем) name
+	// Г„Г®ГЎГ ГўГ«ГїГҐГІ ГЇГ®Г«ГЁГ­Г®Г¬ pol Гў ГІГ ГЎГ«ГЁГ¶Гі Г± ГЄГ«ГѕГ·ГҐГ¬(ГЁГ¬ГҐГ­ГҐГ¬) name
 	virtual void addElement(const std::string& name, const Polynomial& pol) override;
 
-	// Удаляет из полином с именем name из таблицы
+	// Г“Г¤Г Г«ГїГҐГІ ГЁГ§ ГЇГ®Г«ГЁГ­Г®Г¬ Г± ГЁГ¬ГҐГ­ГҐГ¬ name ГЁГ§ ГІГ ГЎГ«ГЁГ¶Г»
 	virtual void deleteElement(const std::string& name) override;
 
-	// Ищет в таблице полином с именем name
-	virtual const Polynomial& findElement(const std::string& name) override;
+	// Г€Г№ГҐГІ ГЁ ГўГ®Г§ГўГ°Г Г№Г ГҐГІ Г±Г±Г»Г«ГЄГі Г­Г  ГЅГ«ГҐГ¬ГҐГ­ГІ Г± ГЄГ«ГѕГ·ГҐГ¬ K, Гў ГЇГ°Г®ГІГЁГўГ­Г®Г¬ Г±Г«ГіГ·Г ГҐ ГЎГ°Г®Г±Г ГҐГІ ГЁГ±ГЄГ«ГѕГ·ГҐГ­ГЁГҐ
+	virtual T* findElement(const K& key) override;
 };
