@@ -21,7 +21,8 @@ protected:
 
 	size_t tableOffset;
 
-	size_t setOffset() {
+	size_t setOffset() 
+	{
 		std::vector<bool> prime(bufferSize + 1, true);
 		size_t p = 2;
 		for (p = 2; p * p <= bufferSize; p++)
@@ -35,7 +36,8 @@ protected:
 		return tableOffset;
 	}
 
-	size_t hashFuncMain(const K& s) {
+	size_t hashFuncMain(const K& s) 
+	{
 		size_t summary = 0;
 		for (size_t i = 0; i < s.length(); i++) {
 			summary += (s[i] * (i + 1)) % bufferSize; //возмжно не стоит каждый раз делить, долго получается
@@ -44,7 +46,8 @@ protected:
 	}
 
 
-	void Resize() {
+	void Resize() 
+	{
 		size_t pastBufferSize = bufferSize;
 		bufferSize *= 2;
 		setOffset();
@@ -53,7 +56,7 @@ protected:
 		Node* newTable = new Node[bufferSize];
 		for (size_t i = 0; i < bufferSize; ++i)
 			newTable[i].deleted = 0;
-		swap(table, newTable);
+		std::swap(table, newTable);
 
 		for (int i = 0; i < pastBufferSize; ++i)
 		{
@@ -65,7 +68,8 @@ protected:
 	}
 
 public:
-	HashTableTwo(size_t sz = defaultSize) : sizeh(0), sizeAllNonNull(0) {
+	HashTableTwo(size_t sz = defaultSize) : sizeh(0), sizeAllNonNull(0) 
+	{
 		bufferSize = (sz > 1 ? sz * 2 : 4);
 		table = new Node[bufferSize];
 		for (size_t i = 0; i < bufferSize; i++)
@@ -79,7 +83,8 @@ public:
 
 
 	// Добавляет полином pol в таблицу с ключем(именем) name
-	virtual void addElement(const K& name, const T& pol) {
+	virtual void addElement(const K& name, const T& pol) 
+	{
 		// проверка заполненности на 75%
 		if (5 * sizeh > bufferSize * 4) {
 			Resize();
@@ -88,7 +93,8 @@ public:
 
 		size_t hash = hashFuncMain(name);
 		size_t pos = hash;
-		for (; table[pos].deleted == 1; pos = (pos + tableOffset) % bufferSize) {
+		for (; table[pos].deleted == 1; pos = (pos + tableOffset) % bufferSize) 
+		{
 			if (table[pos].name == name)
 				return;
 		}
@@ -97,12 +103,15 @@ public:
 	};
 
 	// Удаляет из полином с именем name из таблицы
-	virtual void deleteElement(const K& name) {
+	virtual void deleteElement(const K& name) 
+	{
 		size_t hash = hashFuncMain(name), offset = OFFSET_CONST;
 		size_t pos = hash;
 
-		for (; table[pos].deleted != 0; pos = (pos + offset) % bufferSize) {
-			if (table[pos].name == name) {
+		for (; table[pos].deleted != 0; pos = (pos + offset) % bufferSize) 
+		{
+			if (table[pos].name == name) 
+			{
 				table[pos].deleted = -1;
 				return;
 			}
@@ -110,22 +119,32 @@ public:
 	}
 
 	// Ищет в таблице полином с именем name
-	virtual T* findElement(const K& name) {
+	virtual T* findElement(const K& name) 
+	{
 		T* ans = nullptr;
 		size_t hash = hashFuncMain(name);
 		setOffset();
 		size_t pos = hash, initialPos = pos;
 		bool firstRound = true;
-		for (; table[pos].deleted != 0; pos = (pos + tableOffset) % bufferSize) {
-			if ((table[pos].name == name) && (table[pos].deleted == 1)) {
+		for (; table[pos].deleted != 0; pos = (pos + tableOffset) % bufferSize) 
+		{
+			if ((table[pos].name == name) && (table[pos].deleted == 1)) 
+			{
 				ans = &table[pos].data;
 				break;
 			}
-			if ((initialPos == pos) && (!firstRound)) {
+			if ((initialPos == pos) && (!firstRound)) 
+			{
 				break;
 			}
 			firstRound = false; // я думаю, первый обход лучше вынести из цикла и не делать постоянного присваивания
 		}
 		return ans;
+	}
+
+	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override
+	{
+		for (size_t i = 0; i < sizeh; i++)
+			outElements.push_back({table[i].name, table[i].data});
 	}
 };

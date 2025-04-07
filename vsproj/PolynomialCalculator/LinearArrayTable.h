@@ -25,7 +25,7 @@ public:
 				throw("ERROR: LinearArrayTable: element with key '" + key + "' already exists!");
 
 		data.push_back(std::pair<K, T>(key, pol));
-		sz++;
+		size++;
 	}
 
 	// Удаляет из таблицы элемент с ключем key
@@ -36,7 +36,7 @@ public:
 			{
 				pair = data[data.size() - 1];
 				data.pop_back();
-				sz--;
+				size--;
 
 				return;
 			}
@@ -55,5 +55,9 @@ public:
 	}
 
 	// В outElements помещает все элементы таблицы в некотором порядке
-	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override { outElements = data; }
+	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override 
+	{ 
+		for (size_t i = 0; i < data.size(); i++)
+			outElements.push_back({ data[i].first, data[i].second });
+	}
 };

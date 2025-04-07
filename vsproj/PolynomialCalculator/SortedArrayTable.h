@@ -13,7 +13,7 @@ protected:
 	};
 	std::vector<Node> table;
 
-	size_t binarySearch(K& x, bool& suc)
+	size_t binarySearch(const K& x, bool& suc)
 	{
 		size_t low = 1, high = table.size(), mid = 42;
 		while (low <= high) {
@@ -37,6 +37,8 @@ protected:
 		// 
 		// крч x =4: 3, 5 - границы сходятся на ближайшем меньшем (в силу +/- 1 в изменении границ?) -> даём low выйти на еденрицу вперёд
 		// x=6: 5,7 - сходятся на ближайшем большем - low опять покажет истинное положение
+
+		return 0;
 	}
 
 public:
@@ -77,13 +79,20 @@ public:
 	};
 
 	// Ищет в таблице полином с именем name
-	virtual T& findElement(const K& name) {
+	virtual T* findElement(const K& name) {
 		bool suc = false;
 		size_t num = binarySearch(name, suc) - 1;
 		if (!suc)
 			return nullptr;
 		else
-			return &table[num];
+			return &table[num].data;
+	}
+
+	// В outElements помещает все элементы таблицы в некотором порядке
+	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override
+	{
+		for (size_t i = 0; i < table.size(); i++)
+			outElements.push_back({ table[i].name, table[i].data });
 	}
 };
 
