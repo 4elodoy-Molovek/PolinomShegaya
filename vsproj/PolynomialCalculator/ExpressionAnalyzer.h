@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <stack>
 #include <set>
 #include "Polynomial.h"
 
@@ -12,6 +13,7 @@
 
 class ExpressionAnalyzer 
 {
+protected: 
 	// Постфиксная форма последнего проанализированного выражения
 	std::vector<std::string> cachedPostfix;
 
@@ -40,8 +42,8 @@ public:
 	 */
 	virtual Polynomial calculateSummaryPolynomial(const std::map<std::string, const Polynomial&> polynomials) = 0;
 
-private:
+protected:
 
 	// Строит постфиксную форму выражения
-	virtual std::vector<std::string> getPostfix(const std::string& expression) = 0;
+	virtual std::vector<std::string> getPostfix(const std::string& expression, std::set<std::string>& outRequestedPolynomials) = 0;
 };
