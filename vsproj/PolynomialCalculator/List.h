@@ -7,8 +7,8 @@ struct ListNode
 	T data;
 	ListNode<T>* pNext;
 
-	ListNode() {}
-	ListNode(const T& value) : data(value) {}
+	ListNode(): pNext(nullptr) {}
+	ListNode(const T& value) : data(value), pNext(nullptr) {}
 };
 
 
