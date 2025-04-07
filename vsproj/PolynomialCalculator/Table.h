@@ -1,5 +1,5 @@
 #pragma once
-#include "Polynomial.h"
+#include <vector>
 
 template<typename K, typename T>
 class Table 

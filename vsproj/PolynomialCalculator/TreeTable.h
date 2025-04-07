@@ -32,6 +32,7 @@ protected:
 
 
 	TreeNode<K, T>* root;
+	size_t size;
 
 
 	// Удаляет поддерево, начинающееся с узла root, используется в деструкторе
@@ -101,7 +102,7 @@ protected:
 	}
 
 public:
-	TreeTable() {}
+	TreeTable(): size(0) {}
 	~TreeTable() override { deleteSubtree(root); }
 
 	// Добавляет в таблицу элемент с ключем key
@@ -176,7 +177,7 @@ public:
 
 			else
 			{
-				if (granParent->left->color == NODE_RED)
+				if (grandParent->left->color == NODE_RED)
 				{
 					grandParent->right->color == NODE_BLACK;
 					grandParent->left->color == NODE_BLACK;
