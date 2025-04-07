@@ -3,11 +3,17 @@
 #include <vector>
 
 
+#pragma once
+#include "Table.h"
+#include <vector>
+
+
 template<typename K, typename T>
 class SortedArrayTable : public Table<K, T>
 {
 protected:
-	struct Node {
+	struct Node 
+	{
 		K name;
 		T data;
 	};
@@ -16,14 +22,16 @@ protected:
 	size_t binarySearch(const K& x, bool& suc)
 	{
 		size_t low = 1, high = table.size(), mid = 42;
-		while (low <= high) {
+		while (low <= high) 
+		{
 			mid = (high + low) / 2;
-			if (table[mid - 1].name == x) {
+			if (table[mid - 1].name == x) 
+			{
 				suc = true;
 				return mid - 1;
 			}
 
-			if (table[mid - 1] < x)
+			if (table[mid - 1].name < x)
 				low = mid + 1;
 			else
 				high = mid - 1;
@@ -37,26 +45,26 @@ protected:
 		// 
 		// крч x =4: 3, 5 - границы сходятся на ближайшем меньшем (в силу +/- 1 в изменении границ?) -> даём low выйти на еденрицу вперёд
 		// x=6: 5,7 - сходятся на ближайшем большем - low опять покажет истинное положение
-
-		return 0;
 	}
 
 public:
-	SortedArrayTable(size_t sz = defaultSize) {
-		table.resize(sz);
-	}
+	SortedArrayTable() = default;
 	~SortedArrayTable() = default;
 
 	// Добавляет полином pol в таблицу с ключем(именем) name
-	virtual void addElement(const K& name, const T& pol) {
+	virtual void addElement(const K& name, const T& pol) 
+	{
 		bool suc = false;
 		size_t num = binarySearch(name, suc);
-		if (suc) { // ячейка с таким именем есть
+		if (suc) 
+		{ // ячейка с таким именем есть
 			return;
 		}
-		else {
-			table.push_back(table[table.size() - 1]);
-			for (size_t i = table.size() - 1; i > num; i--) {
+		else 
+		{
+			table.push_back({ name, pol }); // чтобы не использовать констурктор по умолчанию для Node
+			for (size_t i = table.size() - 1; i > num; i--) 
+			{
 				table[i] = table[i - 1];
 			}
 			table[num] = { name, pol };
@@ -64,13 +72,16 @@ public:
 	}
 
 	// Удаляет из полином с именем name из таблицы
-	virtual void deleteElement(const K& name) {
+	virtual void deleteElement(const K& name) 
+	{
 		bool suc = false;
 		size_t num = binarySearch(name, suc);
-		if (!suc) { // ячейки с таким именем нет
+		if (!suc) 
+		{ // ячейки с таким именем нет
 			return;
 		}
-		else {
+		else 
+		{
 			for (size_t i = num; i < table.size() - 1; i++) {
 				table[i] = table[i + 1];
 			}
@@ -79,7 +90,8 @@ public:
 	};
 
 	// Ищет в таблице полином с именем name
-	virtual T* findElement(const K& name) {
+	virtual T* findElement(const K& name) 
+	{
 		bool suc = false;
 		size_t num = binarySearch(name, suc) - 1;
 		if (!suc)

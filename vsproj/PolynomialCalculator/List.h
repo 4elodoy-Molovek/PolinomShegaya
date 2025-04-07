@@ -219,7 +219,7 @@ public:
 		return node->data;
 	}
 
-	bool operator==(const List<L>& list)
+	bool operator==(const List<L>& list) const
 	{
 		if (size() != list.size()) return false;
 

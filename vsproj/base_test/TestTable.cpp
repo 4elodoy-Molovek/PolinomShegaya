@@ -30,7 +30,7 @@ TEST_P(TableTest, table_Can_Not_Add_Element_With_Existing_Key)
 TEST_P(TableTest, table_Can_Find_Added_Element)
 {
     table->addElement("one", 1);
-    EXPECT_EQ(1, table->findElement("one"));
+    EXPECT_EQ(1, *table->findElement("one"));
 }
 
 TEST_P(TableTest, table_Can_Not_Find_Non_Existant_Element)

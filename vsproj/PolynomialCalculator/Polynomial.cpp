@@ -35,7 +35,7 @@ Polynomial* Polynomial::operator=(const Polynomial& poly)
 }
 
 // Сравнение полиномов
-bool Polynomial::operator==(const Polynomial& pl)
+bool Polynomial::operator==(const Polynomial& pl) const
 {
 	return this->monoms == pl.monoms;
 }

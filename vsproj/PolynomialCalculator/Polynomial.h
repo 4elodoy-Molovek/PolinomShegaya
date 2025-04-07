@@ -35,7 +35,7 @@ public:
 	Polynomial* operator= (const Polynomial& poly);
 
 	// Оператор сравнения полиномов
-	bool operator==(const Polynomial& pl);
+	bool operator==(const Polynomial& pl) const;
 
 	// Сложение полиномов
 	Polynomial operator+ (const Polynomial& rhs);
