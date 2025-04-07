@@ -35,7 +35,7 @@ public:
 	~Polynomial();
 
 	// Оператор присванивания
-	Polynomial* operator= (const Polynomial& poly);
+	Polynomial& operator= (const Polynomial& poly);
 
 	// Оператор сравнения полиномов
 	bool operator==(const Polynomial& pl) const;

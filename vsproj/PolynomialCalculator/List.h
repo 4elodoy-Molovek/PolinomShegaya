@@ -24,10 +24,12 @@ private:
 
 	void destroyNode(ListNode<L>* node)
 	{
-		if (!node) return;
-		if (node->pNext) 
-			destroyNode(node->pNext);
-		delete node;
+		while (node)
+		{
+			ListNode<L>* temp = node;
+			node = node->pNext;
+			delete temp;
+		}
 	}
 
 public:
@@ -52,6 +54,9 @@ public:
 	List(const List<L>& list)
 	{
 		sz = list.sz;
+
+		pFirst = nullptr;
+		pLast = nullptr;
 
 		if (sz > 0)
 		{
@@ -142,7 +147,7 @@ public:
 			pLast = newNode;
 		}
 
-		else if (index >= sz) throw(std::exception("LIST: Trying to insert at invalid index!"));
+		else if (index >= sz || index < 0) throw(std::exception("LIST: Trying to insert at invalid index!"));
 
 		else
 		{
@@ -242,10 +247,16 @@ public:
 
 	List<L>& operator=(const List<L>& list)
 	{
+		if (this != &list)
+			return *this;
+
 		ListNode<L>* node = pFirst;
 
 		// Удаление текущего списка
 		destroyNode(pFirst);
+
+		pFirst = nullptr;
+		pLast = nullptr;
 
 		// Копирование
 		sz = list.sz;

@@ -1,215 +1,136 @@
-﻿//﻿
-#include "Polynomial.h"
+﻿#include "Polynomial.h"
+#include <cmath>
+#include <stdexcept>
 #include <iostream>
 
-// Конструктор по умолчанию
-Polynomial::Polynomial() {}
-
-// Конструктор копирования
-Polynomial::Polynomial(const Polynomial& pl)
+Polynomial::Polynomial()
 {
-	this->monoms = pl.monoms;
 }
 
-// Конструктор из константы
+Polynomial::Polynomial(const Polynomial& pl)
+{
+	monoms = pl.monoms;
+}
+
 Polynomial::Polynomial(int constant)
 {
 	if (constant != 0)
 	{
-		polynomialData mono = { constant, 0 };
-		insertMonomLast(mono);
+		polynomialData monom;
+		monom.c = constant;
+		monom.grades = 0;
+		monoms.insertLast(monom);
 	}
 }
 
-// Деструктор
-Polynomial::~Polynomial() {}
-
-// Присваивание
-Polynomial* Polynomial::operator=(const Polynomial& poly)
+Polynomial::~Polynomial()
 {
-	if (this == &poly)
-		return this;
-
-
-	this->monoms = poly.monoms;
-	return this;
 }
 
-// Сравнение полиномов
+Polynomial& Polynomial::operator=(const Polynomial& poly)
+{
+	if (this != &poly)
+	{
+		monoms = poly.monoms;
+	}
+	return *this;
+}
+
 bool Polynomial::operator==(const Polynomial& pl) const
 {
-	return this->monoms == pl.monoms;
-}
-
-// Вставка в правильную позицию (отсортированно по убыванию степени)
-void Polynomial::insertMonom(int co, unsigned grad)
-{
-	polynomialData el{ co, grad };
-
-	if (monoms.empty())
+	if (monoms.size() != pl.monoms.size())
 	{
-		monoms.insertFirst(el);
-		return;
+		return false;
 	}
 
-	List<polynomialData> newList;
-	bool inserted = false;
-	for (size_t i = 0; i < monoms.size(); i++)
+	for (int i = 0; i < monoms.size(); ++i)
 	{
-		polynomialData curr = monoms[i];
-		if (!inserted && curr.grades < el.grades)
+		if (monoms[i] != pl.monoms[i])
 		{
-			newList.insertLast(el);
-			inserted = true;
+			return false;
 		}
-		newList.insertLast(curr);
 	}
 
-	if (!inserted)
-		newList.insertLast(el);
-
-	monoms = newList;
+	return true;
 }
 
-void Polynomial::insertMonom(const polynomialData& el)
-{
-
-	if (monoms.empty())
-	{
-		monoms.insertFirst(el);
-		return;
-	}
-
-	List<polynomialData> newList;
-	bool inserted = false;
-	for (size_t i = 0; i < monoms.size(); i++)
-	{
-		polynomialData curr = monoms[i];
-		if (!inserted && curr.grades < el.grades)
-		{
-			newList.insertLast(el);
-			inserted = true;
-		}
-		newList.insertLast(curr);
-	}
-
-	if (!inserted)
-		newList.insertLast(el);
-
-	monoms = newList;
-}
-
-// Вставка в конец
-void Polynomial::insertMonomLast(int co, unsigned grad)
-{
-	polynomialData el{ co, grad };
-	monoms.insertLast(el);
-}
-
-// Вставка в конец
-void Polynomial::insertMonomLast(const polynomialData& el)
-{
-	monoms.insertLast(el);
-}
-
-// Сложение
 Polynomial Polynomial::operator+(const Polynomial& rhs)
 {
 	Polynomial result;
 
-	size_t i = 0, j = 0;
-	while (i < this->monoms.size() || j < rhs.monoms.size())
+	for (int i = 0; i < monoms.size(); ++i)
 	{
-		polynomialData newMonom;
+		result.insertMonomLast(monoms[i]);
+	}
 
-		if (j >= rhs.monoms.size() || (i < this->monoms.size() && this->monoms[i].grades > rhs.monoms[j].grades))
-		{
-			newMonom = this->monoms[i++];
-		}
-		else if (i >= this->monoms.size() || (j < rhs.monoms.size() && rhs.monoms[j].grades > this->monoms[i].grades))
-		{
-			newMonom = rhs.monoms[j++];
-		}
-		else
-		{
-			newMonom.grades = this->monoms[i].grades;
-			newMonom.c = this->monoms[i].c + rhs.monoms[j].c;
-			i++;
-			j++;
-		}
-
-		if (newMonom.c != 0)
-			result.insertMonomLast(newMonom);
+	for (int i = 0; i < rhs.monoms.size(); ++i)
+	{
+		result.insertMonomLast(rhs.monoms[i]);
 	}
 
 	return result;
 }
 
-// Вычитание
 Polynomial Polynomial::operator-(const Polynomial& rhs)
-{
-	return *this + (rhs * -1.0f);
-}
-
-// Умножение на константу
-Polynomial Polynomial::operator*(const float scalar) const
 {
 	Polynomial result;
 
-	for (size_t i = 0; i < monoms.size(); i++)
+	for (int i = 0; i < monoms.size(); ++i)
 	{
-		polynomialData mono = monoms[i];
-		mono.c = static_cast<int>(mono.c * scalar);
+		result.insertMonomLast(monoms[i]);
+	}
 
-		if (mono.c != 0)
-			result.insertMonomLast(mono);
+	for (int i = 0; i < rhs.monoms.size(); ++i)
+	{
+		polynomialData neg = rhs.monoms[i];
+		neg.c *= -1;
+		result.insertMonomLast(neg);
 	}
 
 	return result;
 }
 
-// Умножение полиномов
 Polynomial Polynomial::operator*(const Polynomial& rhs)
 {
 	Polynomial result;
 
-	for (size_t i = 0; i < monoms.size(); i++)
+	for (int i = 0; i < monoms.size(); ++i)
 	{
-		for (size_t j = 0; j < rhs.monoms.size(); j++)
+		for (int j = 0; j < rhs.monoms.size(); ++j)
 		{
-			polynomialData mono;
-			mono.c = monoms[i].c * rhs.monoms[j].c;
-			mono.grades = monoms[i].grades + rhs.monoms[j].grades;
-			result.insertMonom(mono);
+			polynomialData prod;
+			prod.c = monoms[i].c * rhs.monoms[j].c;
+
+			unsigned a = monoms[i].grades;
+			unsigned b = rhs.monoms[j].grades;
+
+			int x = (a / 100) + (b / 100);
+			int y = ((a / 10) % 10) + ((b / 10) % 10);
+			int z = (a % 10) + (b % 10);
+
+			prod.grades = x * 100 + y * 10 + z;
+
+			result.insertMonomLast(prod);
 		}
 	}
 
 	return result;
 }
 
-// Вычисление значения полинома в точке (x, y, z)
-long Polynomial::calculate(const int px, const int py, const int pz)
+Polynomial Polynomial::operator*(float scalar) const
 {
-	long result = 0;
+	Polynomial result;
 
-	for (size_t i = 0; i < monoms.size(); i++)
+	for (int i = 0; i < monoms.size(); ++i)
 	{
-		int gx = (monoms[i].grades / 100) % 10;
-		int gy = (monoms[i].grades / 10) % 10;
-		int gz = monoms[i].grades % 10;
-
-		long term = monoms[i].c;
-		for (int i = 0; i < gx; i++) term *= px;
-		for (int i = 0; i < gy; i++) term *= py;
-		for (int i = 0; i < gz; i++) term *= pz;
-
-		result += term;
+		polynomialData scaled = monoms[i];
+		scaled.c *= scalar;
+		result.insertMonomLast(scaled);
 	}
 
 	return result;
 }
 
-// Производная
 Polynomial Polynomial::derivate(const std::string& var)
 {
 	Polynomial result;
@@ -218,32 +139,26 @@ Polynomial Polynomial::derivate(const std::string& var)
 	if (var == "x") varIndex = 0;
 	else if (var == "y") varIndex = 1;
 	else if (var == "z") varIndex = 2;
-	else return result;
+	else throw std::invalid_argument("Unknown variable");
 
-	for (size_t i = 0; i < monoms.size(); i++)
+	for (int i = 0; i < monoms.size(); ++i)
 	{
-		polynomialData mono = monoms[i];
+		polynomialData mon = monoms[i];
+		int degrees[3] = { mon.grades / 100, (mon.grades / 10) % 10, mon.grades % 10 };
 
-		int gx = (mono.grades / 100) % 10;
-		int gy = (mono.grades / 10) % 10;
-		int gz = mono.grades % 10;
+		if (degrees[varIndex] == 0) continue;
 
-		int degrees[3] = { gx, gy, gz };
+		polynomialData der;
+		der.c = mon.c * degrees[varIndex];
+		degrees[varIndex] -= 1;
+		der.grades = degrees[0] * 100 + degrees[1] * 10 + degrees[2];
 
-		if (degrees[varIndex] == 0)
-			continue;
-
-		mono.c *= degrees[varIndex];
-		degrees[varIndex]--;
-
-		mono.grades = degrees[0] * 100 + degrees[1] * 10 + degrees[2];
-		result.insertMonomLast(mono);
+		result.insertMonomLast(der);
 	}
 
 	return result;
 }
 
-// Интеграл
 Polynomial Polynomial::integrate(const std::string& var)
 {
 	Polynomial result;
@@ -252,41 +167,97 @@ Polynomial Polynomial::integrate(const std::string& var)
 	if (var == "x") varIndex = 0;
 	else if (var == "y") varIndex = 1;
 	else if (var == "z") varIndex = 2;
-	else return result;
+	else throw std::invalid_argument("Unknown variable");
 
-	for (size_t i = 0; i < monoms.size(); i++)
+	for (int i = 0; i < monoms.size(); ++i)
 	{
-		polynomialData mono = monoms[i];
+		polynomialData mon = monoms[i];
+		int degrees[3] = { mon.grades / 100, (mon.grades / 10) % 10, mon.grades % 10 };
 
-		int gx = (mono.grades / 100) % 10;
-		int gy = (mono.grades / 10) % 10;
-		int gz = mono.grades % 10;
+		degrees[varIndex] += 1;
 
-		int degrees[3] = { gx, gy, gz };
+		polynomialData integ;
+		integ.grades = degrees[0] * 100 + degrees[1] * 10 + degrees[2];
+		integ.c = mon.c / degrees[varIndex]; // простая интеграция без константы
 
-		degrees[varIndex]++;
-		int denom = degrees[varIndex];
-
-		if (mono.c % denom != 0)
-			continue;
-
-		mono.c /= denom;
-		mono.grades = degrees[0] * 100 + degrees[1] * 10 + degrees[2];
-		result.insertMonomLast(mono);
+		result.insertMonomLast(integ);
 	}
 
 	return result;
 }
 
-// Оператор вывода
+void Polynomial::insertMonom(int co, unsigned grad)
+{
+	polynomialData el = { co, grad };
+	insertMonom(el);
+}
+
+void Polynomial::insertMonom(const polynomialData& el)
+{
+	for (int i = 0; i < monoms.size(); ++i)
+	{
+		if (monoms[i].grades == el.grades)
+		{
+			monoms[i].c += el.c;
+			return;
+		}
+	}
+
+	monoms.insertLast(el);
+}
+
+void Polynomial::insertMonomLast(int co, unsigned grad)
+{
+	polynomialData el = { co, grad };
+	monoms.insertLast(el);
+}
+
+void Polynomial::insertMonomLast(const polynomialData& el)
+{
+	monoms.insertLast(el);
+}
+
+long Polynomial::calculate(const int px, const int py, const int pz)
+{
+	long result = 0;
+
+	for (int i = 0; i < monoms.size(); ++i)
+	{
+		polynomialData mon = monoms[i];
+		int x = mon.grades / 100;
+		int y = (mon.grades / 10) % 10;
+		int z = mon.grades % 10;
+
+		long term = mon.c * std::pow(px, x) * std::pow(py, y) * std::pow(pz, z);
+		result += term;
+	}
+
+	return result;
+}
+
 std::ostream& operator<<(std::ostream& os, const Polynomial& pl)
 {
-	for (size_t i = 0; i < pl.monoms.size(); i++)
+	for (int i = 0; i < pl.monoms.size(); ++i)
 	{
-		const auto& mono = pl.monoms[i];
-		os << mono.c << "x^" << (mono.grades / 100) % 10
-			<< "y^" << (mono.grades / 10) % 10
-			<< "z^" << mono.grades % 10 << " ";
+		const auto& mon = pl.monoms[i];
+		if (mon.c == 0) continue;
+
+		if (i > 0 && mon.c > 0) os << " + ";
+		else if (mon.c < 0) os << " - ";
+
+		os << std::abs(mon.c);
+
+		int x = mon.grades / 100;
+		int y = (mon.grades / 10) % 10;
+		int z = mon.grades % 10;
+
+		if (x > 0) os << "x^" << x;
+		if (y > 0) os << "y^" << y;
+		if (z > 0) os << "z^" << z;
 	}
+
+	if (pl.monoms.size() == 0)
+		os << "0";
+
 	return os;
 }

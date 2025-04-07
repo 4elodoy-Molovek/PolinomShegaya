@@ -1,31 +1,31 @@
 #include <gtest.h>
 #include "Polynomial.h"
 
-//// Вспомогательная функция для сравнения двух полиномов
-//bool polynomialsEqual(const Polynomial& a, const Polynomial& b) {
-//    return a == b;
-//}
-//
-//TEST(PolynomialTest, ConstructorConstant) {
-//    Polynomial p(5);
-//    EXPECT_EQ(p.calculate(0, 0, 0), 5);
-//}
-//
-//TEST(PolynomialTest, InsertMonomLast) {
-//    Polynomial p;
-//    p.insertMonomLast(3, 120); // 3x^1y^2z^0
-//    EXPECT_EQ(p.calculate(1, 2, 3), 3 * 1 * 4); // 3 * x^1 * y^2 = 12
-//}
-//
-//TEST(PolynomialTest, OperatorAddition) {
-//    Polynomial a, b;
-//    a.insertMonomLast(2, 100); // 2x^1
-//    b.insertMonomLast(3, 100); // 3x^1
-//
-//    Polynomial result;
-//    result = a + b;
-//    EXPECT_EQ(result.calculate(2, 0, 0), 10); // 5x^1 = 5*2 = 10
-//}
+// Вспомогательная функция для сравнения двух полиномов
+bool polynomialsEqual(const Polynomial& a, const Polynomial& b) {
+    return a == b;
+}
+
+TEST(PolynomialTest, ConstructorConstant) {
+    Polynomial p(5);
+    EXPECT_EQ(p.calculate(0, 0, 0), 5);
+}
+
+TEST(PolynomialTest, InsertMonomLast) {
+    Polynomial p;
+    p.insertMonomLast(3, 120); // 3x^1y^2z^0
+    EXPECT_EQ(p.calculate(1, 2, 3), 3 * 1 * 4); // 3 * x^1 * y^2 = 12
+}
+
+TEST(PolynomialTest, OperatorAddition) {
+    Polynomial a, b;
+    a.insertMonomLast(2, 100); // 2x^1
+    b.insertMonomLast(3, 100); // 3x^1
+
+    Polynomial result;
+    result = a + b;
+    EXPECT_EQ(result.calculate(2, 0, 0), 10); // 5x^1 = 5*2 = 10
+}
 
 TEST(PolynomialTest, OperatorSubtraction) {
     Polynomial a, b;
@@ -37,22 +37,22 @@ TEST(PolynomialTest, OperatorSubtraction) {
     EXPECT_EQ(result.calculate(0, 3, 0), 9); // 3y^1 = 3*3 = 9
 }
 
-//TEST(PolynomialTest, OperatorMultiplicationScalar) {
-//    Polynomial p(2);
-//    Polynomial result;
-//    result = p * 3;
-//    EXPECT_EQ(result.calculate(0, 0, 0), 6);
-//}
+TEST(PolynomialTest, OperatorMultiplicationScalar) {
+    Polynomial p(2);
+    Polynomial result;
+    result = p * 3;
+    EXPECT_EQ(result.calculate(0, 0, 0), 6);
+}
 
-//TEST(PolynomialTest, OperatorMultiplicationPolynomials) {
-//    Polynomial a, b;
-//    a.insertMonomLast(2, 100); // 2x^1
-//    b.insertMonomLast(3, 1);   // 3z^1
-//
-//    Polynomial result;
-//    result = a * b;
-//    EXPECT_EQ(result.calculate(2, 0, 2), 24); // (2x^1 * 3z^1) = 6xz = 6*2*2 = 24
-//}
+TEST(PolynomialTest, OperatorMultiplicationPolynomials) {
+    Polynomial a, b;
+    a.insertMonomLast(2, 100); // 2x^1
+    b.insertMonomLast(3, 1);   // 3z^1
+
+    Polynomial result;
+    result = a * b;
+    EXPECT_EQ(result.calculate(2, 0, 2), 24); // (2x^1 * 3z^1) = 6xz = 6*2*2 = 24
+}
 
 TEST(PolynomialTest, Derivate) {
     Polynomial p;
