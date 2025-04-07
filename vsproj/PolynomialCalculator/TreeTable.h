@@ -116,6 +116,9 @@ public:
 			root->right = new TreeNode<K, T>();
 			root->left = new TreeNode<K, T>();
 
+			root->right->parent = root;
+			root->left->parent = root;
+
 			return;
 		}
 
