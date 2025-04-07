@@ -137,7 +137,13 @@ public:
 			pLast = newNode;
 		}
 
-		else if (index >= sz || index < 0) throw(std::exception("LIST: Trying to insert at invalid index!"));
+		else if (index == sz)
+		{
+			insertLast(data);
+			return;
+		}
+
+		else if (index > sz || index < 0) throw(std::exception("LIST: Trying to insert at invalid index!"));
 
 		else
 		{

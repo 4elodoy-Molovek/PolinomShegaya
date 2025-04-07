@@ -224,6 +224,41 @@ TEST(List, list_Can_Insert_In_Any_Spot)
 	EXPECT_EQ(listExample, list);
 }
 
+TEST(List, list_Can_Remove_Element)
+{
+	// Создаем список с несколькими элементами
+	List<int> list;
+	list.insertLast(10);
+	list.insertLast(20);
+	list.insertLast(30);
+
+	// Удаляем первый элемент
+	list.remove(0);
+	EXPECT_EQ(2, list.size());
+	EXPECT_EQ(20, list.getFirst());
+
+	// Удаляем последний элемент
+	list.remove(1);
+	EXPECT_EQ(1, list.size());
+	EXPECT_EQ(20, list.getFirst());
+
+	// Удаляем единственный оставшийся элемент
+	list.remove(0);
+	EXPECT_EQ(0, list.size());
+	EXPECT_TRUE(list.empty());
+}
+
+TEST(List, list_Remove_Throws_When_Index_Is_Invalid)
+{
+	List<int> list;
+	list.insertLast(10);
+
+	// Проверка на удаление элемента по неверному индексу
+	EXPECT_THROW(list.remove(1), std::exception); // Индекс 1 выходит за пределы
+	EXPECT_THROW(list.remove(-1), std::exception); // Отрицательный индекс
+	EXPECT_THROW(list.remove(0), std::exception); // Попытка удалить из пустого списка после удаления элемента
+}
+
 TEST(List, list_Size_Is_Correct)
 {
 	List<int> list = List<int>();

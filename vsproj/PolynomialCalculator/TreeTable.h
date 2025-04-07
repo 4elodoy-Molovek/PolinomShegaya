@@ -442,7 +442,7 @@ public:
 		TreeNode<K, T>* node = root;
 		while (node && node->key != key)
 		{
-			if (node->key > key) node = node->right;
+			if (node->key < key) node = node->right;
 			else node = node->left;
 		}
 
