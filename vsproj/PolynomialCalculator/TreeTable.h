@@ -96,8 +96,7 @@ protected:
 
 		if (node->left) inorderTraversal(node->left, outElements);
 
-		if (node->left)
-			outElements.push_back(std::pair<const K&, const T&>(node->key, node->data));
+		if (node->left) outElements.push_back({ node->key, node->data });
 
 		if (node->right) inorderTraversal(node->right, outElements);
 	}
@@ -153,7 +152,7 @@ public:
 		// Ребалансировка
 		node = newNode;
 
-		while (node->parent->color == NODE_RED)
+		while (node->parent && node->parent->color == NODE_RED)
 		{
 			TreeNode<K, T>* parent = node->parent;
 			TreeNode<K, T>* grandParent = parent->parent;
@@ -228,7 +227,7 @@ public:
 			node = root;
 			while (node && node->key != key)
 			{
-				if (node->key > key) node = node->right;
+				if (node->key < key) node = node->right;
 				else node = node->left;
 			}
 		}

@@ -7,7 +7,7 @@ struct ListNode
 	T data;
 	ListNode<T>* pNext;
 
-	ListNode(): pNext(nullptr) {}
+	ListNode() : pNext(nullptr) {}
 	ListNode(const T& value) : data(value), pNext(nullptr) {}
 };
 
@@ -173,52 +173,50 @@ public:
 
 	void remove(int index)
 	{
-		if (!pFirst) throw(std::exception("LIST: Trying to remove an element in an EMPTY list!"));
+		// Step 1: Check if the index is valid before modifying anything
+		if (index < 0 || index >= sz)
+			throw std::exception("LIST: Trying to remove at an invalid index!");  // Invalid index
 
-		else if (index >= sz || index < 0) throw(std::exception("LIST: Trying to remove at invalid index!"));
+		// Step 2: Check for empty list before removal
+		if (empty())
+			throw std::exception("LIST: Trying to remove from an empty list!");  // Empty list
 
-		else if (pFirst == pLast)
-		{
-			delete pFirst;
-			pFirst = nullptr;
-			pLast = nullptr;
-		}
-
-		else if (index == 0)
+		// Step 3: If the index is 0, we remove the first element
+		if (index == 0)
 		{
 			ListNode<L>* temp = pFirst;
 			pFirst = pFirst->pNext;
 			delete temp;
-		}
 
+			// If the list becomes empty, reset the last pointer
+			if (pFirst == nullptr)
+				pLast = nullptr;
+		}
 		else
 		{
-			int i = 0;
-
 			ListNode<L>* prevNode = nullptr;
 			ListNode<L>* node = pFirst;
 
-			while (i < index)
+			for (int i = 0; i < index; i++) // Traverse to the node at the specified index
 			{
 				prevNode = node;
 				node = node->pNext;
-				i++;
 			}
 
-			if (node == pLast)
+			if (node == pLast)  // If we're deleting the last node, update pLast
 			{
 				pLast = prevNode;
-				delete node;
 			}
 
-			else
+			if (prevNode != nullptr)
 				prevNode->pNext = node->pNext;
 
 			delete node;
 		}
 
-		sz--;
+		sz--;  // Decrement size after successful removal
 	}
+
 
 	// Получение значения первого элемента
 	L& getFirst()
@@ -277,7 +275,7 @@ public:
 	{
 		if (size() != list.size()) return false;
 
-		ListNode<L> *node_1 = pFirst, *node_2 = list.pFirst;
+		ListNode<L>* node_1 = pFirst, * node_2 = list.pFirst;
 
 		while (node_1)
 		{
@@ -285,7 +283,7 @@ public:
 			node_1 = node_1->pNext;
 			node_2 = node_2->pNext;
 		}
-		
+
 		return true;
 	}
 

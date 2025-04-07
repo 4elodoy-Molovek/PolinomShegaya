@@ -1,4 +1,4 @@
-#include "gtest.h"
+п»ї#include "gtest.h"
 #include "List.h"
 
 TEST(List, list_Can_Create_List)
@@ -23,7 +23,7 @@ TEST(List, list_Size_Is_Zero_By_Default)
 
 TEST(List, list_Can_Create_Node)
 {
-	EXPECT_NO_THROW(ListNode<int>* node = new ListNode<int>());
+	EXPECT_NO_THROW(ListNode<int>*node = new ListNode<int>());
 }
 
 
@@ -37,7 +37,7 @@ TEST(List, list_Can_Create_List_From_First_Node)
 
 TEST(List, list_Identical_Lists_Are_Equal)
 {
-	// Собираем list_1
+	// Г‘Г®ГЎГЁГ°Г ГҐГ¬ list_1
 	ListNode<int>* node_1_1 = new ListNode<int>();
 	ListNode<int>* node_1_2 = new ListNode<int>();
 	ListNode<int>* node_1_3 = new ListNode<int>();
@@ -53,7 +53,7 @@ TEST(List, list_Identical_Lists_Are_Equal)
 	List<int> list_1(node_1_1);
 
 
-	// Собираем list_2
+	// Г‘Г®ГЎГЁГ°Г ГҐГ¬ list_2
 	ListNode<int>* node_2_1 = new ListNode<int>();
 	ListNode<int>* node_2_2 = new ListNode<int>();
 	ListNode<int>* node_2_3 = new ListNode<int>();
@@ -74,7 +74,7 @@ TEST(List, list_Identical_Lists_Are_Equal)
 
 TEST(List, list_Can_Copy_List)
 {
-	// Собираем list_1
+	// Г‘Г®ГЎГЁГ°Г ГҐГ¬ list_1
 	ListNode<int>* node_1_1 = new ListNode<int>();
 	ListNode<int>* node_1_2 = new ListNode<int>();
 	ListNode<int>* node_1_3 = new ListNode<int>();
@@ -89,10 +89,10 @@ TEST(List, list_Can_Copy_List)
 
 	List<int> list_1(node_1_1);
 
-	// Копирукм list_1 в list_2 конструктором
+	// ГЉГ®ГЇГЁГ°ГіГЄГ¬ list_1 Гў list_2 ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г®Г¬
 	List<int> list_2(list_1);
 
-	// Копируем list_1 в list_3 опрератором "="
+	// ГЉГ®ГЇГЁГ°ГіГҐГ¬ list_1 Гў list_3 Г®ГЇГ°ГҐГ°Г ГІГ®Г°Г®Г¬ "="
 	List<int> list_3 = list_1;
 
 	EXPECT_EQ(list_1, list_2);
@@ -102,7 +102,7 @@ TEST(List, list_Can_Copy_List)
 /*
 TEST(List, list_Operator_Eq_Returns_New_Value)
 {
-	// Собираем list_1
+	// Г‘Г®ГЎГЁГ°Г ГҐГ¬ list_1
 	ListNode<int>* node_1_1 = new ListNode<int>();
 	ListNode<int>* node_1_2 = new ListNode<int>();
 	ListNode<int>* node_1_3 = new ListNode<int>();
@@ -125,13 +125,13 @@ TEST(List, list_Operator_Eq_Returns_New_Value)
 
 TEST(List, list_Can_Insert_First_Into_Empty_List)
 {
-	// Лист пример, с которым будем сравнивать
+	// Г‹ГЁГ±ГІ ГЇГ°ГЁГ¬ГҐГ°, Г± ГЄГ®ГІГ®Г°Г»Г¬ ГЎГіГ¤ГҐГ¬ Г±Г°Г ГўГ­ГЁГўГ ГІГј
 	ListNode<int>* nodeExample = new ListNode<int>();
 	nodeExample->data = 10;
 
 	List<int> listExample(nodeExample);
 
-	// Сам insert
+	// Г‘Г Г¬ insert
 	List<int> list = List<int>();
 	list.insertFirst(10);
 
@@ -141,7 +141,7 @@ TEST(List, list_Can_Insert_First_Into_Empty_List)
 
 TEST(List, list_Can_Insert_First_Into_Non_Empty_List)
 {
-	// Лист пример, с которым будем сравнивать
+	// Г‹ГЁГ±ГІ ГЇГ°ГЁГ¬ГҐГ°, Г± ГЄГ®ГІГ®Г°Г»Г¬ ГЎГіГ¤ГҐГ¬ Г±Г°Г ГўГ­ГЁГўГ ГІГј
 	ListNode<int>* nodeExample_1 = new ListNode<int>();
 	ListNode<int>* nodeExample_2 = new ListNode<int>();
 
@@ -152,7 +152,7 @@ TEST(List, list_Can_Insert_First_Into_Non_Empty_List)
 
 	List<int> listExample(nodeExample_1);
 
-	// Сам insert
+	// Г‘Г Г¬ insert
 	List<int> list = List<int>();
 	list.insertFirst(5);
 	list.insertFirst(10);
@@ -163,13 +163,13 @@ TEST(List, list_Can_Insert_First_Into_Non_Empty_List)
 
 TEST(List, list_Can_Insert_Last_Into_Empty_List)
 {
-	// Лист пример, с которым будем сравнивать
+	// Г‹ГЁГ±ГІ ГЇГ°ГЁГ¬ГҐГ°, Г± ГЄГ®ГІГ®Г°Г»Г¬ ГЎГіГ¤ГҐГ¬ Г±Г°Г ГўГ­ГЁГўГ ГІГј
 	ListNode<int>* nodeExample = new ListNode<int>();
 	nodeExample->data = 10;
 
 	List<int> listExample(nodeExample);
 
-	// Сам insert
+	// Г‘Г Г¬ insert
 	List<int> list = List<int>();
 	list.insertLast(10);
 
@@ -179,7 +179,7 @@ TEST(List, list_Can_Insert_Last_Into_Empty_List)
 
 TEST(List, list_Can_Insert_Last_Into_Non_Empty_List)
 {
-	// Лист пример, с которым будем сравнивать
+	// Г‹ГЁГ±ГІ ГЇГ°ГЁГ¬ГҐГ°, Г± ГЄГ®ГІГ®Г°Г»Г¬ ГЎГіГ¤ГҐГ¬ Г±Г°Г ГўГ­ГЁГўГ ГІГј
 	ListNode<int>* nodeExample_1 = new ListNode<int>();
 	ListNode<int>* nodeExample_2 = new ListNode<int>();
 
@@ -190,7 +190,7 @@ TEST(List, list_Can_Insert_Last_Into_Non_Empty_List)
 
 	List<int> listExample(nodeExample_1);
 
-	// Сам insert
+	// Г‘Г Г¬ insert
 	List<int> list = List<int>();
 	list.insertLast(5);
 	list.insertLast(10);
@@ -200,7 +200,7 @@ TEST(List, list_Can_Insert_Last_Into_Non_Empty_List)
 
 TEST(List, list_Can_Insert_In_Any_Spot)
 {
-	// Лист пример, с которым будем сравнивать
+	// Г‹ГЁГ±ГІ ГЇГ°ГЁГ¬ГҐГ°, Г± ГЄГ®ГІГ®Г°Г»Г¬ ГЎГіГ¤ГҐГ¬ Г±Г°Г ГўГ­ГЁГўГ ГІГј
 	ListNode<int>* nodeExample_1 = new ListNode<int>();
 	ListNode<int>* nodeExample_2 = new ListNode<int>();
 	ListNode<int>* nodeExample_3 = new ListNode<int>();
@@ -215,7 +215,7 @@ TEST(List, list_Can_Insert_In_Any_Spot)
 
 	List<int> listExample(nodeExample_1);
 
-	// Сам insert
+	// Г‘Г Г¬ insert
 	List<int> list = List<int>();
 	list.insert(0, 5);
 	list.insert(1, 20);
@@ -226,24 +226,20 @@ TEST(List, list_Can_Insert_In_Any_Spot)
 
 TEST(List, list_Can_Remove_Element)
 {
-	// Создаем список с несколькими элементами
 	List<int> list;
 	list.insertLast(10);
 	list.insertLast(20);
 	list.insertLast(30);
 
-	// Удаляем первый элемент
-	list.remove(0);
+	EXPECT_NO_THROW(list.remove(0));
 	EXPECT_EQ(2, list.size());
 	EXPECT_EQ(20, list.getFirst());
 
-	// Удаляем последний элемент
-	list.remove(1);
+	EXPECT_NO_THROW(list.remove(1));
 	EXPECT_EQ(1, list.size());
 	EXPECT_EQ(20, list.getFirst());
 
-	// Удаляем единственный оставшийся элемент
-	list.remove(0);
+	EXPECT_NO_THROW(list.remove(0));
 	EXPECT_EQ(0, list.size());
 	EXPECT_TRUE(list.empty());
 }
@@ -253,10 +249,10 @@ TEST(List, list_Remove_Throws_When_Index_Is_Invalid)
 	List<int> list;
 	list.insertLast(10);
 
-	// Проверка на удаление элемента по неверному индексу
-	EXPECT_THROW(list.remove(1), std::exception); // Индекс 1 выходит за пределы
-	EXPECT_THROW(list.remove(-1), std::exception); // Отрицательный индекс
-	EXPECT_THROW(list.remove(0), std::exception); // Попытка удалить из пустого списка после удаления элемента
+	EXPECT_THROW(list.remove(1), std::exception);
+	EXPECT_THROW(list.remove(-1), std::exception);
+	list.remove(0);
+	EXPECT_THROW(list.remove(0), std::exception);
 }
 
 TEST(List, list_Size_Is_Correct)
