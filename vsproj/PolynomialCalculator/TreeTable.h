@@ -96,7 +96,8 @@ protected:
 
 		if (node->left) inorderTraversal(node->left, outElements);
 
-		outElements.push_back(std::pair<const K&, const T&>(node->key, node->data));
+		if (node->left)
+			outElements.push_back(std::pair<const K&, const T&>(node->key, node->data));
 
 		if (node->right) inorderTraversal(node->right, outElements);
 	}
