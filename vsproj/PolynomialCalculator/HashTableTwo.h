@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <vector>
 #include "Table.h"
 // const size_t defaultSize = 4;
@@ -12,16 +12,16 @@ protected:
 	{
 		K name; // = key
 		T data;
-		int deleted; // 1 - занята, 0 - пустая, -1 - удалена
+		int deleted; // 1 - Г§Г Г­ГїГІГ , 0 - ГЇГіГ±ГІГ Гї, -1 - ГіГ¤Г Г«ГҐГ­Г 
 	};
-	size_t  bufferSize; // фактический размер таблицы
-	size_t sizeh; //  реальных строк
-	size_t sizeAllNonNull; // реальные + удаленные
+	size_t  bufferSize; // ГґГ ГЄГІГЁГ·ГҐГ±ГЄГЁГ© Г°Г Г§Г¬ГҐГ° ГІГ ГЎГ«ГЁГ¶Г»
+	size_t sizeh; //  Г°ГҐГ Г«ГјГ­Г»Гµ Г±ГІГ°Г®ГЄ
+	size_t sizeAllNonNull; // Г°ГҐГ Г«ГјГ­Г»ГҐ + ГіГ¤Г Г«ГҐГ­Г­Г»ГҐ
 	Node* table = nullptr;
 
 	size_t tableOffset;
 
-	size_t setOffset() 
+	size_t setOffset()
 	{
 		std::vector<bool> prime(bufferSize + 1, true);
 		size_t p = 2;
@@ -36,22 +36,22 @@ protected:
 		return tableOffset;
 	}
 
-	size_t hashFuncMain(const K& s) 
+	size_t hashFuncMain(const K& s)
 	{
 		size_t summary = 0;
 		for (size_t i = 0; i < s.length(); i++) {
-			summary += (s[i] * (i + 1)) % bufferSize; //возмжно не стоит каждый раз делить, долго получается
+			summary += (s[i] * (i + 1)) % bufferSize; //ГўГ®Г§Г¬Г¦Г­Г® Г­ГҐ Г±ГІГ®ГЁГІ ГЄГ Г¦Г¤Г»Г© Г°Г Г§ Г¤ГҐГ«ГЁГІГј, Г¤Г®Г«ГЈГ® ГЇГ®Г«ГіГ·Г ГҐГІГ±Гї
 		}
 		return summary % bufferSize;
 	}
 
 
-	void Resize() 
+	void Resize()
 	{
 		size_t pastBufferSize = bufferSize;
 		bufferSize *= 2;
 		setOffset();
-		sizeAllNonNull = 0; // потому что удалённые не переносим
+		sizeAllNonNull = 0; // ГЇГ®ГІГ®Г¬Гі Г·ГІГ® ГіГ¤Г Г«ВёГ­Г­Г»ГҐ Г­ГҐ ГЇГҐГ°ГҐГ­Г®Г±ГЁГ¬
 		sizeh = 0;
 		Node* newTable = new Node[bufferSize];
 		for (size_t i = 0; i < bufferSize; ++i)
@@ -61,14 +61,14 @@ protected:
 		for (int i = 0; i < pastBufferSize; ++i)
 		{
 			if (newTable[i].deleted == 1)
-				addElement(newTable[i].name, newTable[i].data); // добавляем элементы в новый массив
+				addElement(newTable[i].name, newTable[i].data); // Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ ГЅГ«ГҐГ¬ГҐГ­ГІГ» Гў Г­Г®ГўГ»Г© Г¬Г Г±Г±ГЁГў
 		}
-		// удаление предыдущего массива
+		// ГіГ¤Г Г«ГҐГ­ГЁГҐ ГЇГ°ГҐГ¤Г»Г¤ГіГ№ГҐГЈГ® Г¬Г Г±Г±ГЁГўГ 
 		delete[] newTable;
 	}
 
 public:
-	HashTableTwo(size_t sz = defaultSize) : sizeh(0), sizeAllNonNull(0) 
+	HashTableTwo(size_t sz = defaultSize) : sizeh(0), sizeAllNonNull(0)
 	{
 		bufferSize = (sz > 1 ? sz * 2 : 4);
 		table = new Node[bufferSize];
@@ -82,10 +82,12 @@ public:
 	}
 
 
-	// Добавляет полином pol в таблицу с ключем(именем) name
-	virtual void addElement(const K& name, const T& pol) 
+	// Г„Г®ГЎГ ГўГ«ГїГҐГІ ГЇГ®Г«ГЁГ­Г®Г¬ pol Гў ГІГ ГЎГ«ГЁГ¶Гі Г± ГЄГ«ГѕГ·ГҐГ¬(ГЁГ¬ГҐГ­ГҐГ¬) name
+	virtual void addElement(const K& name, const T& pol)
 	{
-		// проверка заполненности на 75%
+		if (findElement(name) != nullptr) throw std::runtime_error("Element with the same key already exists.");
+
+		// ГЇГ°Г®ГўГҐГ°ГЄГ  Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г®Г±ГІГЁ Г­Г  75%
 		if (5 * sizeh > bufferSize * 4) {
 			Resize();
 		}
@@ -93,7 +95,7 @@ public:
 
 		size_t hash = hashFuncMain(name);
 		size_t pos = hash;
-		for (; table[pos].deleted == 1; pos = (pos + tableOffset) % bufferSize) 
+		for (; table[pos].deleted == 1; pos = (pos + tableOffset) % bufferSize)
 		{
 			if (table[pos].name == name)
 				return;
@@ -102,15 +104,17 @@ public:
 		sizeh++;
 	};
 
-	// Удаляет из полином с именем name из таблицы
-	virtual void deleteElement(const K& name) 
+	// Г“Г¤Г Г«ГїГҐГІ ГЁГ§ ГЇГ®Г«ГЁГ­Г®Г¬ Г± ГЁГ¬ГҐГ­ГҐГ¬ name ГЁГ§ ГІГ ГЎГ«ГЁГ¶Г»
+	virtual void deleteElement(const K& name)
 	{
+		if (findElement(name) == nullptr) throw std::runtime_error("Element not found.");
+
 		size_t hash = hashFuncMain(name), offset = OFFSET_CONST;
 		size_t pos = hash;
 
-		for (; table[pos].deleted != 0; pos = (pos + offset) % bufferSize) 
+		for (; table[pos].deleted != 0; pos = (pos + offset) % bufferSize)
 		{
-			if (table[pos].name == name) 
+			if (table[pos].name == name)
 			{
 				table[pos].deleted = -1;
 				return;
@@ -118,26 +122,26 @@ public:
 		}
 	}
 
-	// Ищет в таблице полином с именем name
-	virtual T* findElement(const K& name) 
+	// Г€Г№ГҐГІ Гў ГІГ ГЎГ«ГЁГ¶ГҐ ГЇГ®Г«ГЁГ­Г®Г¬ Г± ГЁГ¬ГҐГ­ГҐГ¬ name
+	virtual T* findElement(const K& name)
 	{
 		T* ans = nullptr;
 		size_t hash = hashFuncMain(name);
 		setOffset();
 		size_t pos = hash, initialPos = pos;
 		bool firstRound = true;
-		for (; table[pos].deleted != 0; pos = (pos + tableOffset) % bufferSize) 
+		for (; table[pos].deleted != 0; pos = (pos + tableOffset) % bufferSize)
 		{
-			if ((table[pos].name == name) && (table[pos].deleted == 1)) 
+			if ((table[pos].name == name) && (table[pos].deleted == 1))
 			{
 				ans = &table[pos].data;
 				break;
 			}
-			if ((initialPos == pos) && (!firstRound)) 
+			if ((initialPos == pos) && (!firstRound))
 			{
 				break;
 			}
-			firstRound = false; // я думаю, первый обход лучше вынести из цикла и не делать постоянного присваивания
+			firstRound = false; // Гї Г¤ГіГ¬Г Гѕ, ГЇГҐГ°ГўГ»Г© Г®ГЎГµГ®Г¤ Г«ГіГ·ГёГҐ ГўГ»Г­ГҐГ±ГІГЁ ГЁГ§ Г¶ГЁГЄГ«Г  ГЁ Г­ГҐ Г¤ГҐГ«Г ГІГј ГЇГ®Г±ГІГ®ГїГ­Г­Г®ГЈГ® ГЇГ°ГЁГ±ГўГ ГЁГўГ Г­ГЁГї
 		}
 		return ans;
 	}
@@ -145,6 +149,6 @@ public:
 	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override
 	{
 		for (size_t i = 0; i < sizeh; i++)
-			outElements.push_back({table[i].name, table[i].data});
+			outElements.push_back({ table[i].name, table[i].data });
 	}
 };

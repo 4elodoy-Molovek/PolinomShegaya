@@ -12,7 +12,7 @@ template<typename K, typename T>
 class SortedArrayTable : public Table<K, T>
 {
 protected:
-	struct Node 
+	struct Node
 	{
 		K name;
 		T data;
@@ -22,10 +22,10 @@ protected:
 	size_t binarySearch(const K& x, bool& suc)
 	{
 		size_t low = 1, high = table.size(), mid = 42;
-		while (low <= high) 
+		while (low <= high)
 		{
 			mid = (high + low) / 2;
-			if (table[mid - 1].name == x) 
+			if (table[mid - 1].name == x)
 			{
 				suc = true;
 				return mid - 1;
@@ -52,18 +52,20 @@ public:
 	~SortedArrayTable() = default;
 
 	// Добавляет полином pol в таблицу с ключем(именем) name
-	virtual void addElement(const K& name, const T& pol) 
+	virtual void addElement(const K& name, const T& pol)
 	{
+		if (findElement(name) != nullptr) throw std::runtime_error("Element with the same key already exists.");
+
 		bool suc = false;
 		size_t num = binarySearch(name, suc);
-		if (suc) 
+		if (suc)
 		{ // ячейка с таким именем есть
 			return;
 		}
-		else 
+		else
 		{
 			table.push_back({ name, pol }); // чтобы не использовать констурктор по умолчанию для Node
-			for (size_t i = table.size() - 1; i > num; i--) 
+			for (size_t i = table.size() - 1; i > num; i--)
 			{
 				table[i] = table[i - 1];
 			}
@@ -72,15 +74,17 @@ public:
 	}
 
 	// Удаляет из полином с именем name из таблицы
-	virtual void deleteElement(const K& name) 
+	virtual void deleteElement(const K& name)
 	{
+		if (findElement(name) == nullptr) throw std::runtime_error("Element not found.");
+
 		bool suc = false;
 		size_t num = binarySearch(name, suc);
-		if (!suc) 
+		if (!suc)
 		{ // ячейки с таким именем нет
 			return;
 		}
-		else 
+		else
 		{
 			for (size_t i = num; i < table.size() - 1; i++) {
 				table[i] = table[i + 1];
@@ -90,7 +94,7 @@ public:
 	};
 
 	// Ищет в таблице полином с именем name
-	virtual T* findElement(const K& name) 
+	virtual T* findElement(const K& name)
 	{
 		bool suc = false;
 		size_t num = binarySearch(name, suc);

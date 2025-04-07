@@ -24,7 +24,7 @@ TEST_P(TableTest, table_Can_Add_Element)
 TEST_P(TableTest, table_Can_Not_Add_Element_With_Existing_Key)
 {
     table->addElement("one", 1);
-    EXPECT_ANY_THROW(table->addElement("one", 2));
+    EXPECT_THROW(table->addElement("one", 2), std::runtime_error);
 }
 
 TEST_P(TableTest, table_Can_Find_Added_Element)
@@ -35,20 +35,21 @@ TEST_P(TableTest, table_Can_Find_Added_Element)
 
 TEST_P(TableTest, table_Can_Not_Find_Non_Existant_Element)
 {
-    EXPECT_ANY_THROW(table->findElement("two"));
+    EXPECT_EQ(nullptr, table->findElement("two"));
 }
 
 TEST_P(TableTest, table_Can_Delete_Element)
 {
     table->addElement("one", 1);
     table->deleteElement("one");
-    EXPECT_ANY_THROW(table->findElement("one"));
+    EXPECT_EQ(nullptr, table->findElement("one"));
 }
 
 TEST_P(TableTest, table_Can_Not_Delete_Non_Existant_Element)
 {
-    EXPECT_ANY_THROW(table->findElement("two"));
+    EXPECT_THROW(table->deleteElement("two"), std::runtime_error);
 }
+
 
 INSTANTIATE_TEST_CASE_P
 (

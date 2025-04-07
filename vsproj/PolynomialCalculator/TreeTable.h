@@ -132,7 +132,7 @@ public:
 			else if (key < node->key)
 				node = node->left;
 			else
-				throw(std::exception("ERROR: Red-Black Tree (TreeTable): trying to insert an element with already existing key!"));
+				throw(std::runtime_error("ERROR: Red-Black Tree (TreeTable): trying to insert an element with already existing key!"));
 		}
 
 		TreeNode<K, T>* newNode = new TreeNode<K, T>(key, pol, NODE_RED);
@@ -214,8 +214,8 @@ public:
 	// Удаляет из таблицы элемент с ключем key
 	virtual void deleteElement(const K& key) override
 	{
-		if (size == 0) throw(std::exception("ERROR: Red-Black Tree (TreeTable): trying to delete an element from an empty tree!"));
-		if (size == 1 && root->key != key) throw(std::exception("ERROR: Red-Black Tree (TreeTable): trying to delete a non existant element!"));
+		if (size == 0) throw(std::runtime_error("ERROR: Red-Black Tree (TreeTable): trying to delete an element from an empty tree!"));
+		if (size == 1 && root->key != key) throw(std::runtime_error("ERROR: Red-Black Tree (TreeTable): trying to delete a non existant element!"));
 
 		// Поиск узла для удаления
 		TreeNode<K, T>* node = root;
@@ -232,7 +232,7 @@ public:
 			}
 		}
 
-		if (!node) throw(std::exception("ERROR: Red-Black Tree (TreeTable): trying to delete a non existant element!"));
+		if (!node) throw(std::runtime_error("ERROR: Red-Black Tree (TreeTable): trying to delete a non existant element!"));
 
 		// Запоминаем ифнормацию для ребалансировки
 		bool nodeColor = node->color;
@@ -316,13 +316,21 @@ public:
 			// Убираем pred со старой позиции
 			if (pred->left->isLeaf())
 			{
-				pred->parent->right = pred->right;
+				if (pred->parent == node) pred->parent->left = pred->right;
+
+				else pred->parent->right = pred->right;
+
+				pred->right->parent = pred->parent;
 				delete pred->left;
+				
 			}
 
 			else
 			{
-				pred->parent->right = pred->left;
+				if (pred->parent == node) pred->parent->left = pred->left;
+				else pred->parent->right = pred->left;
+				
+				pred->left->parent = pred->parent;
 				delete pred->right;
 			}
 

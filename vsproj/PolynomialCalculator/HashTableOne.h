@@ -13,13 +13,13 @@ protected:
 	int size; // сколько элементов у нас сейчас в массиве (без учета deleted)
 	int bufferSize; // размер самого массива, сколько памяти выделено под хранение нашей таблицы
 	int sizeAllNonNullptr; // сколько элементов у нас сейчас в массиве (с учетом deleted)
-	
+
 	std::vector<std::vector<std::pair<K, Node>>> table;
 
 	size_t hashFunction(const K& s)
 	{
 		size_t summary = 0;
-		for (size_t i = 0; i < s.length(); i++) 
+		for (size_t i = 0; i < s.length(); i++)
 		{
 			summary += (s[i] * (i + 1));
 		}
@@ -37,6 +37,8 @@ public:
 	// Добавляет полином pol в таблицу с ключем(именем) name
 	virtual void addElement(const K& key, const T& pol) override
 	{
+		if (findElement(key) != nullptr) throw std::runtime_error("Element with the same key already exists.");
+
 		size_t index = hashFunction(key);
 		for (auto& pair : table[index])
 		{
@@ -55,6 +57,8 @@ public:
 	// Удаляет из полином с именем name из таблицы
 	virtual void deleteElement(const K& key) override
 	{
+		if (findElement(key) == nullptr) throw std::runtime_error("Element not found.");
+
 		size_t index = hashFunction(key);
 		for (auto& pair : table[index])
 		{

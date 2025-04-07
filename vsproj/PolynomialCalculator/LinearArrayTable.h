@@ -10,7 +10,7 @@ protected:
 	size_t size;
 
 public:
-	LinearArrayTable(size_t sz = defaultSize): size(0)
+	LinearArrayTable(size_t sz = defaultSize) : size(0)
 	{
 		data.resize(sz);
 	}
@@ -22,7 +22,7 @@ public:
 	{
 		for (auto& pair : data)
 			if (pair.first == key)
-				throw("ERROR: LinearArrayTable: element with key '" + key + "' already exists!");
+				throw std::runtime_error("ERROR: LinearArrayTable: element with key '" + key + "' already exists!");
 
 		data.push_back(std::pair<K, T>(key, pol));
 		size++;
@@ -41,7 +41,7 @@ public:
 				return;
 			}
 
-		throw("ERROR: LinearArrayTable: element with key '" + key + "' already exists!");
+		throw std::runtime_error("ERROR: LinearArrayTable: element with key '" + key + "' already exists!");
 	}
 
 	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение
@@ -55,8 +55,8 @@ public:
 	}
 
 	// В outElements помещает все элементы таблицы в некотором порядке
-	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override 
-	{ 
+	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override
+	{
 		for (size_t i = 0; i < data.size(); i++)
 			outElements.push_back({ data[i].first, data[i].second });
 	}
