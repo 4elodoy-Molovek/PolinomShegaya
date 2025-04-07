@@ -19,9 +19,9 @@ protected:
 		// 0 - черная, 1 - красная
 		bool color;
 
-		TreeNode<K, T>* parent;
-		TreeNode<K, T>* left;
-		TreeNode<K, T>* right;
+		TreeNode<K, T>* parent = nullptr;
+		TreeNode<K, T>* left = nullptr;
+		TreeNode<K, T>* right = nullptr;
 
 		// Является ли узел листом?
 		bool isLeaf() { return !left; }
@@ -102,7 +102,7 @@ protected:
 	}
 
 public:
-	TreeTable(): size(0) {}
+	TreeTable(): size(0), root(nullptr) {}
 	~TreeTable() override { deleteSubtree(root); }
 
 	// Добавляет в таблицу элемент с ключем key
