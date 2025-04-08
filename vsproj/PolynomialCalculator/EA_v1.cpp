@@ -43,6 +43,22 @@ string POSTFIX_FUNCTION_STRING = "f";
 string POSTFIX_SEPARATOR_STRING = "|";
 string POSTFIX_CONST_STRING = "c";
 
+std::vector<std::string> EA_v1::getCachedPostfix() {
+	return cachedPostfix;
+}
+
+
+std::vector<std::string> EA_v1::getCachedPurePostfix() {
+	vector<std::string> env;
+	std::string item;
+	for (auto i : cachedPostfix) {
+		item = i;
+		item.erase(0, 2);
+		env.push_back(item);
+	}
+	return env;
+}
+
 long int convertStrToInt(string strNum) {
 	long num = 0;
 	long pow = 10;
@@ -64,7 +80,7 @@ long int convertStrToInt(string strNum) {
 EA_v1::EA_v1() {
 	cachedPostfix.clear();
 	functionList = { {"sin", sin }, {"cos", cos }, { "d_dx", d_dx }, { "d_dy", d_dy }, { "d_dz", d_dz },
-	{ "i_dx", i_dx }, { "i_dy", i_dy }, { "i_dz", i_dz }}; // <name, ptr_to_func> 
+	{ "i_dx", i_dx }, { "i_dy", i_dy }, { "i_dz", i_dz } }; // <name, ptr_to_func> 
 }
 
 Tptr EA_v1::funcCheck(const string& func) {
@@ -190,7 +206,7 @@ std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::s
 				}
 				else {
 					st.push(stackItem);
-					break; 
+					break;
 				}
 			}
 			st.push(item);
@@ -212,7 +228,7 @@ std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::s
 			break;
 
 
-		default: 
+		default:
 			if (!((('a' <= item) && (item <= 'z')) || (('A' <= item) && (item <= 'Z')) || (item == '_')))
 				throw (string("Names can only contain letters fron a to z and '_' symbol"));
 
@@ -235,6 +251,9 @@ std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::s
 		postfix.push_back(string(POSTFIX_OPERAND_STRING) + string(POSTFIX_SEPARATOR_STRING) + postfixItem);
 		break;
 	case 4:
+		break;
+	case 6:
+		postfix.push_back(string(POSTFIX_CONST_STRING) + string(POSTFIX_SEPARATOR_STRING) + postfixItem);
 		break;
 	default:
 		throw(string("Incorrect state at the end"));
@@ -259,17 +278,19 @@ void EA_v1::analyzeExpression(const std::string& expression, std::set<std::strin
 	cachedPostfix = getPostfix(expression, outRequestedPolynomials);
 }
 
-Polynomial EA_v1::calculateSummaryPolynomial(std::map<std::string, Polynomial> polynomials) {
+Polynomial EA_v1::calculateSummaryPolynomial(const std::map<std::string, const Polynomial&> polynomials) {
 	stack<Polynomial> operandsStack;
 	for (string item : cachedPostfix) {
-		char type = item[0]; 
+		char type = item[0];
 		string itemName = item;
-		itemName.erase(0, 2); 
+		itemName.erase(0, 2);
 
 		switch (type) {
 		case 'v': {
-			Polynomial handle = polynomials[itemName];
-			operandsStack.push(handle);
+			auto handle = polynomials.find(itemName);
+			operandsStack.push(handle->second);
+			//Polynomial handle = polynomials[itemName];
+			//operandsStack.push(handle);
 			break;
 		}
 		case 'c': {

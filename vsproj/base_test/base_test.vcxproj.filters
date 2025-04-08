@@ -48,6 +48,9 @@
     <ClCompile Include="..\PolynomialCalculator\Parser_v1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\PolynomialCalculator\EA_v1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\gtest\gtest.h">

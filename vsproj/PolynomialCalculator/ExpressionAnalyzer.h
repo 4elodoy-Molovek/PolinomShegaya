@@ -11,9 +11,9 @@
  * Отвечает за обработку математических выражений с полиномами
  */
 
-class ExpressionAnalyzer 
+class ExpressionAnalyzer
 {
-protected: 
+protected:
 	// Постфиксная форма последнего проанализированного выражения
 	std::vector<std::string> cachedPostfix;
 
@@ -22,10 +22,10 @@ public:
 	ExpressionAnalyzer() {}
 	virtual ~ExpressionAnalyzer() {}
 
-	/* 
+	/*
 	 * Анализирует выражение строя его постфиксную форму и записывая её в cachedPostfix
 	 * В outRequestedPolynomials метод положит имена полиномов, которые необходимо получить из таблиц
-	 * 
+	 *
 	 * Подробности:
 	 *		1) Поддержка операций '+', '-', '* на полином', '* на константу';
 	 *		2) Поддержка скобок '(' и ')';
