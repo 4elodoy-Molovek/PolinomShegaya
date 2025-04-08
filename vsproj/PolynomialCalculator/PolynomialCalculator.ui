@@ -216,17 +216,32 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QComboBox" name="tableSelectorBox">
              <item>
               <property name="text">
-               <string>Table 1</string>
+               <string>Liniear Array Table</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Table 2</string>
+               <string>Linear List Table</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Table 3</string>
+               <string>Hash Table One</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Hash Table Two</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Red-BLack Tree Table</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Sorted Array Table</string>
               </property>
              </item>
             </widget>
@@ -300,13 +315,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QPushButton" name="renameButton">
-               <property name="text">
-                <string>Rename</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
           </layout>
@@ -343,4 +351,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <include location="PolynomialCalculator.qrc"/>
  </resources>
  <connections/>
+ <slots>
+  <slot>currentTableChanged(int)</slot>
+ </slots>
 </ui>

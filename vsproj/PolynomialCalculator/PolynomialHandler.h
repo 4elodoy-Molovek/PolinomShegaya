@@ -3,6 +3,7 @@
 #include "ExpressionAnalyzer.h"
 #include "Parser.h"
 #include "Parser_v1.h"
+#include "EA_v1.h"
 
 #include "LinearArrayTable.h"
 #include "LinearListTable.h"
@@ -38,15 +39,15 @@ public:
 
 	PolynomialHandler()
 	{
-		//analyzer = new ...
+		analyzer = new EA_v1();
 		parser = new Parser_v1();
 
 		tableList[0] = new LinearArrayTable<std::string, Polynomial>();
-		//tableList[1] = new LinearListTable<std::string, Polynomial>();
-		//tableList[2] = new HashTableOne<std::string, Polynomial>();
-		//tableList[3] = new HashTableTwo<std::string, Polynomial>();
+		tableList[1] = new LinearListTable<std::string, Polynomial>();
+		tableList[2] = new HashTableOne<std::string, Polynomial>();
+		tableList[3] = new HashTableTwo<std::string, Polynomial>();
 		tableList[4] = new TreeTable<std::string, Polynomial>();
-		//tableList[5] = new SortedArrayTable<std::string, Polynomial>();
+		tableList[5] = new SortedArrayTable<std::string, Polynomial>();
 
 	}
 

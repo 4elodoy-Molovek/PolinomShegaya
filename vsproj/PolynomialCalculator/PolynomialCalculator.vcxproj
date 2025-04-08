@@ -93,6 +93,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="PolynomialCalculator.qrc" />
+    <QtUic Include="AddPolynomialWidget.ui" />
     <QtUic Include="PolynomialCalculator.ui" />
     <QtMoc Include="PolynomialCalculator.h" />
     <ClCompile Include="EA_v1.cpp" />

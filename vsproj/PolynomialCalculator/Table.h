@@ -5,10 +5,8 @@
 template<typename K, typename T>
 class Table 
 {
-
 protected:
-
-	static const size_t defaultSize = 4;
+	const size_t defaultSize = 4;
 
 public:
 	Table() {}

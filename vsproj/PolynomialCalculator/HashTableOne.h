@@ -1,6 +1,8 @@
 #pragma once
 #include "Table.h"
 
+#define DSIZE 4
+
 template<typename K, typename T>
 class HashTableOne : public Table<K, T>
 {
@@ -27,7 +29,7 @@ protected:
 	}
 
 public:
-	HashTableOne(size_t sz = defaultSize) : size(0), bufferSize(sz), sizeAllNonNullptr(0)
+	HashTableOne(size_t sz = DSIZE) : size(0), bufferSize(sz), sizeAllNonNullptr(0)
 	{
 		table.resize(bufferSize);
 	}

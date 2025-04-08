@@ -2,6 +2,8 @@
 #include "Table.h"
 #include <vector>
 
+#define DSIZE 4
+
 template<typename K, typename T>
 class LinearArrayTable : public Table<K, T>
 {
@@ -10,7 +12,7 @@ protected:
 	size_t size;
 
 public:
-	LinearArrayTable(size_t sz = defaultSize) : size(0)
+	LinearArrayTable(size_t sz = DSIZE) : size(0)
 	{
 		data.resize(sz);
 	}

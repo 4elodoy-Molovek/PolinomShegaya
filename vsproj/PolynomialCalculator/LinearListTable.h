@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <vector>
 
+#define DSIZE 4
+
 template<typename K, typename T>
 struct ListTablePair
 {
@@ -19,7 +21,7 @@ protected:
 	size_t size = 0;
 
 public:
-	LinearListTable(size_t sz = defaultSize)
+	LinearListTable(size_t sz = DSIZE)
 	{
 		data = new List<ListTablePair<K, T>>();
 		size = sz;

@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include <vector>
 #include "Table.h"
+
+#define DSIZE 4
+
 // const size_t defaultSize = 4;
 const size_t OFFSET_CONST = 1;
 
@@ -68,7 +71,7 @@ protected:
 	}
 
 public:
-	HashTableTwo(size_t sz = defaultSize) : sizeh(0), sizeAllNonNull(0)
+	HashTableTwo(size_t sz = DSIZE) : sizeh(0), sizeAllNonNull(0)
 	{
 		bufferSize = (sz > 1 ? sz * 2 : 4);
 		table = new Node[bufferSize];
