@@ -191,107 +191,71 @@ TEST(EA_v1, EA_functions_could_work_with_negative_constants)
     EXPECT_TRUE(pst == verified);
 }
 
-
-// Postfix Errors
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-// Тест на корректность постфиксной формы
-TEST(EA_v1, PostfixConversion) {
+TEST(EA_v1, EA_can_analyze_complex_expression1) {
     EA_v1 ea;
-    std::set<std::string> requestedPOLYLOLs;
-
-    // Простое выражение: a + b -> a b +
-    ea.analyzeExpression("a + b", requestedPOLYLOLs);
-    auto postfix = ea.getCachedPurePostfix();
-    ASSERT_EQ(postfix, std::vector<std::string>({ "a", "b", "+" }));
-
-    // Выражение с функциями: sin(a) -> a sin
-    requestedPOLYLOLs.clear();
-    ea.analyzeExpression("sin(a)", requestedPOLYLOLs);
-    postfix = ea.getCachedPurePostfix();
-    ASSERT_EQ(postfix, std::vector<std::string>({ "a", "sin" }));
-
-    // Сложное выражение: cos(sin(b)) + (q * sin(word) * (a + c - f))
-    // Ожидаемый постфикс: b sin cos q word sin * a c + f - * +
-    requestedPOLYLOLs.clear();
-    ea.analyzeExpression("cos(sin(b)) + (q * sin(word) * (a + c - f))", requestedPOLYLOLs);
-    postfix = ea.getCachedPurePostfix();
-    ASSERT_EQ(postfix, std::vector<std::string>({
-        "b", "sin", "cos",
-        "q", "word", "sin", "*",
-        "a", "c", "+", "f", "-", "*", "+"
-        }));
+    std::set<std::string> orp;
+    std::string expression = "(a+b)*(c+d)";
+    std::vector<std::string> verified = { "a", "b", "+", "c", "d", "+", "*" };
+    ea.analyzeExpression(expression, orp);
+    EXPECT_EQ(ea.getCachedPurePostfix(), verified);
 }
 
-// Тест на запрос переменных
-TEST(EA_v1, RequestedVariables) {
+TEST(EA_v1, EA_can_analyze_expressions_with_multiple_open_brackets) {
     EA_v1 ea;
-    std::set<std::string> requestedPOLYLOLs;
-
-    // Выражение: a + b * sin(c)
-    ea.analyzeExpression("a + b * sin(c)", requestedPOLYLOLs);
-
-    // Проверяем, что все переменные запрошены
-    ASSERT_TRUE(requestedPOLYLOLs.count("a"));
-    ASSERT_TRUE(requestedPOLYLOLs.count("b"));
-    ASSERT_TRUE(requestedPOLYLOLs.count("c"));
-    ASSERT_EQ(requestedPOLYLOLs.size(), 3);
+    std::set<std::string> orp;
+    std::string expression = "((a+b)*c)-d";
+    std::vector<std::string> verified = { "a", "b", "+", "c", "*", "d", "-" };
+    ea.analyzeExpression(expression, orp);
+    EXPECT_EQ(ea.getCachedPurePostfix(), verified);
 }
-/*
-// Тест на вычисление выражения
-TEST(EA_v1, ExpressionCalculation) {
+
+TEST(EA_v1, EA_can_analyze_expressions_with_multiple_back_brackets) {
     EA_v1 ea;
-    std::set<std::string> requestedPOLYLOLs;
-
-    // Подготовка тестовых данных
-    std::map<std::string, POLYLOL&> POLYLOLs;
-    POLYLOL a = createDummyPOLYLOL("a");
-    POLYLOL b = createDummyPOLYLOL("b");
-    POLYLOL c = createDummyPOLYLOL("c");
-
-    // Здесь нужно добавить реальные полиномы в `POLYLOLs`
-    // Например: POLYLOLs["a"] = a;
-
-    // Тестируем выражение: a + b * c
-    ea.analyzeExpression("a + b * c", requestedPOLYLOLs);
-    POLYLOL result = ea.calculateSummaryPOLYLOL(POLYLOLs);
-
-    // Здесь должна быть проверка результата
-    // ASSERT_EQ(result, expectedResult);
-}
-*/
-
-/*
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    std::set<std::string> orp;
+    std::string expression = "(a+(b-c))";
+    std::vector<std::string> verified = { "a", "b", "c", "-", "+" };
+    ea.analyzeExpression(expression, orp);
+    EXPECT_EQ(ea.getCachedPurePostfix(), verified);
 }
 
-*/
+TEST(EA_v1, EmptyExpression) {
+    EA_v1 ea;
+    std::set<std::string> orp;
+    std::string expression = "";
+    EXPECT_ANY_THROW(ea.analyzeExpression(expression, orp));
+}
+
+TEST(EA_v1, OnlySpaces) {
+    EA_v1 ea;
+    std::set<std::string> orp;
+    std::string expression = "   ";
+    EXPECT_ANY_THROW(ea.analyzeExpression(expression, orp));
+}
+
+TEST(EA_v1, InvalidCharacters) {
+    EA_v1 ea;
+    std::set<std::string> orp;
+    std::string expression = "a + b $ c";
+    EXPECT_ANY_THROW(ea.analyzeExpression(expression, orp));
+}
+
+TEST(EA_v1, DoubleOperator) {
+    EA_v1 ea;
+    std::set<std::string> orp;
+    std::string expression = "a++b";
+    EXPECT_ANY_THROW(ea.analyzeExpression(expression, orp));
+}
+
+TEST(EA_v1, MissingOperandLeft) {
+    EA_v1 ea;
+    std::set<std::string> orp;
+    std::string expression = "+b";
+    EXPECT_ANY_THROW(ea.analyzeExpression(expression, orp));
+}
+
+TEST(EA_v1, MissingOperandRight) {
+    EA_v1 ea;
+    std::set<std::string> orp;
+    std::string expression = "a+";
+    EXPECT_ANY_THROW(ea.analyzeExpression(expression, orp));
+}
