@@ -89,7 +89,7 @@ public:
 
 	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override
 	{
-		for (int index = 0; index < sizeAllNonNullptr; index++)
+		for (int index = 0; index < table.size(); index++)
 		{
 			for (int i = 0; i < table[index].size(); i++)
 			{

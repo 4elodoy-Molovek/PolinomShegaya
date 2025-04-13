@@ -2,13 +2,6 @@
 
 using namespace std;
 
-/// test functions
-Polynomial sin(Polynomial a) {
-	return a + a;
-}
-Polynomial cos(Polynomial a) {
-	return a + a;
-}
 
 Polynomial d_dx(Polynomial a) {
 	return a.derivate("x");
@@ -79,7 +72,7 @@ long int convertStrToInt(string strNum) {
 
 EA_v1::EA_v1() {
 	cachedPostfix.clear();
-	functionList = { {"sin", sin }, {"cos", cos }, { "d_dx", d_dx }, { "d_dy", d_dy }, { "d_dz", d_dz },
+	functionList = { { "d_dx", d_dx }, { "d_dy", d_dy }, { "d_dz", d_dz },
 	{ "i_dx", i_dx }, { "i_dy", i_dy }, { "i_dz", i_dz } }; // <name, ptr_to_func> 
 }
 
@@ -94,26 +87,32 @@ std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::s
 	map<char, int> priority = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'^', 3}, {STACK_FUNC_SYMBOL, 4} };
 	stack<string> funcStack;
 
+	int bracketBalance = 0;
 	char stackItem;
 	stack<char> st;
 	string postfixItem;
 	vector <string> postfix = {};
 	int state = 1;
 	for (char item : expression) {
+		if (bracketBalance < 0)
+			throw(string("Closing bracket withut an open one"));
 		switch (item) {
 		case ' ':
 			break;
 		case '(':
 			switch (state) {
 			case 1:
+				bracketBalance++;
 				state = 1;
 				st.push(item);
 				break;
 			case 3:
 				state = 1;
+				bracketBalance++;
 				st.push(item);
 				break;
 			case 2: {
+				bracketBalance++;
 				state = 1;
 				Tptr funcPtr = funcCheck(postfixItem);
 				if (funcPtr) {
@@ -132,6 +131,9 @@ std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::s
 			break;
 
 		case ')':
+			bracketBalance--;
+			if (bracketBalance < 0)
+				throw(string("Closing bracket withut an open one"));
 			switch (state) {
 			case 2:
 				outRequestedPolynomials.insert(postfixItem);
@@ -245,6 +247,8 @@ std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::s
 			}
 		}
 	}
+	if (bracketBalance != 0)
+		throw(string("Bad brackets detected"));
 	switch (state) {
 	case 2:
 		outRequestedPolynomials.insert(postfixItem);
@@ -288,6 +292,9 @@ Polynomial EA_v1::calculateSummaryPolynomial(const std::map<std::string, const P
 		switch (type) {
 		case 'v': {
 			auto handle = polynomials.find(itemName);
+			if (handle == polynomials.end()) {
+				throw(string("No polynmial ") + itemName + string(" in plynmials map"));
+			}
 			operandsStack.push(handle->second);
 			//Polynomial handle = polynomials[itemName];
 			//operandsStack.push(handle);

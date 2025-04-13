@@ -151,7 +151,8 @@ public:
 
 	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override
 	{
-		for (size_t i = 0; i < sizeh; i++)
-			outElements.push_back({ table[i].name, table[i].data });
+		for (size_t i = 0; i < bufferSize; i++)
+			if (!table[i].deleted != 1)
+				outElements.push_back({ table[i].name, table[i].data });
 	}
 };

@@ -77,8 +77,10 @@ public:
 		std::map<std::string, const Polynomial&> polynomials;
 		for (auto& pol : requestedPolynomials)
 		{
-			Polynomial& polp = *tableList[activeTableID]->findElement(pol);
-			polynomials.insert({ pol, polp });
+			Polynomial* polp = tableList[activeTableID]->findElement(pol);
+
+			if (!polp) throw(std::exception(std::string("ERROR: Polynomial '" + pol + "' not found!").data()));
+			polynomials.insert({ pol, *polp });
 		}
 
 		cachedExpressionResult = analyzer->calculateSummaryPolynomial(polynomials);

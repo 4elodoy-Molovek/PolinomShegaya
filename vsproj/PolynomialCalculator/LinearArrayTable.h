@@ -14,7 +14,7 @@ protected:
 public:
 	LinearArrayTable(size_t sz = DSIZE) : size(0)
 	{
-		data.resize(sz);
+		data.reserve(DSIZE);
 	}
 
 	~LinearArrayTable() override {}

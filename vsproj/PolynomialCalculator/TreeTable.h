@@ -157,7 +157,9 @@ public:
 			TreeNode<K, T>* parent = node->parent;
 			TreeNode<K, T>* grandParent = parent->parent;
 
-			if (parent == grandParent->left)
+			if (!grandParent) { break; }
+
+			else if (parent == grandParent->left)
 			{
 				if (grandParent->right->color == NODE_RED)
 				{
