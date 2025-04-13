@@ -78,9 +78,6 @@
     <ClInclude Include="LinearListTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TreeTable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -94,6 +91,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EA_v1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

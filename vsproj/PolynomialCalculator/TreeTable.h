@@ -3,9 +3,6 @@
 #include <Table.h>
 #include <stack>
 
-#define NODE_BLACK false
-#define NODE_RED true
-
 template<typename K, typename T>
 class TreeTable : public Table<K, T>
 {
@@ -16,18 +13,20 @@ protected:
 	{
 		K key;
 		T data;
-		// 0 - С‡РµСЂРЅР°СЏ, 1 - РєСЂР°СЃРЅР°СЏ
-		bool color;
 
-		TreeNode<K, T>* parent = nullptr;
 		TreeNode<K, T>* left = nullptr;
 		TreeNode<K, T>* right = nullptr;
 
-		// РЇРІР»СЏРµС‚СЃСЏ Р»Рё СѓР·РµР» Р»РёСЃС‚РѕРј?
-		bool isLeaf() { return !left; }
+		size_t height = 1;
 
-		TreeNode() : color(NODE_BLACK), parent(nullptr), left(nullptr), right(nullptr) {}
-		TreeNode(const K& inKey, const T& inData, bool inColor) : key(inKey), data(inData), color(inColor), parent(nullptr), left(nullptr), right(nullptr) {}
+		TreeNode() : left(nullptr), right(nullptr), height(1) {}
+		TreeNode(const K& inKey, const T& inData) : key(inKey), data(inData), left(nullptr), right(nullptr), height(1) {}
+
+		static size_t getHeight(TreeNode<K, T>* node) 
+		{
+			if (!node) return 0;
+			return node->height;
+		}
 	};
 
 
@@ -35,7 +34,7 @@ protected:
 	size_t size;
 
 
-	// РЈРґР°Р»СЏРµС‚ РїРѕРґРґРµСЂРµРІРѕ, РЅР°С‡РёРЅР°СЋС‰РµРµСЃСЏ СЃ СѓР·Р»Р° root, РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ РґРµСЃС‚СЂСѓРєС‚РѕСЂРµ
+	// Удаляет поддерево, начинающееся с узла root, используется в деструкторе
 	void deleteSubtree(TreeNode<K, T>* subtreeRoot)
 	{
 		if (!subtreeRoot) return;
@@ -47,407 +46,226 @@ protected:
 	}
 
 
-	// РџРѕРІРѕСЂРѕС‚С‹ РґР»СЏ СЂРµР±Р°Р»Р°РЅСЃРёСЂРѕРІРєРё
+	// Повороты для ребалансировки
 
-	// Р›РµРІС‹Р№ РїРѕРІРѕСЂРѕС‚
-	void rotateLeft(TreeNode<K, T>* node)
+	// Левый поворот
+	TreeNode<K, T>* rotateLeft(TreeNode<K, T>* node)
 	{
-		// РџСЂР°РІС‹Р№ РЅР°СЃР»РµРґРЅРёРє СЃС‚Р°РЅРѕРІРёС‚СЃСЏ РєРѕСЂРЅРµРј
+		// Правый наследник становится корнем
 		TreeNode<K, T>* newParent = node->right;
-		newParent->parent = node->parent;
 
-		// РћР±РЅРѕРІР»РµРЅРёРµ РєРѕСЂРЅСЏ, РїСЂРё РµРіРѕ РїРѕРІРѕСЂРѕС‚Рµ
-		if (!newParent->parent)
-			root = newParent;
-
-		// Р›РµРІС‹Р№ РЅР°СЃР»РµРґРЅРёРє РЅРѕРІРѕРіРѕ РєРѕСЂРЅСЏ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ РїСЂР°РІС‹Рј РЅР°СЃР»РµРґРЅРёРєРѕРј node
+		// Левый наследник нового корня становится правым наследником node
 		node->right = newParent->left;
-		node->right->parent = node;
 
-		// node СЃС‚Р°РЅРѕРІРёС‚СЃСЏ Р»РµРІС‹Рј РЅР°СЃР»РµРґРЅРёРєРѕРј РЅРѕРІРѕРіРѕ РєРѕСЂРЅСЏ
-		node->parent = newParent;
+		// node становится левым наследником нового корня
 		newParent->left = node;
+
+		// Обновляем высоты
+		node->height = 1 + max(TreeNode<K, T>::getHeight(node->left), TreeNode<K, T>::getHeight(node->right));
+		newParent->height = 1 + max(TreeNode<K, T>::getHeight(newParent->left), TreeNode<K, T>::getHeight(newParent->right));
+
+		return newParent;
 	}
 
-	// РџСЂР°РІС‹Р№ РїРѕРІРѕСЂРѕС‚
-	void rotateRight(TreeNode<K, T>* node)
+	// Правый поворот
+	TreeNode<K, T>* rotateRight(TreeNode<K, T>* node)
 	{
-		// Р›РµРІС‹Р№ РЅР°СЃР»РµРґРЅРёРє СЃС‚Р°РЅРѕРІРёС‚СЃСЏ РєРѕСЂРЅРµРј
+		// Левый наследник становится корнем
 		TreeNode<K, T>* newParent = node->left;
-		newParent->parent = node->parent;
 
-		// РћР±РЅРѕРІР»РµРЅРёРµ РєРѕСЂРЅСЏ, РїСЂРё РµРіРѕ РїРѕРІРѕСЂРѕС‚Рµ
-		if (!newParent->parent)
-			root = newParent;
-
-		// РџСЂР°РІС‹Р№ РЅР°СЃР»РµРґРЅРёРє РЅРѕРІРѕРіРѕ РєРѕСЂРЅСЏ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ Р»РµРІС‹Рј РЅР°СЃР»РµРґРЅРёРєРѕРј node
+		// Правый наследник нового корня становится левым наследником node
 		node->left = newParent->right;
-		node->left->parent = node;
 
-		// node СЃС‚Р°РЅРѕРІРёС‚СЃСЏ РїСЂР°РІС‹Рј РЅР°СЃР»РµРґРЅРёРєРѕРј РЅРѕРІРѕРіРѕ РєРѕСЂРЅСЏ
-		node->parent = newParent;
+		// node становится правым наследником нового корня
 		newParent->right = node;
+
+		// Обновляем высоты
+		node->height = 1 + max(TreeNode<K, T>::getHeight(node->left), TreeNode<K, T>::getHeight(node->right));
+		newParent->height = 1 + max(TreeNode<K, T>::getHeight(newParent->left), TreeNode<K, T>::getHeight(newParent->right));
+
+		return newParent;
 	}
 
-	// Р РµРєСѓСЂСЃРёРІРЅС‹Р№ С€Р°Рі РѕР±С…РѕРґР° РґРµСЂРµРІР° РїРѕ РїРѕСЂСЏРґРєСѓ
+	// Рекурсивное добавление элемента
+	TreeNode<K, T>* addElementReq(TreeNode<K, T>* currentNode, const K& key, const T& pol)
+	{
+		if (!currentNode)
+		{
+			TreeNode<K, T>* newNode = new TreeNode<K, T>(key, pol);
+			return newNode;
+		}
+
+		if (key < currentNode->key) currentNode->left = addElementReq(currentNode->left, key, pol);
+		else if (key > currentNode->key) currentNode->right = addElementReq(currentNode->right, key, pol);
+		else throw(std::runtime_error("ERROR: TreeTable: trying to insert an element with already existing key!"));
+
+		currentNode->height = 1 + max(TreeNode<K, T>::getHeight(currentNode->left), TreeNode<K, T>::getHeight(currentNode->right));
+		int balance = TreeNode<K, T>::getHeight(currentNode->left) - TreeNode<K, T>::getHeight(currentNode->right);
+
+		if (balance > 1)
+		{
+			// left-right
+			if (key > currentNode->left->key)
+			{
+				currentNode->left = rotateLeft(currentNode->left);
+				return rotateRight(currentNode);
+			}
+
+			// left-left
+			else return rotateRight(currentNode);
+		}
+
+		else if (balance < -1)
+		{
+			// right-left
+			if (key < currentNode->right->key)
+			{
+				currentNode->right = rotateRight(currentNode->right);
+				return rotateLeft(currentNode);
+			}
+
+			// right-right
+			else return rotateLeft(currentNode);
+		}
+
+		return currentNode;
+	}
+
+	// Рекурсивное удаление элемента
+	TreeNode<K, T>* removeElementReq(TreeNode<K, T>* currentNode, const K& key)
+	{
+		currentNode = currentNode;
+		if (!currentNode) throw(std::runtime_error("ERROR: TreeTable: trying to delete a non-existant element!"));
+
+		if (key < currentNode->key) currentNode->left = removeElementReq(currentNode->left, key);
+		else if (key > currentNode->key) currentNode->right = removeElementReq(currentNode->right, key);
+		else
+		{
+			// Лист
+			if (!currentNode->left && !currentNode->right)
+			{
+				delete currentNode;
+				currentNode = nullptr;
+			}
+
+			// Только правый наследник
+			else if (!currentNode->left)
+			{
+				TreeNode<K, T>* temp = currentNode;
+				currentNode = currentNode->right;
+
+				delete temp;
+			}
+
+			// Только левый наследник
+			else if (!currentNode->right)
+			{
+				TreeNode<K, T>* temp = currentNode;
+				currentNode = currentNode->left;
+
+				delete temp;
+			}
+
+			// Оба наследника
+			else
+			{
+				// Ищем наибольшего в левом поддереве node
+				TreeNode<K, T>* max = currentNode->left;
+				while (max->right) max = max->right;
+
+				currentNode->key = max->key;
+				currentNode->data = max->data;
+
+				currentNode->left = removeElementReq(currentNode->left, max->key);
+			}
+		}
+
+		if (!currentNode) return nullptr;
+
+		currentNode->height = 1 + max(TreeNode<K, T>::getHeight(currentNode->left), TreeNode<K, T>::getHeight(currentNode->right));
+		int balance = TreeNode<K, T>::getHeight(currentNode->left) - TreeNode<K, T>::getHeight(currentNode->right);
+
+		if (balance > 1)
+		{
+
+			int childBalance = TreeNode<K, T>::getHeight(currentNode->left->left) - TreeNode<K, T>::getHeight(currentNode->left->right);
+
+			// left-left
+			if (childBalance >= 0)
+				return rotateRight(currentNode);
+
+			// left-right
+			else
+			{
+				currentNode->left = rotateLeft(currentNode->left);
+				return rotateRight(currentNode);
+			}
+		}
+
+		else if (balance < -1)
+		{
+			int childBalance = TreeNode<K, T>::getHeight(currentNode->right->left) - TreeNode<K, T>::getHeight(currentNode->right->right);
+
+			// right-right
+			if (childBalance <= 0)
+				return rotateLeft(currentNode);
+
+			// right-left
+			else
+			{
+				currentNode->right = rotateRight(currentNode->right);
+				return rotateLeft(currentNode);
+			}
+		}
+
+		return currentNode;
+	}
+
+
+	// Рекурсивный шаг обхода дерева по порядку
 	void inorderTraversal(TreeNode<K, T>* node, std::vector<std::pair<const K&, const T&>>& outElements)
 	{
 		if (!node) return;
 
 		if (node->left) inorderTraversal(node->left, outElements);
 
-		if (node->left) outElements.push_back({ node->key, node->data });
+		outElements.push_back({ node->key, node->data });
 
 		if (node->right) inorderTraversal(node->right, outElements);
 	}
 
+
 public:
-	TreeTable(): size(0), root(nullptr) {}
+	TreeTable() : size(0), root(nullptr) {}
 	~TreeTable() override { deleteSubtree(root); }
 
-	// Р”РѕР±Р°РІР»СЏРµС‚ РІ С‚Р°Р±Р»РёС†Сѓ СЌР»РµРјРµРЅС‚ СЃ РєР»СЋС‡РµРј key
+	// Добавляет в таблицу элемент с ключем key
 	virtual void addElement(const K& key, const T& pol) override
 	{
-		if (!root)
-		{
-			TreeNode<K, T>* newNode = new TreeNode<K, T>(key, pol, NODE_BLACK);
-			root = newNode;
-
-			root->right = new TreeNode<K, T>();
-			root->left = new TreeNode<K, T>();
-
-			root->right->parent = root;
-			root->left->parent = root;
-			
-			size++;
-
-			return;
-		}
-
-		TreeNode<K, T>* node = root;
-		while (!node->isLeaf()) // РџСЂРѕРІРµСЂСЏРµС‚ СЏРІР»СЏРµС‚СЃСЏ Р»Рё
-		{
-			if (key > node->key)
-				node = node->right;
-			else if (key < node->key)
-				node = node->left;
-			else
-				throw(std::runtime_error("ERROR: Red-Black Tree (TreeTable): trying to insert an element with already existing key!"));
-		}
-
-		TreeNode<K, T>* newNode = new TreeNode<K, T>(key, pol, NODE_RED);
-		newNode->parent = node->parent;
-
-		if (node->parent->left == node) node->parent->left = newNode;
-		else node->parent->right = newNode;
-
-		// РЎРѕР·РґР°РЅРёРµ РЅРѕРІС‹С… Р»РёСЃС‚РѕРІ
-		node->parent = newNode;
-		newNode->left = node;
-		newNode->right = new TreeNode<K, T>();
-		newNode->right->parent = newNode;
+		root = addElementReq(root, key, pol);
 
 		size++;
-
-		// Р РµР±Р°Р»Р°РЅСЃРёСЂРѕРІРєР°
-		node = newNode;
-
-		while (node->parent && node->parent->color == NODE_RED)
-		{
-			TreeNode<K, T>* parent = node->parent;
-			TreeNode<K, T>* grandParent = parent->parent;
-
-			if (!grandParent) { break; }
-
-			else if (parent == grandParent->left)
-			{
-				if (grandParent->right->color == NODE_RED)
-				{
-					grandParent->right->color = NODE_BLACK;
-					grandParent->left->color = NODE_BLACK;
-					grandParent->color = NODE_RED;
-
-					node = grandParent;
-					continue;
-				}
-
-				else
-				{
-					if (node == parent->right)
-					{
-						node = parent;
-						rotateLeft(node);
-					}
-
-					parent->color = NODE_BLACK;
-					grandParent->color = NODE_RED;
-					rotateRight(grandParent);
-				}
-			}
-
-			else
-			{
-				if (grandParent->left->color == NODE_RED)
-				{
-					grandParent->right->color == NODE_BLACK;
-					grandParent->left->color == NODE_BLACK;
-					grandParent->color == NODE_RED;
-
-					node = grandParent;
-					continue;
-				}
-
-				else
-				{
-					if (node == parent->left)
-					{
-						node = parent;
-						rotateRight(node);
-					}
-
-					parent->color = NODE_BLACK;
-					grandParent->color = NODE_RED;
-					rotateLeft(grandParent);
-				}
-			}
-		}
 	}
 
-	// РЈРґР°Р»СЏРµС‚ РёР· С‚Р°Р±Р»РёС†С‹ СЌР»РµРјРµРЅС‚ СЃ РєР»СЋС‡РµРј key
+	// Удаляет из таблицы элемент с ключем key
 	virtual void deleteElement(const K& key) override
 	{
-		if (size == 0) throw(std::runtime_error("ERROR: Red-Black Tree (TreeTable): trying to delete an element from an empty tree!"));
-		if (size == 1 && root->key != key) throw(std::runtime_error("ERROR: Red-Black Tree (TreeTable): trying to delete a non existant element!"));
-
-		// РџРѕРёСЃРє СѓР·Р»Р° РґР»СЏ СѓРґР°Р»РµРЅРёСЏ
-		TreeNode<K, T>* node = root;
-
-		if (size == 1 && root->key == key) node = root;
-
-		else
-		{
-			node = root;
-			while (node && node->key != key)
-			{
-				if (node->key < key) node = node->right;
-				else node = node->left;
-			}
-		}
-
-		if (!node) throw(std::runtime_error("ERROR: Red-Black Tree (TreeTable): trying to delete a non existant element!"));
-
-		// Р—Р°РїРѕРјРёРЅР°РµРј РёС„РЅРѕСЂРјР°С†РёСЋ РґР»СЏ СЂРµР±Р°Р»Р°РЅСЃРёСЂРѕРІРєРё
-		bool nodeColor = node->color;
-		TreeNode<K, T>* rNode = nullptr;
-
-		// РЈРґР°Р»РµРЅРёРµ РєР°Рє РІ Р»СЋР±РѕРј РґРµСЂРµРІРµ РїРѕРёСЃРєР°
-
-		// РЈРґР°Р»РµРЅРёРµ РєРѕСЂРЅСЏ РІ РїСѓСЃС‚РѕРј РґРµСЂРµРІРµ
-		if (node == root && size == 1)
-		{
-			delete root->left;
-			delete root->right;
-			delete root;
-
-			root = nullptr;
-		}
-
-		// РЎР»СѓС‡Р°Р№ РєРѕРіРґР° РЅР°СЃР»РµРґРЅРёРєРѕРІ РЅРµС‚
-		else if (node->left->isLeaf() && node->right->isLeaf())
-		{
-			if (node->parent->right == node) node->parent->right = node->right;
-			else node->parent->left = node->right;
-
-			node->right->parent = node->parent;
-
-			rNode = node->right;
-
-			delete node->left;
-			delete node;
-		}
-
-		// РЎР»СѓС‡Р°Р№ РєРѕРіРґР° РЅР°СЃР»РµРґРЅРёРє РѕРґРёРЅ
-
-		// РџСЂР°РІС‹Р№ РЅР°СЃР»РµРґРЅРёРє
-		else if (node->left->isLeaf())
-		{
-			if (node == root)
-				root = node->right;
-
-			else
-			{
-				if (node->parent->right == node) node->parent->right = node->right;
-				else node->parent->left = node->right;
-			}
-
-			node->right->parent = node->parent;
-
-			rNode = node->right;
-
-			delete node->left;
-			delete node;
-		}
-
-		// Р›РµРІС‹Р№ РЅР°СЃР»РµРґРЅРёРє
-		else if (node->right->isLeaf())
-		{
-			if (node == root)
-				root = node->left;
-
-			else
-			{
-				if (node->parent->right == node) node->parent->right = node->left;
-				else node->parent->left = node->left;
-			}
-			node->left->parent = node->parent;
-
-			rNode = node->left;
-
-			delete node->right;
-			delete node;
-		}
-
-		// РЎР»СѓС‡Р°Р№ РєРѕРіРґР° РЅР°СЃР»РµРґРЅРёРєРѕРІ 2
-		else
-		{
-			// РС‰РµРј РЅР°РёР±РѕР»СЊС€РµРіРѕ РІ Р»РµРІРѕРј РїРѕРґРґРµСЂРµРІРµ node
-			TreeNode<K, T>* pred = node->left;
-
-			while (!pred->right->isLeaf()) pred = pred->right;
-			
-			// РЈР±РёСЂР°РµРј pred СЃРѕ СЃС‚Р°СЂРѕР№ РїРѕР·РёС†РёРё
-			if (pred->left->isLeaf())
-			{
-				if (pred->parent == node) pred->parent->left = pred->right;
-
-				else pred->parent->right = pred->right;
-
-				pred->right->parent = pred->parent;
-				delete pred->left;
-				
-			}
-
-			else
-			{
-				if (pred->parent == node) pred->parent->left = pred->left;
-				else pred->parent->right = pred->left;
-				
-				pred->left->parent = pred->parent;
-				delete pred->right;
-			}
-
-			// Р’СЃС‚Р°РІР»СЏРµРј pred РЅР° РЅРѕРІСѓСЋ РїРѕР·РёС†РёСЋ
-			pred->parent = node->parent;
-			pred->right = node->right;
-			pred->left = node->left;
-
-			rNode = pred;
-
-			if (!pred->parent) root = pred;
-
-			delete node;
-		}
+		root = root;
+		root = removeElementReq(root, key);
 
 		size--;
 
-
-		// Р РµР±Р°Р»Р°РЅСЃРёСЂРѕРІРєР°
-
-		if (nodeColor == NODE_RED || size == 0) return;
-		
-		while (rNode != root && rNode->color == NODE_BLACK)
-		{
-			if (rNode == rNode->parent->left)
-			{
-				TreeNode<K, T>* sibling = rNode->parent->right;
-
-				if (sibling->color == NODE_RED)
-				{
-					sibling->color = NODE_BLACK;
-					rNode->parent->color = NODE_RED;
-					rotateLeft(rNode->parent);
-
-					sibling = rNode->parent->right;
-				}
-
-				if (sibling->left->color == NODE_BLACK && sibling->right->color == NODE_BLACK)
-				{
-					sibling->color = NODE_RED;
-					rNode = rNode->parent;
-				}
-
-				else
-				{
-					if (sibling->right->color == NODE_BLACK)
-					{
-						sibling->left->color = NODE_BLACK;
-						sibling->color = NODE_RED;
-						rotateRight(sibling);
-
-						sibling = rNode->parent->right;
-					}
-
-					sibling->color = rNode->parent->color;
-					rNode->parent->color = NODE_BLACK;
-					sibling->right->color = NODE_BLACK;
-					rotateLeft(rNode->parent);
-
-					rNode = root;
-				}
-			}
-
-			else
-			{
-				TreeNode<K, T>* sibling = rNode->parent->left;
-
-				if (sibling->color == NODE_RED)
-				{
-					sibling->color = NODE_BLACK;
-					rNode->parent->color = NODE_RED;
-					rotateRight(rNode->parent);
-
-					sibling = rNode->parent->left;
-				}
-
-				if (sibling->left->color == NODE_BLACK && sibling->right->color == NODE_BLACK)
-				{
-					sibling->color = NODE_RED;
-					rNode = rNode->parent;
-				}
-
-				else
-				{
-					if (sibling->left->color == NODE_BLACK)
-					{
-						sibling->right->color = NODE_BLACK;
-						sibling->color = NODE_RED;
-						rotateLeft(sibling);
-
-						sibling = rNode->parent->left;
-					}
-
-					sibling->color = rNode->parent->color;
-					rNode->parent->color = NODE_BLACK;
-					sibling->left->color = NODE_BLACK;
-					rotateRight(rNode->parent);
-
-					rNode = root;
-				}
-			}
-		}
-
-		rNode->color = NODE_BLACK;
 	}
 
-	// РС‰РµС‚ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌР»РµРјРµРЅС‚ СЃ РєР»СЋС‡РµРј K, РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ Р±СЂРѕСЃР°РµС‚ РёСЃРєР»СЋС‡РµРЅРёРµ
+	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение
 	virtual T* findElement(const K& key) override
 	{
 		if (size == 0) return nullptr;
 		if (size == 1 && root->key != key) return nullptr;
-		
+
 		if (size == 1 && root->key == key) return &root->data;
 
-		// Р Р°Р·РјРµСЂ >= 2
+		// Размер >= 2
 		TreeNode<K, T>* node = root;
 		while (node && node->key != key)
 		{
@@ -459,8 +277,8 @@ public:
 		return &node->data;
 	}
 
-	// Р’ outElements РїРѕРјРµС‰Р°РµС‚ РІСЃРµ СЌР»РµРјРµРЅС‚С‹ С‚Р°Р±Р»РёС†С‹ РІ РЅРµРєРѕС‚РѕСЂРѕРј РїРѕСЂСЏРґРєРµ
-	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override 
+	// В outElements помещает все элементы таблицы в некотором порядке
+	virtual void getAllElements(std::vector<std::pair<const K&, const T&>>& outElements) override
 	{
 		if (!root) return;
 
