@@ -101,5 +101,8 @@
     <QtUic Include="AddPolynomialWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="ErrorMessageWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

@@ -2,6 +2,8 @@
 #include <cmath>
 #include <stdexcept>
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 Polynomial::Polynomial()
 {
@@ -43,15 +45,33 @@ bool Polynomial::operator==(const Polynomial& pl) const
 		return false;
 	}
 
+	std::vector<polynomialData> thisSorted, otherSorted;
+
 	for (int i = 0; i < monoms.size(); ++i)
+		thisSorted.push_back(monoms[i]);
+
+	for (int i = 0; i < pl.monoms.size(); ++i)
+		otherSorted.push_back(pl.monoms[i]);
+
+	auto comparator = [](const polynomialData& a, const polynomialData& b) {
+		return a.grades < b.grades;
+		};
+
+	std::sort(thisSorted.begin(), thisSorted.end(), comparator);
+	std::sort(otherSorted.begin(), otherSorted.end(), comparator);
+
+	for (size_t i = 0; i < thisSorted.size(); ++i)
 	{
-		if (monoms[i] != pl.monoms[i])
-		{
+		if (!(thisSorted[i] == otherSorted[i]))
 			return false;
-		}
 	}
 
 	return true;
+}
+
+bool Polynomial::operator!=(const Polynomial& pl) const
+{
+	return !(*this == pl);
 }
 
 Polynomial Polynomial::operator+(const Polynomial& rhs)

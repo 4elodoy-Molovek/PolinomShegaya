@@ -35,6 +35,10 @@ private:
 	 */
 	Parser* parser;
 
+
+	// Последний вычисленный результат выражения
+	Polynomial cachedExpressionResult;
+
 public:
 
 	PolynomialHandler()
@@ -77,7 +81,25 @@ public:
 			polynomials.insert({ pol, polp });
 		}
 
-		return analyzer->calculateSummaryPolynomial(polynomials);
+		cachedExpressionResult = analyzer->calculateSummaryPolynomial(polynomials);
+		return cachedExpressionResult;
+	}
+
+	std::string getCachedExpressionResultNotation()
+	{
+		return parser->convertPolynomialToString(cachedExpressionResult);
+	}
+
+	void getAllPolynomials(std::vector<std::pair<const std::string&, string>>& outPolynomials)
+	{
+		std::vector<std::pair<const std::string&, const Polynomial&>> polynomialRequest;
+		tableList[activeTableID]->getAllElements(polynomialRequest);
+
+		outPolynomials.clear();
+		for (auto& pol : polynomialRequest)
+		{
+			outPolynomials.push_back({ pol.first, parser->convertPolynomialToString(pol.second) });
+		}
 	}
 
 	void setActiveTable(size_t newActiveTable) { activeTableID = newActiveTable; }

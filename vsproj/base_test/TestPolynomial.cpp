@@ -1,7 +1,7 @@
-#include <gtest.h>
+п»ї#include <gtest.h>
 #include "Polynomial.h"
 
-// Вспомогательная функция для сравнения двух полиномов
+// Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅР°СЏ С„СѓРЅРєС†РёСЏ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ РґРІСѓС… РїРѕР»РёРЅРѕРјРѕРІ
 bool polynomialsEqual(const Polynomial& a, const Polynomial& b) {
     return a == b;
 }
@@ -85,4 +85,73 @@ TEST(PolynomialTest, EqualityOperator) {
 TEST(PolynomialTest, ZeroPolynomial) {
     Polynomial p;
     EXPECT_EQ(p.calculate(10, 10, 10), 0);
+}
+
+TEST(PolynomialEqualityTest, SameOrderSameMonoms)
+{
+    Polynomial p1;
+    p1.insertMonom(-3, 10); // -3y
+    p1.insertMonom(2, 0);   // +2
+
+    Polynomial p2;
+    p2.insertMonom(-3, 10); // -3y
+    p2.insertMonom(2, 0);   // +2
+
+    EXPECT_TRUE(p1 == p2);
+}
+
+TEST(PolynomialEqualityTest, DifferentOrderSameMonoms)
+{
+    Polynomial p1;
+    p1.insertMonom(-3, 10); // -3y
+    p1.insertMonom(2, 0);   // +2
+
+    Polynomial p2;
+    p2.insertMonom(2, 0);   // +2
+    p2.insertMonom(-3, 10); // -3y
+
+    EXPECT_TRUE(p1 == p2);
+}
+
+TEST(PolynomialEqualityTest, DifferentMonoms)
+{
+    Polynomial p1;
+    p1.insertMonom(5, 0);   // 5
+
+    Polynomial p2;
+    p2.insertMonom(3, 0);   // 3
+
+    EXPECT_FALSE(p1 == p2);
+}
+
+TEST(PolynomialEqualityTest, ZeroPolynomials)
+{
+    Polynomial p1;
+    Polynomial p2;
+
+    EXPECT_TRUE(p1 == p2);
+}
+
+TEST(PolynomialEqualityTest, MonomCancellation)
+{
+    Polynomial p1;
+    p1.insertMonom(3, 100);   // 3x
+    p1.insertMonom(-3, 100);  // -3x в†’ cancelled
+
+    Polynomial p2;
+
+    EXPECT_TRUE(p1 == p2);
+}
+
+TEST(PolynomialEqualityTest, CommutativeAddition)
+{
+    Polynomial p1;
+    p1.insertMonom(1, 100);   // x
+    p1.insertMonom(2, 10);    // 2y
+
+    Polynomial p2;
+    p2.insertMonom(2, 10);    // 2y
+    p2.insertMonom(1, 100);   // x
+
+    EXPECT_TRUE(p1 == p2);
 }

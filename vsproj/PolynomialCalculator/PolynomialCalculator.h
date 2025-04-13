@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_PolynomialCalculator.h"
 #include "ui_AddPolynomialWidget.h"
+#include "ui_ErrorMessageWidget.h"
 #include "PolynomialHandler.h"
 
 
@@ -12,6 +13,15 @@ class PolynomialCalculator : public QMainWindow
 
     PolynomialHandler* handler;
     class AddPolynomialWidgetClass* addWidget;
+    class ErrorMessageWidgetClass* errorWidget;
+
+    // Таблица
+    std::vector<std::pair<const std::string&, std::string>> cachedPolynomials;
+    int selectedRow = -1;
+
+
+protected:
+
 
 public:
     PolynomialCalculator(QWidget* parent = nullptr);
@@ -19,6 +29,10 @@ public:
 
     void setHandler(PolynomialHandler* inHandler) { handler = inHandler; }
     PolynomialHandler* getHandler() { return handler; }
+
+    void updateTable();
+
+    void showErrorMessage(const std::string& errorMessage);
 
 signals:
 
@@ -39,6 +53,8 @@ private:
 };
 
 
+
+
 class AddPolynomialWidgetClass : public QWidget
 {
     Q_OBJECT
@@ -48,51 +64,46 @@ class AddPolynomialWidgetClass : public QWidget
     std::string notationCache;
 
 public:
-    AddPolynomialWidgetClass(PolynomialCalculator* inParentWindow, QWidget* parent = nullptr) : QWidget(parent), parentWindow(inParentWindow)
-    {
-        selfUI.setupUi(this);
-
-        QObject::connect(selfUI.nameInputBox, &QTextEdit::textChanged, this, &AddPolynomialWidgetClass::onPolynomialNameChanged);
-        QObject::connect(selfUI.polynomialNotationBox, &QTextEdit::textChanged, this, &AddPolynomialWidgetClass::onPolynomialNotationChanged);
-        QObject::connect(selfUI.confirmButton, &QPushButton::clicked, this, &AddPolynomialWidgetClass::onClickedConfirm);
-    }
+    AddPolynomialWidgetClass(PolynomialCalculator* inParentWindow, QWidget* parent = nullptr);
     ~AddPolynomialWidgetClass() {}
+
+    void open();
+
+    void openSaveMode(const std::string& polynomialExpression);
 
 signals:
 public slots:
 
-    void onPolynomialNameChanged() 
-    {
-        nameCache = selfUI.nameInputBox->toPlainText().toStdString();
-    }
+    void onPolynomialNameChanged();
 
-    void onPolynomialNotationChanged()
-    {
-        notationCache = selfUI.polynomialNotationBox->toPlainText().toStdString();
-    }
+    void onPolynomialNotationChanged();
 
-    void onClickedConfirm(bool a) 
-    {
-        bool failure = false;
-
-        if (nameCache.size() == 0 || notationCache.size() == 0) return;
-
-        try
-        {
-            parentWindow->getHandler()->addPolynomial(nameCache, notationCache);
-        }
-
-        catch (std::exception e)
-        {
-            failure = true;
-        }
-
-        if (!failure)
-            hide();
-    }
+    void onClickedConfirm(bool a);
 
 private:
     Ui::AddPolynomialWidget selfUI;
+};
+
+
+
+class ErrorMessageWidgetClass : public QWidget
+{
+    Q_OBJECT
+
+public:
+    ErrorMessageWidgetClass(QWidget* parent = nullptr);
+    ~ErrorMessageWidgetClass() {}
+
+    void open(const std::string& errorMessage);
+
+signals:
+public slots:
+
+    void onClickedOk(bool a);
+
+
+private:
+    Ui::ErrorMessageWidget selfUI;
 };
 
 

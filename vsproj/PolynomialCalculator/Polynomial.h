@@ -37,8 +37,9 @@ public:
 	// Оператор присванивания
 	Polynomial& operator= (const Polynomial& poly);
 
-	// Оператор сравнения полиномов
+	// Операторы сравнения полиномов
 	bool operator==(const Polynomial& pl) const;
+	bool operator!=(const Polynomial& pl) const;
 
 	// Сложение полиномов
 	Polynomial operator+ (const Polynomial& rhs);
