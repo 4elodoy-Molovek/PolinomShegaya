@@ -39,6 +39,22 @@ private:
 	// Последний вычисленный результат выражения
 	Polynomial cachedExpressionResult;
 
+
+	bool isValidPolynomialName(const std::string& name)
+	{
+		bool onlyLetters = true;
+		for (auto& c : name)
+		{
+			if (!isalpha(c) && c != '_')
+			{
+				onlyLetters = false;
+				break;
+			}
+		}
+
+		return onlyLetters;
+	}
+
 public:
 
 	PolynomialHandler()
@@ -57,6 +73,8 @@ public:
 
 	void addPolynomial(const std::string& name, const std::string& notation)
 	{
+		if (!isValidPolynomialName(name)) throw(std::exception(std::string("ERROR: '" + name + "' is not a valid polynomial name!").data()));
+
 		Polynomial pol = parser->convertStringToPolynomial(notation);
 
 		for (int i = 0; i < 6; i++)
@@ -114,5 +132,7 @@ public:
 
 	void setActiveTable(size_t newActiveTable) { activeTableID = newActiveTable; }
 	size_t GetActiveTable() { return activeTableID; }
+
+
 };
 
