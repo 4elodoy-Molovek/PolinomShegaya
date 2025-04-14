@@ -61,8 +61,8 @@ protected:
 		newParent->left = node;
 
 		// Обновляем высоты
-		node->height = 1 + max(TreeNode<K, T>::getHeight(node->left), TreeNode<K, T>::getHeight(node->right));
-		newParent->height = 1 + max(TreeNode<K, T>::getHeight(newParent->left), TreeNode<K, T>::getHeight(newParent->right));
+		node->height = 1 + std::max(TreeNode<K, T>::getHeight(node->left), TreeNode<K, T>::getHeight(node->right));
+		newParent->height = 1 + std::max(TreeNode<K, T>::getHeight(newParent->left), TreeNode<K, T>::getHeight(newParent->right));
 
 		return newParent;
 	}
@@ -80,8 +80,8 @@ protected:
 		newParent->right = node;
 
 		// Обновляем высоты
-		node->height = 1 + max(TreeNode<K, T>::getHeight(node->left), TreeNode<K, T>::getHeight(node->right));
-		newParent->height = 1 + max(TreeNode<K, T>::getHeight(newParent->left), TreeNode<K, T>::getHeight(newParent->right));
+		node->height = 1 + std::max(TreeNode<K, T>::getHeight(node->left), TreeNode<K, T>::getHeight(node->right));
+		newParent->height = 1 + std::max(TreeNode<K, T>::getHeight(newParent->left), TreeNode<K, T>::getHeight(newParent->right));
 
 		return newParent;
 	}
@@ -99,7 +99,7 @@ protected:
 		else if (key > currentNode->key) currentNode->right = addElementReq(currentNode->right, key, pol);
 		else throw(std::runtime_error("ERROR: TreeTable: trying to insert an element with already existing key!"));
 
-		currentNode->height = 1 + max(TreeNode<K, T>::getHeight(currentNode->left), TreeNode<K, T>::getHeight(currentNode->right));
+		currentNode->height = 1 + std::max(TreeNode<K, T>::getHeight(currentNode->left), TreeNode<K, T>::getHeight(currentNode->right));
 		int balance = TreeNode<K, T>::getHeight(currentNode->left) - TreeNode<K, T>::getHeight(currentNode->right);
 
 		if (balance > 1)
@@ -182,7 +182,7 @@ protected:
 
 		if (!currentNode) return nullptr;
 
-		currentNode->height = 1 + max(TreeNode<K, T>::getHeight(currentNode->left), TreeNode<K, T>::getHeight(currentNode->right));
+		currentNode->height = 1 + std::max(TreeNode<K, T>::getHeight(currentNode->left), TreeNode<K, T>::getHeight(currentNode->right));
 		int balance = TreeNode<K, T>::getHeight(currentNode->left) - TreeNode<K, T>::getHeight(currentNode->right);
 
 		if (balance > 1)

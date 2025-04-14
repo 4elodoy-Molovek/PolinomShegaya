@@ -11,11 +11,13 @@ PolynomialCalculator::PolynomialCalculator(QWidget *parent)
 
     addWidget = new AddPolynomialWidgetClass(this);
     errorWidget = new ErrorMessageWidgetClass();
+    calculateWidget = new CalculatePolynomialWidgetClass(this);
 
     QObject::connect(ui.tableSelectorBox, &QComboBox::currentIndexChanged, this, &PolynomialCalculator::currentTableChanged);
     QObject::connect(ui.polynomialTable, &QTableWidget::cellClicked, this, &PolynomialCalculator::onPolynomialClicked);
     QObject::connect(ui.addButton, &QPushButton::clicked, this, &PolynomialCalculator::addPolynomialClicked);
     QObject::connect(ui.deleteButton, &QPushButton::clicked, this, &PolynomialCalculator::onDeletePolynomialClicked);
+    QObject::connect(ui.calculatePolynomialButton, &QPushButton::clicked, this, &PolynomialCalculator::calculatePolynomialClicked);
     
     QObject::connect(ui.expressionInputBox, &QTextEdit::textChanged, this, &PolynomialCalculator::onInputExpressionChanged);
     QObject::connect(ui.calculateButton, &QPushButton::clicked, this, &PolynomialCalculator::onClickedCalculate);
@@ -43,6 +45,9 @@ void PolynomialCalculator::updateTable()
     cachedPolynomials.clear();
     handler->getAllPolynomials(cachedPolynomials);
 
+    std::string fectiveName = ".", fectiveValue = "   ";
+    cachedPolynomials.push_back({fectiveName, fectiveValue});
+
     for (auto& pol : cachedPolynomials)
     {
         ui.polynomialTable->insertRow(ui.polynomialTable->rowCount());
@@ -54,6 +59,10 @@ void PolynomialCalculator::updateTable()
     labels.append(QString::fromStdString("Name"));
     labels.append(QString::fromStdString("Polynomial"));
     ui.polynomialTable->setHorizontalHeaderLabels(labels);
+
+    // Updating other elements, that depend on the table
+    ui.deleteButton->setEnabled(selectedRow != -1);
+    ui.calculatePolynomialButton->setEnabled(selectedRow != -1);
 }
 
 void PolynomialCalculator::showErrorMessage(const std::string& errorMessage)
@@ -63,12 +72,21 @@ void PolynomialCalculator::showErrorMessage(const std::string& errorMessage)
 
 void PolynomialCalculator::onPolynomialClicked(int x, int y)
 {
-    selectedRow = x;
+    if (x == cachedPolynomials.size() - 1) resetSelectedRow();
+    else selectedRow = x;
+
+    ui.deleteButton->setEnabled(selectedRow != -1);
+    ui.calculatePolynomialButton->setEnabled(selectedRow != -1);
 }
 
 void PolynomialCalculator::addPolynomialClicked(bool a)
 {
     addWidget->open();
+}
+
+void PolynomialCalculator::calculatePolynomialClicked(bool a)
+{
+    calculateWidget->open(cachedPolynomials[selectedRow].first, cachedPolynomials[selectedRow].second);
 }
 
 void PolynomialCalculator::onDeletePolynomialClicked(bool a)
@@ -78,9 +96,8 @@ void PolynomialCalculator::onDeletePolynomialClicked(bool a)
         std::string key = cachedPolynomials[selectedRow].first;
         handler->deletePolynomial(key);
 
+        resetSelectedRow();
         updateTable();
-
-        selectedRow = -1;
     }
 }
 
@@ -185,6 +202,7 @@ void AddPolynomialWidgetClass::onClickedConfirm(bool a)
     if (!failure)
         hide();
 
+    parentWindow->resetSelectedRow();
     parentWindow->updateTable();
 }
 
@@ -213,4 +231,62 @@ void ErrorMessageWidgetClass::open(const std::string& errorMessage)
 void ErrorMessageWidgetClass::onClickedOk(bool a)
 {
     hide();
+}
+
+
+// CALCULATE POLYNOMIAL
+CalculatePolynomialWidgetClass::CalculatePolynomialWidgetClass(PolynomialCalculator* inParentWindow, QWidget* parent): QWidget(parent)
+{
+    parentWindow = inParentWindow;
+
+    selfUI.setupUi(this);
+
+    QObject::connect(selfUI.calculateButton, &QPushButton::clicked, this, &CalculatePolynomialWidgetClass::onClickedCalculate);
+
+    QObject::connect(selfUI.xBox, &QSpinBox::valueChanged, this, &CalculatePolynomialWidgetClass::onXChanged);
+    QObject::connect(selfUI.yBox, &QSpinBox::valueChanged, this, &CalculatePolynomialWidgetClass::onYChanged);
+    QObject::connect(selfUI.zBox, &QSpinBox::valueChanged, this, &CalculatePolynomialWidgetClass::onZChanged);
+
+    QWidget::setWindowTitle(QString::fromStdString("Calculate Polynomial Value"));
+}
+
+void CalculatePolynomialWidgetClass::open(const std::string& polName, const std::string& polNotation)
+{
+    polynomialName = polName;
+    selfUI.polynomialBox->setPlainText(QString::fromStdString(polNotation));
+
+    cachedX = cachedY = cachedZ = 0;
+    selfUI.xBox->setValue(0);
+    selfUI.yBox->setValue(0);
+    selfUI.zBox->setValue(0);
+
+    selfUI.resultBox->setPlainText(QString());
+
+    show();
+}
+
+void CalculatePolynomialWidgetClass::onXChanged(int newValue)
+{
+    cachedX = newValue;
+}
+
+void CalculatePolynomialWidgetClass::onYChanged(int newValue)
+{
+    cachedY = newValue;
+}
+
+void CalculatePolynomialWidgetClass::onZChanged(int newValue)
+{
+    cachedZ = newValue;
+}
+
+void CalculatePolynomialWidgetClass::onClickedCalculate(bool a)
+{
+    try
+    {
+        cachedResult = parentWindow->getHandler()->calculatePolynomialValue(polynomialName, cachedX, cachedY, cachedZ);
+        selfUI.resultBox->setPlainText(QString::fromStdString(std::to_string(cachedResult)));
+    }
+
+    catch (std::exception e) { parentWindow->showErrorMessage(e.what()); }
 }

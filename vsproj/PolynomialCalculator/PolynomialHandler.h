@@ -87,6 +87,14 @@ public:
 		return cachedExpressionResult;
 	}
 
+	long calculatePolynomialValue(const std::string& polynomialName, int x, int y, int z)
+	{
+		Polynomial* pol = tableList[activeTableID]->findElement(polynomialName);
+		if (!pol) throw(std::exception(std::string("ERROR: Polynomial '" + polynomialName + "' not found!").data()));
+
+		return pol->calculate(x, y, z);
+	}
+
 	std::string getCachedExpressionResultNotation()
 	{
 		return parser->convertPolynomialToString(cachedExpressionResult);

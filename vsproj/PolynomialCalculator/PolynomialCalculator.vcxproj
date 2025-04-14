@@ -94,6 +94,7 @@
   <ItemGroup>
     <QtRcc Include="PolynomialCalculator.qrc" />
     <QtUic Include="AddPolynomialWidget.ui" />
+    <QtUic Include="CalculatePolynomialWidget.ui" />
     <QtUic Include="ErrorMessageWidget.ui" />
     <QtUic Include="PolynomialCalculator.ui" />
     <QtMoc Include="PolynomialCalculator.h" />

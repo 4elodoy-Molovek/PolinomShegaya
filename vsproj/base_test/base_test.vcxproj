@@ -96,7 +96,6 @@
     <ClCompile Include="TestPolynomial.cpp" />
     <ClCompile Include="TestTable.cpp" />
     <ClCompile Include="TestMain.cpp" />
-    <ClCompile Include="TestTreeTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\gtest\gtest.h" />
