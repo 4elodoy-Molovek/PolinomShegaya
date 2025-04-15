@@ -62,12 +62,17 @@ Polynomial Parser_v1::convertStringToPolynomial(const std::string poly_string)
             }
         }
 
-        unsigned grades = x * 100 + y * 10 + z;
+        // Преобразуем (x, y, z) в длинный hash-ключ
+        // Например, x=10, y=20, z=30 -> 0010 0020 0030 -> long ключ
+        // Используем 3 цифры на каждую переменную:
+        unsigned grades = x * 10000 + y * 100 + z;
+
         result.insertMonom(coeff, grades);
     }
 
     return result;
 }
+
 
 
 std::string Parser_v1::convertPolynomialToString(const Polynomial& poly)
@@ -88,9 +93,9 @@ std::string Parser_v1::convertPolynomialToString(const Polynomial& poly)
         }
 
         unsigned grades = poly.monoms[i].grades;
-        int x = grades / 100;
-        int y = (grades / 10) % 10;
-        int z = grades % 10;
+        int x = grades / 10000;
+        int y = (grades / 100) % 100;
+        int z = grades % 100;
 
         // Знак
         if (!first) {

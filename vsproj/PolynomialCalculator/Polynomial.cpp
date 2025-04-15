@@ -2,8 +2,6 @@
 #include <cmath>
 #include <stdexcept>
 #include <iostream>
-#include <vector>
-#include <algorithm>
 
 Polynomial::Polynomial()
 {
@@ -45,25 +43,12 @@ bool Polynomial::operator==(const Polynomial& pl) const
 		return false;
 	}
 
-	std::vector<polynomialData> thisSorted, otherSorted;
-
 	for (int i = 0; i < monoms.size(); ++i)
-		thisSorted.push_back(monoms[i]);
-
-	for (int i = 0; i < pl.monoms.size(); ++i)
-		otherSorted.push_back(pl.monoms[i]);
-
-	auto comparator = [](const polynomialData& a, const polynomialData& b) {
-		return a.grades < b.grades;
-		};
-
-	std::sort(thisSorted.begin(), thisSorted.end(), comparator);
-	std::sort(otherSorted.begin(), otherSorted.end(), comparator);
-
-	for (size_t i = 0; i < thisSorted.size(); ++i)
 	{
-		if (!(thisSorted[i] == otherSorted[i]))
+		if (monoms[i] != pl.monoms[i])
+		{
 			return false;
+		}
 	}
 
 	return true;
@@ -124,11 +109,11 @@ Polynomial Polynomial::operator*(const Polynomial& rhs)
 			unsigned a = monoms[i].grades;
 			unsigned b = rhs.monoms[j].grades;
 
-			int x = (a / 100) + (b / 100);
-			int y = ((a / 10) % 10) + ((b / 10) % 10);
-			int z = (a % 10) + (b % 10);
+			int x = (a / 10000) + (b / 10000);
+			int y = ((a / 100) % 100) + ((b / 100) % 100);
+			int z = (a % 100) + (b % 100);
 
-			prod.grades = x * 100 + y * 10 + z;
+			prod.grades = x * 10000 + y * 100 + z;
 
 			result.insertMonom(prod);
 		}
@@ -164,14 +149,14 @@ Polynomial Polynomial::derivate(const std::string& var)
 	for (int i = 0; i < monoms.size(); ++i)
 	{
 		polynomialData mon = monoms[i];
-		int degrees[3] = { mon.grades / 100, (mon.grades / 10) % 10, mon.grades % 10 };
+		int degrees[3] = { mon.grades / 10000, (mon.grades / 100) % 100, mon.grades % 100 };
 
 		if (degrees[varIndex] == 0) continue;
 
 		polynomialData der;
 		der.c = mon.c * degrees[varIndex];
 		degrees[varIndex] -= 1;
-		der.grades = degrees[0] * 100 + degrees[1] * 10 + degrees[2];
+		der.grades = degrees[0] * 10000 + degrees[1] * 100 + degrees[2];
 
 		result.insertMonom(der);
 	}
@@ -192,12 +177,12 @@ Polynomial Polynomial::integrate(const std::string& var)
 	for (int i = 0; i < monoms.size(); ++i)
 	{
 		polynomialData mon = monoms[i];
-		int degrees[3] = { mon.grades / 100, (mon.grades / 10) % 10, mon.grades % 10 };
+		int degrees[3] = { mon.grades / 10000, (mon.grades / 100) % 100, mon.grades % 100 };
 
 		degrees[varIndex] += 1;
 
 		polynomialData integ;
-		integ.grades = degrees[0] * 100 + degrees[1] * 10 + degrees[2];
+		integ.grades = degrees[0] * 10000 + degrees[1] * 100 + degrees[2];
 		integ.c = mon.c / degrees[varIndex];
 
 		result.insertMonom(integ);
@@ -253,9 +238,9 @@ long Polynomial::calculate(const int px, const int py, const int pz)
 	for (int i = 0; i < monoms.size(); ++i)
 	{
 		polynomialData mon = monoms[i];
-		int x = mon.grades / 100;
-		int y = (mon.grades / 10) % 10;
-		int z = mon.grades % 10;
+		int x = mon.grades / 10000;
+		int y = (mon.grades / 100) % 100;
+		int z = mon.grades % 100;
 
 		long term = mon.c * std::pow(px, x) * std::pow(py, y) * std::pow(pz, z);
 		result += term;
@@ -282,9 +267,9 @@ std::ostream& operator<<(std::ostream& os, const Polynomial& pl)
 
 		os << std::abs(mon.c);
 
-		int x = mon.grades / 100;
-		int y = (mon.grades / 10) % 10;
-		int z = mon.grades % 10;
+		int x = mon.grades / 10000;
+		int y = (mon.grades / 100) % 100;
+		int z = mon.grades % 100;
 
 		if (x > 0) os << "x^" << x;
 		if (y > 0) os << "y^" << y;
