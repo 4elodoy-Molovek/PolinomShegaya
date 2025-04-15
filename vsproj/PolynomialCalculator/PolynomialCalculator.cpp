@@ -59,11 +59,8 @@ void PolynomialCalculator::updateTable()
     labels.append(QString::fromStdString("Name"));
     labels.append(QString::fromStdString("Polynomial"));
     ui.polynomialTable->setHorizontalHeaderLabels(labels);
-
-    // Updating other elements, that depend on the table
-    ui.deleteButton->setEnabled(selectedRow != -1);
-    ui.calculatePolynomialButton->setEnabled(selectedRow != -1);
 }
+
 
 void PolynomialCalculator::showErrorMessage(const std::string& errorMessage)
 {
@@ -72,11 +69,7 @@ void PolynomialCalculator::showErrorMessage(const std::string& errorMessage)
 
 void PolynomialCalculator::onPolynomialClicked(int x, int y)
 {
-    if (x == cachedPolynomials.size() - 1) resetSelectedRow();
-    else selectedRow = x;
-
-    ui.deleteButton->setEnabled(selectedRow != -1);
-    ui.calculatePolynomialButton->setEnabled(selectedRow != -1);
+    if (x == cachedPolynomials.size() - 1) updateTable();
 }
 
 void PolynomialCalculator::addPolynomialClicked(bool a)
@@ -86,17 +79,31 @@ void PolynomialCalculator::addPolynomialClicked(bool a)
 
 void PolynomialCalculator::calculatePolynomialClicked(bool a)
 {
-    calculateWidget->open(cachedPolynomials[selectedRow].first, cachedPolynomials[selectedRow].second);
+    if (ui.polynomialTable->selectedRanges().size() > 0)
+    {
+        int selectedRow = ui.polynomialTable->selectedRanges().last().bottomRow();
+        calculateWidget->open(cachedPolynomials[selectedRow].first, cachedPolynomials[selectedRow].second);
+    }
 }
 
 void PolynomialCalculator::onDeletePolynomialClicked(bool a)
 {
-    if (selectedRow != -1)
+    if (ui.polynomialTable->selectedRanges().size() > 0)
     {
-        std::string key = cachedPolynomials[selectedRow].first;
-        handler->deletePolynomial(key);
+        for (auto& range: ui.polynomialTable->selectedRanges())
+        {
+            int top = range.topRow();
+            int bottom = range.bottomRow();
+            for (int i = top; i <= bottom; i++)
+            {
+                if (i != cachedPolynomials.size() - 1)
+                {
+                    std::string name = cachedPolynomials[i].first;
+                    handler->deletePolynomial(name);
+                }
+            }
+        }
 
-        resetSelectedRow();
         updateTable();
     }
 }
@@ -202,7 +209,6 @@ void AddPolynomialWidgetClass::onClickedConfirm(bool a)
     if (!failure)
         hide();
 
-    parentWindow->resetSelectedRow();
     parentWindow->updateTable();
 }
 

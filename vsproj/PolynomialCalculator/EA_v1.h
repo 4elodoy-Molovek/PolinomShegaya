@@ -3,7 +3,7 @@
 
 using namespace std;
 
-typedef Polynomial(*Tptr)(Polynomial);
+typedef Polynomial(*Tptr)(Polynomial&);
 
 
 class EA_v1 : public ExpressionAnalyzer

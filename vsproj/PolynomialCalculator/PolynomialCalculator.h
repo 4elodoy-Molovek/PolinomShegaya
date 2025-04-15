@@ -18,8 +18,8 @@ class PolynomialCalculator : public QMainWindow
     class CalculatePolynomialWidgetClass* calculateWidget;
 
     // Таблица
-    std::vector<std::pair<const std::string&, std::string>> cachedPolynomials;
-    int selectedRow = -1;
+    std::vector<std::pair<std::string, std::string>> cachedPolynomials;
+    //int selectedRow = -1;
 
 
 protected:
@@ -36,7 +36,7 @@ public:
 
     void showErrorMessage(const std::string& errorMessage);
 
-    void resetSelectedRow() { selectedRow = -1; }
+    //void resetSelectedRow() { selectedRow = -1; }
 
 signals:
 

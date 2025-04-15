@@ -118,7 +118,7 @@ public:
 		return parser->convertPolynomialToString(cachedExpressionResult);
 	}
 
-	void getAllPolynomials(std::vector<std::pair<const std::string&, string>>& outPolynomials)
+	void getAllPolynomials(std::vector<std::pair<std::string, string>>& outPolynomials)
 	{
 		std::vector<std::pair<const std::string&, const Polynomial&>> polynomialRequest;
 		tableList[activeTableID]->getAllElements(polynomialRequest);

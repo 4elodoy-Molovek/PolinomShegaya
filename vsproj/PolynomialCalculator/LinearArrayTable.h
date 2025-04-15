@@ -43,7 +43,7 @@ public:
 				return;
 			}
 
-		throw std::runtime_error("ERROR: LinearArrayTable: element with key '" + key + "' already exists!");
+		throw std::runtime_error("ERROR: LinearArrayTable: element with key '" + key + "' does not exist!");
 	}
 
 	// Ищет и возвращает ссылку на элемент с ключем K, в противном случае бросает исключение

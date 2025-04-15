@@ -3,27 +3,27 @@
 using namespace std;
 
 
-Polynomial d_dx(Polynomial a) {
+Polynomial d_dx(Polynomial& a) {
 	return a.derivate("x");
 }
 
-Polynomial d_dy(Polynomial a) {
+Polynomial d_dy(Polynomial& a) {
 	return a.derivate("y");
 }
 
-Polynomial d_dz(Polynomial a) {
+Polynomial d_dz(Polynomial& a) {
 	return a.derivate("z");
 }
 
-Polynomial i_dx(Polynomial a) {
+Polynomial i_dx(Polynomial& a) {
 	return a.integrate("x");
 }
 
-Polynomial i_dy(Polynomial a) {
+Polynomial i_dy(Polynomial& a) {
 	return a.integrate("y");
 }
 
-Polynomial i_dz(Polynomial a) {
+Polynomial i_dz(Polynomial& a) {
 	return a.integrate("z");
 }
 
@@ -83,15 +83,15 @@ Tptr EA_v1::funcCheck(const string& func) {
 	return functionPtr;
 }
 
-std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::set<std::string>& outRequestedPolynomials) {
-	map<char, int> priority = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'^', 3}, {STACK_FUNC_SYMBOL, 4} };
-	stack<string> funcStack;
+map<char, int> priority = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'^', 3}, {STACK_FUNC_SYMBOL, 4} };
+stack<string> funcStack;
 
-	int bracketBalance = 0;
-	char stackItem;
-	stack<char> st;
-	string postfixItem;
-	vector <string> postfix = {};
+int bracketBalance = 0;
+char stackItem;
+stack<char> st;
+string postfixItem;
+vector <string> postfix = {}; std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::set<std::string>& outRequestedPolynomials) {
+
 	int state = 1;
 	for (char item : expression) {
 		if (bracketBalance < 0)
@@ -222,6 +222,10 @@ std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::s
 				postfixItem = item;
 				break;
 			case 6:
+				postfixItem += item;
+				break;
+			case 2:
+				state = 2;
 				postfixItem += item;
 				break;
 			default:
