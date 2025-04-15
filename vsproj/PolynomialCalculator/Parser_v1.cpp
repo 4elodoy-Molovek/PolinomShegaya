@@ -54,6 +54,9 @@ Polynomial Parser_v1::convertStringToPolynomial(const std::string poly_string)
             if ((*var_iter)[3].matched)
                 power = std::stoi((*var_iter)[3].str());
 
+            if (power > 99)
+                throw(std::out_of_range("The power of variable " + std::string(1, var) + " is more than 99"));
+
             switch (var)
             {
             case 'x': x = power; break;
