@@ -7,66 +7,45 @@ class Polynomial
 {
 private:
 
-	// Содержит данные об одном мономе
 	struct polynomialData
 	{
-		int c;
+		double c;
 		unsigned grades;
 
 		bool operator==(const polynomialData& rhs) const { return (c == rhs.c) && (grades == rhs.grades); }
-		bool operator!=(const polynomialData& rhs) const { return (c != rhs.c) || (grades != rhs.grades); }
+		bool operator!=(const polynomialData& rhs) const { return !(*this == rhs); }
 	};
 
-	// Лист всех мономов полинома
 	List<polynomialData> monoms;
 
 public:
 
-	// Конструктор по умолчанию
 	Polynomial();
-
-	// Конструктор копирования
 	Polynomial(const Polynomial& pl);
-
-	// Конструктор константы
-	explicit Polynomial(int constant);
-
-	// Деструктор
+	explicit Polynomial(double constant);
 	~Polynomial();
 
-	// Оператор присванивания
-	Polynomial& operator= (const Polynomial& poly);
+	Polynomial& operator=(const Polynomial& poly);
 
-	// Операторы сравнения полиномов
 	bool operator==(const Polynomial& pl) const;
 	bool operator!=(const Polynomial& pl) const;
 
-	// Сложение полиномов
-	Polynomial operator+ (const Polynomial& rhs);
-	// Вычитание полиномов
-	Polynomial operator- (const Polynomial& rhs);
-	// Умножение полиномов
-	Polynomial operator* (const Polynomial& rhs);
-	// Умножение полинома на константу
-	Polynomial operator* (float scalar) const;
+	Polynomial operator+(const Polynomial& rhs);
+	Polynomial operator-(const Polynomial& rhs);
+	Polynomial operator*(const Polynomial& rhs);
+	Polynomial operator*(double scalar) const;
 
-	// Взятие производной полинома
 	Polynomial derivate(const std::string& var);
-	// Интегрирование полинома
 	Polynomial integrate(const std::string& var);
 
-	// Вставка монома в правильную позицию (поддерживает отсортированность полинома)
-	void insertMonom(int co, unsigned grad);
+	void insertMonom(double co, unsigned grad);
 	void insertMonom(const polynomialData& el);
 
-	// Вставка монома в конец списка (правильност порядка на совести программиста)
-	void insertMonomLast(int co, unsigned grad);
+	void insertMonomLast(double co, unsigned grad);
 	void insertMonomLast(const polynomialData& el);
 
-	// Вычисляет значение полинома в точке
-	long calculate(const int px, const int py, const int pz);
+	double calculate(double px, double py, double pz);
 
 	friend std::ostream& operator<<(std::ostream& os, const Polynomial& pl);
-
 	friend class Parser_v1;
 };

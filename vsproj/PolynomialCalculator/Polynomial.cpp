@@ -2,30 +2,24 @@
 #include <cmath>
 #include <stdexcept>
 #include <iostream>
+#include <iomanip>
 
-Polynomial::Polynomial()
-{
-}
+Polynomial::Polynomial() {}
 
 Polynomial::Polynomial(const Polynomial& pl)
 {
 	monoms = pl.monoms;
 }
 
-Polynomial::Polynomial(int constant)
+Polynomial::Polynomial(double constant)
 {
-	if (constant != 0)
+	if (constant != 0.0)
 	{
-		polynomialData monom;
-		monom.c = constant;
-		monom.grades = 0;
-		monoms.insertLast(monom);
+		insertMonom(constant, 0);
 	}
 }
 
-Polynomial::~Polynomial()
-{
-}
+Polynomial::~Polynomial() {}
 
 Polynomial& Polynomial::operator=(const Polynomial& poly)
 {
@@ -39,16 +33,12 @@ Polynomial& Polynomial::operator=(const Polynomial& poly)
 bool Polynomial::operator==(const Polynomial& pl) const
 {
 	if (monoms.size() != pl.monoms.size())
-	{
 		return false;
-	}
 
 	for (int i = 0; i < monoms.size(); ++i)
 	{
 		if (monoms[i] != pl.monoms[i])
-		{
 			return false;
-		}
 	}
 
 	return true;
@@ -61,12 +51,7 @@ bool Polynomial::operator!=(const Polynomial& pl) const
 
 Polynomial Polynomial::operator+(const Polynomial& rhs)
 {
-	Polynomial result;
-
-	for (int i = 0; i < monoms.size(); ++i)
-	{
-		result.insertMonom(monoms[i]);
-	}
+	Polynomial result = *this;
 
 	for (int i = 0; i < rhs.monoms.size(); ++i)
 	{
@@ -78,12 +63,7 @@ Polynomial Polynomial::operator+(const Polynomial& rhs)
 
 Polynomial Polynomial::operator-(const Polynomial& rhs)
 {
-	Polynomial result;
-
-	for (int i = 0; i < monoms.size(); ++i)
-	{
-		result.insertMonom(monoms[i]);
-	}
+	Polynomial result = *this;
 
 	for (int i = 0; i < rhs.monoms.size(); ++i)
 	{
@@ -113,6 +93,9 @@ Polynomial Polynomial::operator*(const Polynomial& rhs)
 			int y = ((a / 100) % 100) + ((b / 100) % 100);
 			int z = (a % 100) + (b % 100);
 
+			if (x > 99 || y > 99 || z > 99)
+				throw std::overflow_error("Exponent too large during multiplication");
+
 			prod.grades = x * 10000 + y * 100 + z;
 
 			result.insertMonom(prod);
@@ -122,7 +105,7 @@ Polynomial Polynomial::operator*(const Polynomial& rhs)
 	return result;
 }
 
-Polynomial Polynomial::operator*(float scalar) const
+Polynomial Polynomial::operator*(double scalar) const
 {
 	Polynomial result;
 
@@ -149,7 +132,11 @@ Polynomial Polynomial::derivate(const std::string& var)
 	for (int i = 0; i < monoms.size(); ++i)
 	{
 		polynomialData mon = monoms[i];
-		int degrees[3] = { mon.grades / 10000, (mon.grades / 100) % 100, mon.grades % 100 };
+		int degrees[3] = {
+			mon.grades / 10000,
+			(mon.grades / 100) % 100,
+			mon.grades % 100
+		};
 
 		if (degrees[varIndex] == 0) continue;
 
@@ -177,13 +164,21 @@ Polynomial Polynomial::integrate(const std::string& var)
 	for (int i = 0; i < monoms.size(); ++i)
 	{
 		polynomialData mon = monoms[i];
-		int degrees[3] = { mon.grades / 10000, (mon.grades / 100) % 100, mon.grades % 100 };
+		int degrees[3] = {
+			mon.grades / 10000,
+			(mon.grades / 100) % 100,
+			mon.grades % 100
+		};
 
 		degrees[varIndex] += 1;
+		int deg = degrees[varIndex];
+
+		if (degrees[0] > 99 || degrees[1] > 99 || degrees[2] > 99)
+			throw std::overflow_error("Exponent too large during integration");
 
 		polynomialData integ;
 		integ.grades = degrees[0] * 10000 + degrees[1] * 100 + degrees[2];
-		integ.c = mon.c / degrees[varIndex];
+		integ.c = mon.c / deg;
 
 		result.insertMonom(integ);
 	}
@@ -191,7 +186,7 @@ Polynomial Polynomial::integrate(const std::string& var)
 	return result;
 }
 
-void Polynomial::insertMonom(int co, unsigned grad)
+void Polynomial::insertMonom(double co, unsigned grad)
 {
 	polynomialData el = { co, grad };
 	insertMonom(el);
@@ -205,7 +200,7 @@ void Polynomial::insertMonom(const polynomialData& el)
 		{
 			monoms[i].c += el.c;
 
-			if (monoms[i].c == 0)
+			if (std::abs(monoms[i].c) < 1e-10)
 			{
 				monoms.remove(i);
 			}
@@ -214,16 +209,15 @@ void Polynomial::insertMonom(const polynomialData& el)
 		}
 	}
 
-	if (el.c != 0)
+	if (std::abs(el.c) > 1e-10)
 	{
 		monoms.insertLast(el);
 	}
 }
 
-void Polynomial::insertMonomLast(int co, unsigned grad)
+void Polynomial::insertMonomLast(double co, unsigned grad)
 {
-	polynomialData el = { co, grad };
-	monoms.insertLast(el);
+	insertMonomLast({ co, grad });
 }
 
 void Polynomial::insertMonomLast(const polynomialData& el)
@@ -231,9 +225,9 @@ void Polynomial::insertMonomLast(const polynomialData& el)
 	monoms.insertLast(el);
 }
 
-long Polynomial::calculate(const int px, const int py, const int pz)
+double Polynomial::calculate(double px, double py, double pz)
 {
-	long result = 0;
+	double result = 0;
 
 	for (int i = 0; i < monoms.size(); ++i)
 	{
@@ -242,7 +236,7 @@ long Polynomial::calculate(const int px, const int py, const int pz)
 		int y = (mon.grades / 100) % 100;
 		int z = mon.grades % 100;
 
-		long term = mon.c * std::pow(px, x) * std::pow(py, y) * std::pow(pz, z);
+		double term = mon.c * std::pow(px, x) * std::pow(py, y) * std::pow(pz, z);
 		result += term;
 	}
 
@@ -260,20 +254,24 @@ std::ostream& operator<<(std::ostream& os, const Polynomial& pl)
 	for (int i = 0; i < pl.monoms.size(); ++i)
 	{
 		const auto& mon = pl.monoms[i];
-		if (mon.c == 0) continue;
+		if (std::abs(mon.c) < 1e-10) continue;
 
-		if (i > 0 && mon.c > 0) os << " + ";
-		else if (mon.c < 0) os << " - ";
+		if (i > 0 && mon.c > 0) os << "+";
+		else if (mon.c < 0) os << "-";
 
-		os << std::abs(mon.c);
-
+		double absCoeff = std::abs(mon.c);
 		int x = mon.grades / 10000;
 		int y = (mon.grades / 100) % 100;
 		int z = mon.grades % 100;
 
-		if (x > 0) os << "x^" << x;
-		if (y > 0) os << "y^" << y;
-		if (z > 0) os << "z^" << z;
+		bool hasVars = (x || y || z);
+
+		if (!hasVars || absCoeff != 1.0)
+			os << std::fixed << std::setprecision(3) << absCoeff;
+
+		if (x > 0) os << "x" << (x > 1 ? ("^" + std::to_string(x)) : "");
+		if (y > 0) os << "y" << (y > 1 ? ("^" + std::to_string(y)) : "");
+		if (z > 0) os << "z" << (z > 1 ? ("^" + std::to_string(z)) : "");
 	}
 
 	return os;
