@@ -3,6 +3,10 @@
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
+#include <vector>
+
+constexpr double EPS = 1e-9;
 
 Polynomial::Polynomial() {}
 
@@ -13,7 +17,7 @@ Polynomial::Polynomial(const Polynomial& pl)
 
 Polynomial::Polynomial(double constant)
 {
-	if (constant != 0.0)
+	if (std::fabs(constant) > EPS)
 	{
 		insertMonom(constant, 0);
 	}
@@ -35,14 +39,32 @@ bool Polynomial::operator==(const Polynomial& pl) const
 	if (monoms.size() != pl.monoms.size())
 		return false;
 
+	std::vector<polynomialData> a, b;
 	for (int i = 0; i < monoms.size(); ++i)
 	{
-		if (monoms[i] != pl.monoms[i])
+		a.push_back(monoms[i]);
+		b.push_back(pl.monoms[i]);
+	}
+
+	auto cmp = [](const polynomialData& lhs, const polynomialData& rhs) 
+		{
+		if (lhs.grades != rhs.grades)
+			return lhs.grades < rhs.grades;
+		return std::fabs(lhs.c - rhs.c) > 1e-9 ? lhs.c < rhs.c : false;
+	};
+
+	std::sort(a.begin(), a.end(), cmp);
+	std::sort(b.begin(), b.end(), cmp);
+
+	for (size_t i = 0; i < a.size(); ++i)
+	{
+		if (a[i].grades != b[i].grades || std::fabs(a[i].c - b[i].c) > 1e-9)
 			return false;
 	}
 
 	return true;
 }
+
 
 bool Polynomial::operator!=(const Polynomial& pl) const
 {
@@ -200,16 +222,15 @@ void Polynomial::insertMonom(const polynomialData& el)
 		{
 			monoms[i].c += el.c;
 
-			if (std::abs(monoms[i].c) < 1e-10)
+			if (std::fabs(monoms[i].c) < EPS)
 			{
 				monoms.remove(i);
 			}
-
 			return;
 		}
 	}
 
-	if (std::abs(el.c) > 1e-10)
+	if (std::fabs(el.c) > EPS)
 	{
 		monoms.insertLast(el);
 	}
@@ -254,7 +275,7 @@ std::ostream& operator<<(std::ostream& os, const Polynomial& pl)
 	for (int i = 0; i < pl.monoms.size(); ++i)
 	{
 		const auto& mon = pl.monoms[i];
-		if (std::abs(mon.c) < 1e-10) continue;
+		if (std::abs(mon.c) < EPS) continue;
 
 		if (i > 0 && mon.c > 0) os << "+";
 		else if (mon.c < 0) os << "-";
@@ -266,7 +287,7 @@ std::ostream& operator<<(std::ostream& os, const Polynomial& pl)
 
 		bool hasVars = (x || y || z);
 
-		if (!hasVars || absCoeff != 1.0)
+		if (!hasVars || std::fabs(absCoeff - 1.0) > EPS)
 			os << std::fixed << std::setprecision(3) << absCoeff;
 
 		if (x > 0) os << "x" << (x > 1 ? ("^" + std::to_string(x)) : "");

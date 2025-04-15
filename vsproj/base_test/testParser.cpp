@@ -1,4 +1,4 @@
-#include <gtest.h>
+﻿#include <gtest.h>
 #include "Parser_v1.h"
 
 TEST(ParserV1Test, ParseSimplePolynomial) 
@@ -38,13 +38,13 @@ TEST(ParserV1Test, ParseImpliedCoefficientOne)
     EXPECT_EQ(poly.calculate(2, 3, 4), 2 * 2 * 3 - 3 * 4 + 4); // 12 - 12 + 4 = 4
 }
 
-TEST(ParserV1Test, ToStringSimple) 
+TEST(ParserV1Test, ToStringSimple)
 {
     Parser_v1 parser;
     Polynomial p;
-    p.insertMonomLast(2, 210); // 2x^2y
-    p.insertMonomLast(-1, 1);  // -z
-    p.insertMonomLast(5, 0);   // +5
+    p.insertMonomLast(2.0, 20100); // 2x^2y
+    p.insertMonomLast(-1.0, 1);  // -z
+    p.insertMonomLast(5.0, 0);   // +5
 
     std::string result = parser.convertPolynomialToString(p);
     EXPECT_EQ(result, "2x^2y-z+5");

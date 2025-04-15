@@ -1,4 +1,4 @@
-#include "EA_v1.h"
+﻿#include "EA_v1.h"
 
 using namespace std;
 
@@ -83,15 +83,15 @@ Tptr EA_v1::funcCheck(const string& func) {
 	return functionPtr;
 }
 
-map<char, int> priority = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'^', 3}, {STACK_FUNC_SYMBOL, 4} };
-stack<string> funcStack;
+std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::set<std::string>& outRequestedPolynomials) {
+	map<char, int> priority = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'^', 3}, {STACK_FUNC_SYMBOL, 4} };
+	stack<string> funcStack;
 
-int bracketBalance = 0;
-char stackItem;
-stack<char> st;
-string postfixItem;
-vector <string> postfix = {}; std::vector<std::string> EA_v1::getPostfix(const std::string& expression, std::set<std::string>& outRequestedPolynomials) {
-
+	int bracketBalance = 0;
+	char stackItem;
+	stack<char> st;
+	string postfixItem;
+	vector <string> postfix = {};
 	int state = 1;
 	for (char item : expression) {
 		if (bracketBalance < 0)

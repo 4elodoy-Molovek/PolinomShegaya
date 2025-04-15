@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <string>
+#include <cmath>
 #include "List.h"
 
 class Polynomial
@@ -12,8 +13,17 @@ private:
 		double c;
 		unsigned grades;
 
-		bool operator==(const polynomialData& rhs) const { return (c == rhs.c) && (grades == rhs.grades); }
-		bool operator!=(const polynomialData& rhs) const { return !(*this == rhs); }
+		bool operator==(const polynomialData& rhs) const
+		{
+			constexpr double EPS = 1e-9;
+			return std::fabs(c - rhs.c) < EPS && grades == rhs.grades;
+		}
+
+		bool operator!=(const polynomialData& rhs) const
+		{
+			return !(*this == rhs);
+		}
+
 	};
 
 	List<polynomialData> monoms;
